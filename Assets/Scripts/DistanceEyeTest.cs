@@ -2,7 +2,7 @@ using System;
 
 namespace ExpertWaves
 {
-	public class GameManager
+	public class DistanceEyeTest
 	{
 		private Random randomGenerator;
 
@@ -64,6 +64,7 @@ namespace ExpertWaves
 			if (this.level < this.levels.Length - 1) {
 				this.RandomAngle();
 				this.level += 1;
+				this.score = (float) Math.Round((decimal) ( 100 * this.level / ( this.levels.Length - 1 ) ), 2);
 			}
 		}
 
