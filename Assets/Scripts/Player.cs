@@ -23,7 +23,7 @@ public class Player :MonoBehaviour
 
 	public Text status;
 
-	public Camera camera;
+	public Camera sceneCamera;
 
 	// game manager
 	private GameManager gameManager;
@@ -119,10 +119,8 @@ public class Player :MonoBehaviour
 
 	public float computeAcuityPercent()
 	{
-		// acuity logging
 		decimal acuity = (decimal) computeAcuity();
-		decimal percent_acuity = Math.Round(acuity * 100, 2);
-		return (float) percent_acuity;
+		return (float) Math.Round(acuity * 100, 2);
 	}
 
 	public float computeAcuity()
@@ -146,11 +144,11 @@ public class Player :MonoBehaviour
 
 		// The minimal point of the box. This is always equal to center-extents.
 		Vector3 imageBoundMin = this.imageOptotype.GetComponent<Image>().sprite.bounds.min;
-		Vector3 ImageScreenBoundMin = camera.WorldToScreenPoint(imageBoundMin);
+		Vector3 ImageScreenBoundMin = sceneCamera.WorldToScreenPoint(imageBoundMin);
 
 		// The maximal point of the box. This is always equal to center+extents.
 		Vector3 imageBoundMax = this.imageOptotype.GetComponent<Image>().sprite.bounds.max;
-		Vector3 ImageScreenBoundMax = camera.WorldToScreenPoint(imageBoundMax);
+		Vector3 ImageScreenBoundMax = sceneCamera.WorldToScreenPoint(imageBoundMax);
 
 		// Image screen width and height in pixels. Screenspace is defined in pixels.
 		float imageScreenWidth  = (ImageScreenBoundMax.x - ImageScreenBoundMin.x) * scale.x;
