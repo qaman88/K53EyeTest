@@ -5,7 +5,6 @@ namespace ExpertWaves
         DOWN,
         UP,
         LEFT,
-        RIGHT,
-        UNKNOWN
+        RIGHT
     }
 }

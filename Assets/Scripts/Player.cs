@@ -23,17 +23,19 @@ public class Player :MonoBehaviour
 
 	public Text status;
 
+	public Camera camera;
+
 	// game manager
 	private GameManager gameManager;
-
-	private Vector3 scaling = new Vector3(0.01f, 0.01f, 1);
-
-	private Vector3 scalingFactor = new Vector3(0.01f, 0.01f, 1);
 
 	// Start is called before the first frame update
 	void Start()
 	{
+		// init game manager
 		gameManager = new GameManager();
+
+		// status text
+		this.status.text = "K53 Eye Test";
 	}
 
 	// Update is called once per frame
@@ -53,22 +55,22 @@ public class Player :MonoBehaviour
 
 			if (!stopTouch) {
 				if (distance.x < -swipeRange) {
-					Debug.Log("Swipe left");
+					Debug.Log("$$$ Swipe left");
 					stopTouch = true;
 					this.NextLevel(DIRECTION.LEFT);
 				}
 				else if (distance.x > swipeRange) {
-					Debug.Log("Swipe right");
+					Debug.Log("$$$ Swipe right");
 					stopTouch = true;
 					this.NextLevel(DIRECTION.RIGHT);
 				}
 				else if (distance.y < -swipeRange) {
-					Debug.Log("Swipe down");
+					Debug.Log("$$$ Swipe down");
 					stopTouch = true;
 					this.NextLevel(DIRECTION.DOWN);
 				}
 				else if (distance.y > swipeRange) {
-					Debug.Log("Swipe up");
+					Debug.Log("$$$ Swipe up");
 					stopTouch = true;
 					this.NextLevel(DIRECTION.UP);
 				}
@@ -86,24 +88,82 @@ public class Player :MonoBehaviour
 
 	public void NextLevel(DIRECTION direction)
 	{
-		if (direction == gameManager.getDirection()) {
-			// status text
-			this.status.text = "Play";
+		if (( gameManager.getGameOver() ) && ( direction == gameManager.Direction )) {
+			// game manager move to next level
+			gameManager.NextLevel();
 
-			// change angle
-			float angle = gameManager.getRandomAngle();
-			Debug.Log("### Angle " + angle);
-			this.imageOptotype.transform.localEulerAngles =
-					new Vector3(0f, 0f, angle);
+			// change angless
+			float angle = gameManager.Angle;
+			this.imageOptotype.transform.localEulerAngles = new Vector3(0f, 0f, angle);
 
 			// change size
-			this.imageOptotype.transform.localScale -= scalingFactor;
-			//Vector3 scale = this.imageOptotype.transform.localScale;
-			//Debug.Log(message: $"{scale.x},{scale.y},{scale.z}");
+			Vector3 scale = new Vector3(gameManager.OptotypeScale, gameManager.OptotypeScale, 1.0f);
+			this.imageOptotype.transform.localScale = scale;
+
+			// acuity logging
+			float percent_acuity = this.computeAcuityPercent();
+			Debug.Log($"$$$ Acuity Score: {percent_acuity}");
+			this.status.text = $"Keep Going, Score: {percent_acuity}%";
 		}
-		else if (direction != gameManager.getDirection()) {
+		else {
+			// game over on incorrect answer or end of levels
+			gameManager.setGameOver(true);
+
+			// compute acuity score
+			float percent_acuity = this.computeAcuityPercent();
+
 			// status text
-			this.status.text = "Try again";
+			this.status.text = $"The End! Acuity Score: {percent_acuity}%";
 		}
+	}
+
+	public float computeAcuityPercent()
+	{
+		// acuity logging
+		decimal acuity = (decimal) computeAcuity();
+		decimal percent_acuity = Math.Round(acuity * 100, 2);
+		return (float) percent_acuity;
+	}
+
+	public float computeAcuity()
+	{
+		// optotype size in meters
+		float optotype_letter_size_m_unit = this.computeCurrentOptotypeSize().y;
+
+		// device to user eyes approx. 30 cm
+		float device2user = 0.4f;
+
+		// acuity measure | ability to read an optotype M print at user-device distance
+		float acuity = device2user / optotype_letter_size_m_unit;
+
+		return acuity;
+	}
+
+	public Vector2 computeCurrentOptotypeSize()
+	{
+		// scaling factors of the image rect transfrom
+		Vector3 scale = this.imageOptotype.transform.localScale;
+
+		// The minimal point of the box. This is always equal to center-extents.
+		Vector3 imageBoundMin = this.imageOptotype.GetComponent<Image>().sprite.bounds.min;
+		Vector3 ImageScreenBoundMin = camera.WorldToScreenPoint(imageBoundMin);
+
+		// The maximal point of the box. This is always equal to center+extents.
+		Vector3 imageBoundMax = this.imageOptotype.GetComponent<Image>().sprite.bounds.max;
+		Vector3 ImageScreenBoundMax = camera.WorldToScreenPoint(imageBoundMax);
+
+		// Image screen width and height in pixels. Screenspace is defined in pixels.
+		float imageScreenWidth  = (ImageScreenBoundMax.x - ImageScreenBoundMin.x) * scale.x;
+		float imageScreenHeight = (ImageScreenBoundMax.y - ImageScreenBoundMin.y) * scale.y;
+
+		// px to mm
+		float px2mm = 0.2645833333f;
+		Vector2 imageMillimeters = new Vector2(imageScreenWidth * px2mm, imageScreenHeight * px2mm);
+
+		// mm to m-unit | 1M = size x 0.69 mm | 
+		float mm2Mu = 0.69f;
+		Vector2 imageMUnit = new Vector2(imageMillimeters.x * mm2Mu, imageMillimeters.y * mm2Mu);
+
+		return imageMUnit;
 	}
 }
