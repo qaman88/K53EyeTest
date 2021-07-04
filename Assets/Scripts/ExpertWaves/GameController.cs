@@ -3,6 +3,7 @@ using ExpertWaves.Scene.Screening.Distance;
 using UnityEngine;
 using UnityEngine.UI;
 using ExpertWaves.Enum;
+using ExpertWaves.Log;
 
 namespace ExpertWaves {
 	namespace Scene {
@@ -11,8 +12,9 @@ namespace ExpertWaves {
 			public Image imageOptotype;
 			public Text status;
 			public Camera sceneCamera;
-			public DistanceScreening distanceEyeTest;
+			public DistanceScreening distanceScene;
 			public InputController inputController;
+			public LogController log;
 			#endregion
 
 			#region Public Functions
@@ -63,25 +65,25 @@ namespace ExpertWaves {
 				this.NextLevel(type);
 			}
 			private void NextLevel(IDirection direction) {
-				if (distanceEyeTest.getGameOver() == false && direction == distanceEyeTest.Direction) {
+				if (distanceScene.getGameOver() == false && direction == distanceScene.Direction) {
 					// game manager move to next level
-					distanceEyeTest.NextLevel();
+					distanceScene.NextLevel();
 
 					// change angless
-					this.imageOptotype.transform.localEulerAngles = new Vector3(0f, 0f, distanceEyeTest.Angle);
+					this.imageOptotype.transform.localEulerAngles = new Vector3(0f, 0f, distanceScene.Angle);
 
 					// change size
-					this.imageOptotype.transform.localScale = new Vector3(distanceEyeTest.OptotypeScale, distanceEyeTest.OptotypeScale, 1.0f);
+					this.imageOptotype.transform.localScale = new Vector3(distanceScene.OptotypeScale, distanceScene.OptotypeScale, 1.0f);
 					;
 
 					// score 
-					this.status.text = $"Score: {distanceEyeTest.Score} %";
+					this.status.text = $"Score: {distanceScene.Score} %";
 				}
 				else {
 					// game over on incorrect answer or end of levels
-					distanceEyeTest.setGameOver(true);
+					distanceScene.setGameOver(true);
 					// status text
-					this.status.text = $"Score: {distanceEyeTest.Score} %";
+					this.status.text = $"Score: {distanceScene.Score} %";
 				}
 			}
 			#endregion

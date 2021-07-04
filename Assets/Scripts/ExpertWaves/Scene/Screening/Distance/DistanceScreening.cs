@@ -1,3 +1,5 @@
+using ExpertWaves.Enum;
+using ExpertWaves.Scene.Screening.Distance.Data;
 using System;
 using UnityEngine;
 
@@ -11,9 +13,9 @@ namespace ExpertWaves {
 					private double score;
 					private int level;
 					private float angle;
-					private IDirection direction;
+					private IDirection direction = IDirection.RIGHT;
 					private bool gameover = false;
-					private readonly float[] levels = new Screening.Distance.Data.DataLoader().Levels;
+					private readonly float[] levels = new DataLoader().Levels;
 					#endregion
 
 					#region Properties
