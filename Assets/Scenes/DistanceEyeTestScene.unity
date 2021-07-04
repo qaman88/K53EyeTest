@@ -176,7 +176,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -192,9 +192,9 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 519420031}
   m_PlaneDistance: 100
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
@@ -449,8 +449,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0000038146973, y: 645.2311}
-  m_SizeDelta: {x: 800, y: 132.568}
+  m_AnchoredPosition: {x: 0.000042063, y: 387}
+  m_SizeDelta: {x: 387.0367, y: 85.6404}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &876914045
 GameObject:
@@ -486,8 +486,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 600, y: 600}
+  m_AnchoredPosition: {x: 0.000011444, y: 0.0000075102}
+  m_SizeDelta: {x: 440, y: 440}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &876914047
 MonoBehaviour:
@@ -538,6 +538,8 @@ GameObject:
   - component: {fileID: 1645040826}
   - component: {fileID: 1645040825}
   - component: {fileID: 1645040827}
+  - component: {fileID: 1645040828}
+  - component: {fileID: 1645040829}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -557,12 +559,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c6771e2c8e658248aa2607647af81c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swipeRange: 50
-  tapRange: 10
   imageOptotype: {fileID: 876914047}
   status: {fileID: 786270578}
   sceneCamera: {fileID: 519420031}
   distanceEyeTest: {fileID: 1645040827}
+  inputController: {fileID: 1645040829}
 --- !u!4 &1645040826
 Transform:
   m_ObjectHideFlags: 0
@@ -589,3 +590,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2531ffceefd98754abf2412199f76c2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1645040828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645040824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0c45f3fede0ad6438e85fa7ad1630da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1645040829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645040824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4efbaa7cb3589f4c810579637743512, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  userInputKeys: 61000000770000007300000064000000
+  swipeRange: 50
+  tapRange: 10
