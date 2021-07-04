@@ -537,8 +537,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1645040826}
   - component: {fileID: 1645040825}
+  - component: {fileID: 1645040827}
   m_Layer: 0
-  m_Name: Player
+  m_Name: GameController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -560,7 +561,8 @@ MonoBehaviour:
   tapRange: 10
   imageOptotype: {fileID: 876914047}
   status: {fileID: 786270578}
-  camera: {fileID: 519420031}
+  sceneCamera: {fileID: 519420031}
+  distanceEyeTest: {fileID: 1645040827}
 --- !u!4 &1645040826
 Transform:
   m_ObjectHideFlags: 0
@@ -575,3 +577,15 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1645040827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1645040824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2531ffceefd98754abf2412199f76c2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
