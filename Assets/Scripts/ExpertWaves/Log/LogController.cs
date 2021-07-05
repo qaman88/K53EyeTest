@@ -41,7 +41,7 @@ namespace ExpertWaves {
 
 			#region Private Function
 			private void Configure() {
-				// enusre instance is defined
+				// ensure instance is defined
 				if (!instance) {
 					instance = this;
 					DontDestroyOnLoad(gameObject);
@@ -94,6 +94,60 @@ namespace ExpertWaves {
 				sqlServerConfig = config;
 				sqlServerLoggerEnable = true;
 			}
+
+			private void Log(string _message, ILogLevel _level, string _classType = null, string _classMethod = null, Exception _exception = null) {
+				string message = _message;
+				string exception = _exception != null ? $"| Expectation:%newline\t{_exception.Source}%newline\t{_exception.Message}%newline\t{_exception.StackTrace}" : "";
+				string classType = _classType != null ? $"[{_classType}]" : "";
+				string classMethod = _classMethod != null ? $"[{_classMethod}] " : "";
+
+				//update layout pattern
+				string newPattern = pattern.Replace("%logger", $"{classType}{classMethod}");
+				fileConsoleConfig.ChangePatternLayout(newPattern);
+
+				// change console and file appenders pattern
+				if (fileLoggerEnable) {
+					hierarchy.Root.AddAppender(fileConsoleConfig.ConsoleAppender);
+				}
+				if (consoleLoggerEnable) {
+					hierarchy.Root.AddAppender(fileConsoleConfig.FileAppender);
+				}
+
+				// defining the level and finalizing the configuration
+				hierarchy.Root.Level = Level.All;
+				hierarchy.Configured = true;
+
+				switch (_level.ToString()) {
+					case "Fatal":
+						log.Fatal(message);
+						if (consoleLoggerEnable)
+							Debug.LogError(message);
+						break;
+					case "Error":
+						log.Error(message);
+						if (consoleLoggerEnable)
+							Debug.LogError(message);
+						break;
+					case "Warn":
+						log.Warn(message);
+						if (consoleLoggerEnable)
+							Debug.LogWarning(message);
+						break;
+					case "Info":
+						log.Info(message);
+						if (consoleLoggerEnable)
+							Debug.Log(message);
+						break;
+					case "Debug":
+						log.Debug(message);
+						if (consoleLoggerEnable)
+							Debug.Log(message);
+						break;
+					default:
+						break;
+				}
+			}
+
 			#endregion
 
 			#region public Function
@@ -118,48 +172,6 @@ namespace ExpertWaves {
 
 			public void LogDebug(string message, string classType = null, string classMethod = null, Exception exception = null) {
 				Log(message, ILogLevel.Debug, classType, classMethod, exception);
-			}
-			public void Log(string _message, ILogLevel _level, string _classType = null, string _classMethod = null, Exception _exception = null) {
-				string message = _message;
-				string exception = _exception != null ? $"| Expetion:%newline\t{_exception.Source}%newline\t{_exception.Message}%newline\t{_exception.StackTrace}" : "";
-				string classType = _classType != null ? $"[{_classType}]" : "";
-				string classMethod = _classMethod != null ? $"[{_classMethod}] " : "";
-
-				//update layout pattern
-				string newPattern = pattern.Replace("%logger", $"{classType}{classMethod}");
-				fileConsoleConfig.ChangePatternLayout(newPattern);
-
-				// change console and file appenders pattern
-				if (fileLoggerEnable) {
-					hierarchy.Root.AddAppender(fileConsoleConfig.ConsoleAppender);
-				}
-				if (consoleLoggerEnable) {
-					hierarchy.Root.AddAppender(fileConsoleConfig.FileAppender);
-				}
-
-				// defining the level and finalizing the configuration
-				hierarchy.Root.Level = Level.All;
-				hierarchy.Configured = true;
-
-				switch (_level.ToString()) {
-					case "Fatal":
-						log.Fatal(message);
-						break;
-					case "Error":
-						log.Error(message);
-						break;
-					case "Warn":
-						log.Warn(message);
-						break;
-					case "Info":
-						log.Info(message);
-						break;
-					case "Debug":
-						log.Debug(message);
-						break;
-					default:
-						break;
-				}
 			}
 			#endregion
 		}

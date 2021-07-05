@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/DistanceEyeTestScene.unity
     guid: 8174b3ae29660ea44956787fc04a2ff1
   - enabled: 1
-    path: Assets/Scenes/NavigationScene.unity
-    guid: 16b5796a4c14eac47b16e2162dc935d1
+    path: Assets/Scenes/Menu.unity
+    guid: 3ba4522eae3431b4693815e3bab74672
   m_configObjects: {}
