@@ -13,7 +13,7 @@ namespace ExpertWaves {
 					private double score;
 					private int level;
 					private float angle;
-					private IDirection direction = IDirection.RIGHT;
+					private IDirection direction = IDirection.Right;
 					private bool gameover = false;
 					private readonly float[] levels = new DataLoader().Levels;
 					#endregion
@@ -63,16 +63,16 @@ namespace ExpertWaves {
 
 						switch (newAngle) {
 							case 0: //  0
-								this.Direction = IDirection.RIGHT;
+								this.Direction = IDirection.Right;
 								break;
 							case 90: // 90
-								this.Direction = IDirection.UP;
+								this.Direction = IDirection.Up;
 								break;
 							case 180: // 180
-								this.Direction = IDirection.LEFT;
+								this.Direction = IDirection.Left;
 								break;
 							case 270: // 270
-								this.Direction = IDirection.DOWN;
+								this.Direction = IDirection.Down;
 								break;
 							default:
 								break;
@@ -91,7 +91,7 @@ namespace ExpertWaves {
 						this.level = 0;
 						this.Score = 0;
 						this.Angle = 0;
-						this.Direction = IDirection.RIGHT;
+						this.Direction = IDirection.Right;
 					}
 
 					public void NextLevel() {

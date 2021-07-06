@@ -9,50 +9,102 @@ namespace ExpertWaves {
 	namespace Scene {
 		public class GameController : MonoBehaviour {
 			#region Public Variables
-			public Image imageOptotype;
-			public Text status;
-			public Camera sceneCamera;
-			public DistanceScreening distanceScene;
-			public InputController inputController;
+			public static GameController instance;
 			public LogController log;
+			public InputController inputController;
+			public PageController pageController;
+			public SceneController sceneController;
 			#endregion
 
 			#region Public Functions
-			void Start() {
-				this.status.text = "K53 Eye Test";
-				inputController.RegisterKeyPressListener(onKeyPress);
-				inputController.RegisterSwipeListener(onSwipe);
+			#endregion
+
+			#region Unity Functions
+			private void Awake() {
+				Configure();
+				log.LogInfo(
+					message: "GameController is Awake.",
+					classType: "GameController",
+					classMethod: "Awake"
+				);
 			}
 
 			private void OnDestroy() {
-				inputController.UnregisterKeyPressListener(onKeyPress);
-				inputController.UnregisterSwipeListener(onSwipe);
+				inputController.UnsubscribeKeyPressListener(onKeyPress);
+				inputController.UnsubscribeSwipeListener(onSwipe);
+				sceneController.UnsubscribeOnSceneLoaded(OnSceneLoaded);
 			}
 			#endregion
 
-			#region Private Functions
+			#region Private Functions		
+			private void Configure() {
+				// ensure instance is defined
+				if (!instance) {
+					instance = this;
+					DontDestroyOnLoad(gameObject);
+				}
+				else {
+					Destroy(gameObject);
+				}
+
+				// ensure log controller is defined
+				if (!log) {
+					log = LogController.instance;
+				}
+
+				// ensure page controller is defined
+				if (!pageController) {
+					pageController = PageController.instance;
+				}
+
+				// ensure input controller is defined
+				if (!inputController) {
+					inputController = InputController.instance;
+				}
+
+				// ensure scene controller is defined
+				if (!sceneController) {
+					sceneController = SceneController.instance;
+				}
+
+				// subscribe to controllers events
+				inputController.SubscribeKeyPressListener(onKeyPress);
+				inputController.SubscribeSwipeListener(onSwipe);
+				sceneController.SubscribeOnSceneLoaded(OnSceneLoaded);
+			}
+			#endregion
+
+			#region Callback Functions
 			private void onKeyPress(KeyCode key) {
-				Debug.Log($"Key Press Event, Key: {key.ToString()}");
+				log.LogInfo(
+					message: $"Key Press Event, Key: {key}",
+					classType: "GameController",
+					classMethod: "onKeyPress"
+				);
 
 				switch (key) {
 					case KeyCode.W:
-						Debug.Log("$$$ Keypress W");
-						this.NextLevel(IDirection.UP);
+						pageController.SwichPage(IPageType.Loading);
 						break;
 
 					case KeyCode.A:
-						Debug.Log("$$$ Keypress A");
-						this.NextLevel(IDirection.LEFT);
+						pageController.SwichPage(IPageType.About);
 						break;
 
 					case KeyCode.D:
-						Debug.Log("$$$ Keypress D");
-						this.NextLevel(IDirection.UP);
+						pageController.SwichPage(IPageType.Menu);
 						break;
 
 					case KeyCode.S:
-						Debug.Log("$$$ Keypress S");
-						this.NextLevel(IDirection.DOWN);
+						pageController.SwichPage(IPageType.Privacy);
+						break;
+
+					case KeyCode.Z:
+						sceneController.LoadSceneOnPage(ISceneType.Menu, IPageType.Loading);
+						break;
+
+					case KeyCode.X:
+						sceneController.LoadSceneOnPage(ISceneType.DistanceScreening, IPageType.Loading);
 						break;
 
 					default:
@@ -60,31 +112,19 @@ namespace ExpertWaves {
 				}
 			}
 
-			private void onSwipe(IDirection type) {
-				Debug.Log($"### Swipe Event from InputController. Swipe: {type.ToString()}");
-				this.NextLevel(type);
+			private void onSwipe(IDirection swipe) {
+				log.LogInfo(
+					message: $"Touch event, swipe {swipe}.",
+					classType: "GameController",
+					classMethod: "onSwipe"
+				);
 			}
-			private void NextLevel(IDirection direction) {
-				if (distanceScene.getGameOver() == false && direction == distanceScene.Direction) {
-					// game manager move to next level
-					distanceScene.NextLevel();
-
-					// change angless
-					this.imageOptotype.transform.localEulerAngles = new Vector3(0f, 0f, distanceScene.Angle);
-
-					// change size
-					this.imageOptotype.transform.localScale = new Vector3(distanceScene.OptotypeScale, distanceScene.OptotypeScale, 1.0f);
-					;
-
-					// score 
-					this.status.text = $"Score: {distanceScene.Score} %";
-				}
-				else {
-					// game over on incorrect answer or end of levels
-					distanceScene.setGameOver(true);
-					// status text
-					this.status.text = $"Score: {distanceScene.Score} %";
-				}
+			public void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene) {
+				log.LogInfo(
+					message: $"Scene loaded event, scene: {scene.name}",
+					classType: "GameController",
+					classMethod: "OnSceneLoaded"
+				);
 			}
 			#endregion
 		}

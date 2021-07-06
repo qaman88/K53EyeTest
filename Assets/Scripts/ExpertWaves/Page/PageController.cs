@@ -9,7 +9,6 @@ public class PageController : MonoBehaviour {
 	#region Public Variables
 	public static PageController instance;
 	public LogController log;
-	public InputController inputController;
 	public IPageType entryPage;
 	public Page[] pages;
 	#endregion
@@ -18,6 +17,11 @@ public class PageController : MonoBehaviour {
 	private Hashtable register;
 	private Page currentPage;
 
+	public Page CurrentPage {
+		get => currentPage = GetPage(IPageType.None);
+		set => this.currentPage = value;
+	}
+
 	#endregion
 
 	#region Variables Properties
@@ -25,87 +29,30 @@ public class PageController : MonoBehaviour {
 
 	#region Unity Functions
 	private void Awake() {
-		Debug.Log("Page Controller is awake!");
-
 		// configure instance
 		Configure();
 
-		// load entry page is not none
-		if (entryPage != IPageType.None) {
-			LoadPage(entryPage);
-		}
-
-		currentPage = GetPage(IPageType.None);
-		// register user input listeners
-#if UNITY_EDITOR
-		inputController.RegisterKeyPressListener(onKeyPress);
-#endif
-		inputController.RegisterSwipeListener(onSwipe);
-	}
-	private void OnDestroy() {
-#if UNITY_EDITOR
-		inputController.UnregisterKeyPressListener(onKeyPress);
-#endif
-		inputController.UnregisterSwipeListener(onSwipe);
+		log.LogInfo(
+			message: "PageController is Awake.",
+			classType: "PageController",
+			classMethod: "Awake"
+		);
 	}
 	#endregion
 
 	#region Event Delegate Functions
-	private void onKeyPress(KeyCode key) {
-		Debug.Log($"Key Press Event, Key: {key.ToString()}");
-		log.LogDebug(
-			message: $"Key press event, key code: {key}.",
-			classType: "PageController",
-			classMethod: "onKeyPress"
-		);
-
-#if UNITY_EDITOR
-		switch (key) {
-			case KeyCode.W:
-				Debug.Log("$$$ Keypress W");
-				SwichPage(currentPage.Type, IPageType.Loading);
-				break;
-
-			case KeyCode.A:
-				Debug.Log("$$$ Keypress A");
-				SwichPage(currentPage.Type, IPageType.About);
-				break;
-
-			case KeyCode.D:
-				Debug.Log("$$$ Keypress D");
-				SwichPage(currentPage.Type, IPageType.Menu);
-				break;
-
-			case KeyCode.S:
-				Debug.Log("$$$ Keypress S");
-				SwichPage(currentPage.Type, IPageType.Privacy);
-				break;
-
-			default:
-				break;
-		}
-#endif
-	}
-
-	private void onSwipe(IDirection type) {
-		Debug.Log($"### Swipe Event from InputController. Swipe: {type.ToString()}");
-	}
-
 	public void onPageLoaded(Page page) {
-		if (page != currentPage) {
-			// TODO deactivate current page
-			EnableOrDisableGameObject(currentPage, Constant.SwitchOff);
+		if (page != CurrentPage) {
+			// deactivate current page
+			EnableOrDisablePage(CurrentPage, Constant.SwitchOff);
 
 			// update current page
-			currentPage = page;
-
-			// unregister onPageLoaded event
-			page.UnregisterPageLoadedCallback(onPageLoaded);
+			CurrentPage = page;
 		}
 
 		// log
 		log.LogDebug(
-			message: $"{page.Type} page is now current page. Callback onPageLoaded is unregistered.",
+			message: $"{page.Type} page is now current page.",
 			classType: "PageController",
 			classMethod: "onPageLoaded"
 		);
@@ -118,14 +65,13 @@ public class PageController : MonoBehaviour {
 		return this;
 	}
 
-
 	public void LoadPage(IPageType targetPage) {
 		if (targetPage != IPageType.None && register.Contains(targetPage)) {
 			// get page to load
 			Page page = GetPage(targetPage);
 
 			// activate page game object
-			EnableOrDisableGameObject(page, Constant.SwitchOn);
+			EnableOrDisablePage(page, Constant.SwitchOn);
 
 			// register page loaded event
 			page.RegisterPageLoadedCallback(onPageLoaded);
@@ -175,8 +121,10 @@ public class PageController : MonoBehaviour {
 			);
 		}
 	}
-	public void SwichPage(IPageType offPageType, IPageType onPageType) {
-		if (offPageType == onPageType) {
+	public void SwichPage(IPageType onPageType) {
+		IPageType offPageType = currentPage.Type;
+
+		if (currentPage.Type == onPageType) {
 			log.LogInfo(
 				message: $"Cannot switch loaded page, from {offPageType} to {onPageType} page.",
 				classType: "PageController",
@@ -229,23 +177,34 @@ public class PageController : MonoBehaviour {
 
 	#region Private Functions
 	private void Configure() {
+		// ensure instance is defined
 		if (instance == null) {
 			instance = this;
 			DontDestroyOnLoad(gameObject);
 			register = new Hashtable();
 			RegisterAllPages();
+			currentPage = GetPage(IPageType.None);
+
+			// load entry page is not none
+			if (entryPage != IPageType.None) {
+				LoadPage(entryPage);
+			}
 		}
 		else {
 			Destroy(gameObject);
 		}
+		// ensure log controller is defined
+		if (!log) {
+			log = LogController.instance;
+		}
 	}
 
-	private void EnableOrDisableGameObject(Page page, bool state) {
+	private void EnableOrDisablePage(Page page, bool state) {
 		// return if the gameObject is desired state
 		if (page == null) {
 			log.LogWarn($"Failed to enable or disable null page.",
 				classType: "PageController",
-				classMethod: "EnableOrDisableGameObject"
+				classMethod: "EnableOrDisablePage"
 			);
 			return;
 		}
@@ -257,9 +216,9 @@ public class PageController : MonoBehaviour {
 
 			// log
 			log.LogDebug(
-				message: $"{page.Type} page gameobject is active, target state is {state}. Activating gameOject of {page.Type}.",
+				message: $"{page.Type} page gameobject is active, target state is {state}. Deactivating {page.Type} page.",
 				classType: "PageController",
-				classMethod: "EnableOrDisableGameObject"
+				classMethod: "EnableOrDisablePage"
 			);
 		}
 
@@ -270,9 +229,9 @@ public class PageController : MonoBehaviour {
 
 			// log
 			log.LogDebug(
-				message: $"{page.Type} page gameobject is inactive, target state is {state}. Activating gameOject of {page.Type}.",
+				message: $"{page.Type} page gameobject is inactive, target state is {state}. Activating {page.Type} page.",
 				classType: "PageController",
-				classMethod: "ActivateGameObject"
+				classMethod: "EnableOrDisablePage"
 			);
 		}
 	}

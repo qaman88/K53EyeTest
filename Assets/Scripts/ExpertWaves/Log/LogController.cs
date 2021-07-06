@@ -32,7 +32,7 @@ namespace ExpertWaves {
 			public void Awake() {
 				Configure();
 				LogInfo(
-					message: "Log Controller Started.",
+					message: "LogController is Awake.",
 					classType: "LogController",
 					classMethod: "Awake"
 				);
@@ -117,31 +117,33 @@ namespace ExpertWaves {
 				hierarchy.Root.Level = Level.All;
 				hierarchy.Configured = true;
 
+				string consoleMessage = $"{classType}{classMethod} {message} \n {exception}";
+
 				switch (_level.ToString()) {
 					case "Fatal":
 						log.Fatal(message);
 						if (consoleLoggerEnable)
-							Debug.LogError(message);
+							Debug.LogError(consoleMessage);
 						break;
 					case "Error":
 						log.Error(message);
 						if (consoleLoggerEnable)
-							Debug.LogError(message);
+							Debug.LogError(consoleMessage);
 						break;
 					case "Warn":
 						log.Warn(message);
 						if (consoleLoggerEnable)
-							Debug.LogWarning(message);
+							Debug.LogWarning(consoleMessage);
 						break;
 					case "Info":
 						log.Info(message);
 						if (consoleLoggerEnable)
-							Debug.Log(message);
+							Debug.Log(consoleMessage);
 						break;
 					case "Debug":
 						log.Debug(message);
 						if (consoleLoggerEnable)
-							Debug.Log(message);
+							Debug.Log(consoleMessage);
 						break;
 					default:
 						break;

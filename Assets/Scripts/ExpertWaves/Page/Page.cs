@@ -39,6 +39,12 @@ namespace ExpertWaves {
 			#endregion
 
 			#region Unity Functions
+			private void Awake() {
+				// ensure log controller is defined
+				if (!log) {
+					log = LogController.instance;
+				}
+			}
 			#endregion
 
 			#region Public Functions
