@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using ExpertWaves.Enum;
 using ExpertWaves.Log;
+using System.Reflection;
 
 namespace ExpertWaves {
 	namespace Scene {
@@ -23,9 +24,9 @@ namespace ExpertWaves {
 			private void Awake() {
 				Configure();
 				log.LogInfo(
-					message: "GameController is Awake.",
-					classType: "GameController",
-					classMethod: "Awake"
+					message: "!!!!!!!!!!!!!!!!GameController is Awake.",
+					classType: GetType().Name,
+					classMethod: MethodBase.GetCurrentMethod().Name
 				);
 			}
 
@@ -78,8 +79,8 @@ namespace ExpertWaves {
 			private void onKeyPress(KeyCode key) {
 				log.LogInfo(
 					message: $"Key Press Event, Key: {key}",
-					classType: "GameController",
-					classMethod: "onKeyPress"
+					classType: MethodBase.GetCurrentMethod().Name,
+					classMethod: GetType().Name
 				);
 
 				switch (key) {
@@ -115,15 +116,15 @@ namespace ExpertWaves {
 			private void onSwipe(IDirection swipe) {
 				log.LogInfo(
 					message: $"Touch event, swipe {swipe}.",
-					classType: "GameController",
-					classMethod: "onSwipe"
+					classType: GetType().Name,
+					classMethod: MethodBase.GetCurrentMethod().Name
 				);
 			}
 			public void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene) {
 				log.LogInfo(
 					message: $"Scene loaded event, scene: {scene.name}",
-					classType: "GameController",
-					classMethod: "OnSceneLoaded"
+					classType: GetType().Name,
+					classMethod: MethodBase.GetCurrentMethod().Name
 				);
 			}
 			#endregion

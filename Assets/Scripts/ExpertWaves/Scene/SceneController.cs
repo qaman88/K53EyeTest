@@ -1,8 +1,8 @@
 ﻿using ExpertWaves.Enum;
 using ExpertWaves.Log;
 using ExpertWaves.Utility;
-using System;
 using System.Collections;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -31,8 +31,8 @@ namespace ExpertWaves {
 						pageController = PageController.instance;
 						log.LogWarn(
 							message: "PageController instance is not define.",
-							classType: "SceneController",
-							classMethod: "PageManager.get"
+							classType: GetType().Name,
+							classMethod: MethodBase.GetCurrentMethod().Name
 						);
 					}
 					return pageController;
@@ -78,16 +78,16 @@ namespace ExpertWaves {
 			public void LoadSceneOnPage(ISceneType scene, IPageType page) {
 				log.LogInfo(
 					message: $"Page type is {page}, Scene type is {scene}.",
-					classType: "SceneController",
-					classMethod: "LoadSceneOnPage"
+					classType: GetType().Name,
+					classMethod: MethodBase.GetCurrentMethod().Name
 				);
 
 				// check if page is valid
 				if (page == IPageType.None) {
 					log.LogWarn(
 						message: $"Page type is {page}, cannot be loaded.",
-						classType: "SceneController",
-						classMethod: "LoadSceneOnPage"
+						classType: GetType().Name,
+						classMethod: MethodBase.GetCurrentMethod().Name
 					);
 					return;
 				}
@@ -96,8 +96,8 @@ namespace ExpertWaves {
 				if (PageManager == null) {
 					log.LogWarn(
 						message: "PageController is not defined, cannot be loaded.",
-						classType: "SceneController",
-						classMethod: "LoadSceneOnPage"
+						classType: GetType().Name,
+						classMethod: MethodBase.GetCurrentMethod().Name
 					);
 					return;
 				}
@@ -106,8 +106,8 @@ namespace ExpertWaves {
 				if (scene == ISceneType.None) {
 					log.LogWarn(
 						message: "Scene is none, cannot be loaded.",
-						classType: "SceneController",
-						classMethod: "LoadSceneOnPage"
+						classType: GetType().Name,
+						classMethod: MethodBase.GetCurrentMethod().Name
 					);
 					return;
 				}
@@ -116,8 +116,8 @@ namespace ExpertWaves {
 				if (scene.ToString() == currentScene.name) {
 					log.LogWarn(
 						message: "Scene cannot be current scene.",
-						classType: "SceneController",
-						classMethod: "LoadSceneOnPage"
+						classType: GetType().Name,
+						classMethod: MethodBase.GetCurrentMethod().Name
 					);
 					return;
 				}
@@ -126,8 +126,8 @@ namespace ExpertWaves {
 				if (IsLoadingScene) {
 					log.LogWarn(
 						message: "scene cannot load, another scene is busy loading.",
-						classType: "SceneController",
-						classMethod: "LoadSceneOnPage"
+						classType: GetType().Name,
+						classMethod: MethodBase.GetCurrentMethod().Name
 					);
 					return;
 				}
@@ -152,8 +152,8 @@ namespace ExpertWaves {
 				SceneManager.LoadScene(scene.ToString());
 
 				log.LogDebug($"Waiting until {name} scene finish to load on {page} page.",
-					classType: "SceneController",
-					classMethod: "AwaitLoadSceneOnPage"
+						classType: GetType().Name,
+						classMethod: MethodBase.GetCurrentMethod().Name
 				);
 
 				// await PageManager current page to be this page
@@ -162,8 +162,8 @@ namespace ExpertWaves {
 				}
 
 				log.LogDebug($"Completed loading {name} scene on {page} page.",
-					classType: "SceneController",
-					classMethod: "AwaitLoadSceneOnPage"
+						classType: GetType().Name,
+						classMethod: MethodBase.GetCurrentMethod().Name
 				);
 
 			}
@@ -182,8 +182,8 @@ namespace ExpertWaves {
 
 			private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode) {
 				log.LogDebug($"UnityEvent.SceneManger.onSceneLoaded event fired, loaded {scene.name} scene using {mode.ToString()} mode. Invoked OnSceneLoaded callbacks.",
-					classType: "SceneController",
-					classMethod: "OnSceneLoaded"
+				classType: GetType().Name,
+				classMethod: MethodBase.GetCurrentMethod().Name
 				);
 				currentScene = scene;
 				callbackOnSceneLoaded.Invoke(scene);

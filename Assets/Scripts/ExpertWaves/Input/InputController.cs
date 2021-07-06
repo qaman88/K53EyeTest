@@ -1,6 +1,7 @@
 using ExpertWaves.Enum;
 using ExpertWaves.Log;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 namespace ExpertWaves {
@@ -56,8 +57,8 @@ namespace ExpertWaves {
 			private void OnDestroy() {
 				log.LogInfo(
 					message: "InputController is destroyed.",
-					classType: "InputController",
-					classMethod: "OnDestroy"
+					classType: GetType().Name,
+					classMethod: MethodBase.GetCurrentMethod().Name
 				);
 			}
 			#endregion
@@ -86,8 +87,8 @@ namespace ExpertWaves {
 						// log
 						log.LogDebug(
 							message: $"Key press event, key: {key}.",
-							classType: "InputController",
-							classMethod: "KeyPressListener"
+							classType: GetType().Name,
+							classMethod: MethodBase.GetCurrentMethod().Name
 						);
 					}
 				}
@@ -127,8 +128,8 @@ namespace ExpertWaves {
 						// log
 						log.LogDebug(
 							message: $"Touch event, swipe {swipe}.",
-							classType: "InputController",
-							classMethod: "SwipeListener"
+							classType: GetType().Name,
+							classMethod: MethodBase.GetCurrentMethod().Name
 						);
 					}
 				}
@@ -144,8 +145,8 @@ namespace ExpertWaves {
 						callbackSingleTab.Invoke();
 						log.LogDebug(
 							message: $"Touch event, single tab.",
-							classType: "InputController",
-							classMethod: "TabListener"
+							classType: GetType().Name,
+							classMethod: MethodBase.GetCurrentMethod().Name
 						);
 					}
 				}
@@ -161,8 +162,8 @@ namespace ExpertWaves {
 				// log
 				log.LogDebug(
 					message: $"Subscription to onKeyPress event detected.",
-					classType: "InputController",
-					classMethod: "SubscribeKeyPressListener"
+					classType: GetType().Name,
+					classMethod: MethodBase.GetCurrentMethod().Name
 				);
 			}
 			public void UnsubscribeKeyPressListener(CallbackKeyPress callback) {
@@ -170,8 +171,8 @@ namespace ExpertWaves {
 				// log
 				log.LogDebug(
 					message: $"Unsubscription to onKeyPress event detected.",
-					classType: "InputController",
-					classMethod: "UnsubscribeKeyPressListener"
+					classType: GetType().Name,
+					classMethod: MethodBase.GetCurrentMethod().Name
 				);
 			}
 
@@ -180,8 +181,8 @@ namespace ExpertWaves {
 				// log
 				log.LogDebug(
 					message: $"Subscription to onSwipe event detected.",
-					classType: "InputController",
-					classMethod: "SubscribeSwipeListener"
+					classType: GetType().Name,
+					classMethod: MethodBase.GetCurrentMethod().Name
 				);
 			}
 
@@ -190,8 +191,8 @@ namespace ExpertWaves {
 				// log
 				log.LogDebug(
 					message: $"Unsubscription to onSwipe event detected.",
-					classType: "InputController",
-					classMethod: "UnsubscribeSwipeListener"
+					classType: GetType().Name,
+					classMethod: MethodBase.GetCurrentMethod().Name
 				);
 			}
 			public void RegisterSingleTabListener(CallbackSingleTab callback) {
@@ -199,8 +200,8 @@ namespace ExpertWaves {
 				// log
 				log.LogDebug(
 					message: $"Subscription to onSingleTab event detected.",
-					classType: "InputController",
-					classMethod: "RegisterSingleTabListener"
+					classType: GetType().Name,
+					classMethod: MethodBase.GetCurrentMethod().Name
 				);
 			}
 
@@ -209,8 +210,8 @@ namespace ExpertWaves {
 				// log
 				log.LogDebug(
 					message: $"Unsubscription to onSingleTab event detected.",
-					classType: "InputController",
-					classMethod: "UnregisterSingleTabListener"
+					classType: GetType().Name,
+					classMethod: MethodBase.GetCurrentMethod().Name
 				);
 			}
 			#endregion

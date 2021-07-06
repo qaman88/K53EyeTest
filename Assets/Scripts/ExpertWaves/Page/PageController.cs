@@ -4,6 +4,7 @@ using ExpertWaves.Log;
 using ExpertWaves.UserInput;
 using System.Collections;
 using UnityEngine;
+using System.Reflection;
 
 public class PageController : MonoBehaviour {
 	#region Public Variables
@@ -34,8 +35,8 @@ public class PageController : MonoBehaviour {
 
 		log.LogInfo(
 			message: "PageController is Awake.",
-			classType: "PageController",
-			classMethod: "Awake"
+			classType: GetType().Name,
+			classMethod: MethodBase.GetCurrentMethod().Name
 		);
 	}
 	#endregion
@@ -53,8 +54,8 @@ public class PageController : MonoBehaviour {
 		// log
 		log.LogDebug(
 			message: $"{page.Type} page is now current page.",
-			classType: "PageController",
-			classMethod: "onPageLoaded"
+			classType: GetType().Name,
+			classMethod: MethodBase.GetCurrentMethod().Name
 		);
 	}
 	#endregion
@@ -85,15 +86,15 @@ public class PageController : MonoBehaviour {
 			// log
 			log.LogDebug(
 				message: $"Attempting to load {targetPage} page.",
-				classType: "PageController",
-				classMethod: "LoadPage"
+				classType: GetType().Name,
+				classMethod: MethodBase.GetCurrentMethod().Name
 			);
 		}
 		else {
 			log.LogWarn(
 				message: $"Failed to load {targetPage} page, it is none or not registered.",
-				classType: "PageController",
-				classMethod: "LoadPage"
+				classType: GetType().Name,
+				classMethod: MethodBase.GetCurrentMethod().Name
 			);
 		}
 	}
@@ -108,16 +109,16 @@ public class PageController : MonoBehaviour {
 				page.Animate(Constant.SwitchOff);
 				log.LogDebug(
 					message: $"Attempting to unload {targetPage} page.",
-					classType: "PageController",
-					classMethod: "UnloadPage"
+					classType: GetType().Name,
+					classMethod: MethodBase.GetCurrentMethod().Name
 				);
 			}
 		}
 		else {
 			log.LogWarn(
 				message: $"Failed to unload {targetPage} page, it is none or not registered.",
-				classType: "PageController",
-				classMethod: "UnloadPage"
+				classType: GetType().Name,
+				classMethod: MethodBase.GetCurrentMethod().Name
 			);
 		}
 	}
@@ -127,8 +128,8 @@ public class PageController : MonoBehaviour {
 		if (currentPage.Type == onPageType) {
 			log.LogInfo(
 				message: $"Cannot switch loaded page, from {offPageType} to {onPageType} page.",
-				classType: "PageController",
-				classMethod: "SwichPage"
+				classType: GetType().Name,
+				classMethod: MethodBase.GetCurrentMethod().Name
 			);
 			return;
 		}
@@ -147,15 +148,15 @@ public class PageController : MonoBehaviour {
 
 			log.LogInfo(
 				message: $"Async switching from {offPageType} to {onPageType} page.",
-				classType: "PageController",
-				classMethod: "SwichPage"
+				classType: GetType().Name,
+				classMethod: MethodBase.GetCurrentMethod().Name
 			);
 		}
 		else {
 			log.LogWarn(
 				message: $"Failed to switch from {offPageType} to {onPageType} page, cannot not switch to none or not registered.",
-				classType: "PageController",
-				classMethod: "SwichPage"
+				classType: GetType().Name,
+				classMethod: MethodBase.GetCurrentMethod().Name
 			);
 		}
 	}
@@ -167,8 +168,8 @@ public class PageController : MonoBehaviour {
 
 		log.LogWarn(
 			message: $"Failed to get {page} page, it is not registered.",
-			classType: "PageController",
-			classMethod: "GetPage"
+			classType: GetType().Name,
+			classMethod: MethodBase.GetCurrentMethod().Name
 		);
 
 		return null;
@@ -203,8 +204,8 @@ public class PageController : MonoBehaviour {
 		// return if the gameObject is desired state
 		if (page == null) {
 			log.LogWarn($"Failed to enable or disable null page.",
-				classType: "PageController",
-				classMethod: "EnableOrDisablePage"
+			classType: GetType().Name,
+			classMethod: MethodBase.GetCurrentMethod().Name
 			);
 			return;
 		}
@@ -217,8 +218,8 @@ public class PageController : MonoBehaviour {
 			// log
 			log.LogDebug(
 				message: $"{page.Type} page gameobject is active, target state is {state}. Deactivating {page.Type} page.",
-				classType: "PageController",
-				classMethod: "EnableOrDisablePage"
+				classType: GetType().Name,
+				classMethod: MethodBase.GetCurrentMethod().Name
 			);
 		}
 
@@ -230,8 +231,8 @@ public class PageController : MonoBehaviour {
 			// log
 			log.LogDebug(
 				message: $"{page.Type} page gameobject is inactive, target state is {state}. Activating {page.Type} page.",
-				classType: "PageController",
-				classMethod: "EnableOrDisablePage"
+				classType: GetType().Name,
+				classMethod: MethodBase.GetCurrentMethod().Name
 			);
 		}
 	}
@@ -241,15 +242,15 @@ public class PageController : MonoBehaviour {
 			register.Add(page.type, page);
 			log.LogInfo(
 				message: $"Registered new page called {page.Type} page.",
-				classType: "PageController",
-				classMethod: "RegisterPage"
+				classType: GetType().Name,
+				classMethod: MethodBase.GetCurrentMethod().Name
 			);
 		}
 		else {
 			log.LogWarn(
 				message: $"Failed to register {page.Type} page, it is already registered.",
-				classType: "PageController",
-				classMethod: "RegisterPage"
+				classType: GetType().Name,
+				classMethod: MethodBase.GetCurrentMethod().Name
 			);
 		}
 	}
@@ -257,8 +258,8 @@ public class PageController : MonoBehaviour {
 	private void RegisterAllPages() {
 		log.LogDebug(
 			message: $"Registering all pages...",
-			classType: "PageController",
-			classMethod: "RegisterAllPages"
+			classType: GetType().Name,
+			classMethod: MethodBase.GetCurrentMethod().Name
 		);
 
 		foreach (Page page in pages) {
@@ -277,8 +278,8 @@ public class PageController : MonoBehaviour {
 
 		log.LogInfo(
 			message: $"Succeeded switching from {offPage.Type} to {onPage.Type} page.",
-			classType: "PageController",
-			classMethod: "AwaitPageSwitch"
+			classType: GetType().Name,
+			classMethod: MethodBase.GetCurrentMethod().Name
 		);
 	}
 	#endregion

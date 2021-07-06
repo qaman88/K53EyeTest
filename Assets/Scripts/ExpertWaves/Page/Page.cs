@@ -1,6 +1,6 @@
 using ExpertWaves.Log;
-using ExpertWaves.UserInput;
 using System.Collections;
+using System.Reflection;
 using UnityEngine;
 
 namespace ExpertWaves {
@@ -67,8 +67,8 @@ namespace ExpertWaves {
 					StartCoroutine(task, state);
 					log.LogInfo(
 						message: $"{Type} Page animation started.",
-						classType: "Page",
-						classMethod: "Animate"
+						classType: GetType().Name,
+						classMethod: MethodBase.GetCurrentMethod().Name
 					);
 				}
 
@@ -108,8 +108,8 @@ namespace ExpertWaves {
 					// log
 					log.LogInfo(
 						message: $"Page {Type} failed to turn off, page is not active.",
-						classType: "Page",
-						classMethod: "AwaitAnimation"
+						classType: GetType().Name,
+						classMethod: MethodBase.GetCurrentMethod().Name
 					);
 				}
 				else {
@@ -119,8 +119,8 @@ namespace ExpertWaves {
 					// log
 					log.LogInfo(
 						message: $"{Type} Page animation completed.",
-						classType: "Page",
-						classMethod: "AwaitAnimation"
+						classType: GetType().Name,
+						classMethod: MethodBase.GetCurrentMethod().Name
 					);
 				}
 
@@ -134,7 +134,11 @@ namespace ExpertWaves {
 					animator = GetComponent<Animator>();
 
 					if (!animator) {
-						log.LogError($"Animator integrity failed, animator is not in gameobject.");
+						log.LogError(
+							message: $"Animator integrity failed, animator is not in gameobject.",
+							classType: GetType().Name,
+							classMethod: MethodBase.GetCurrentMethod().Name
+						);
 					}
 				}
 			}

@@ -33,8 +33,8 @@ namespace ExpertWaves {
 				Configure();
 				LogInfo(
 					message: "LogController is Awake.",
-					classType: "LogController",
-					classMethod: "Awake"
+					classType: GetType().Name,
+					classMethod: MethodBase.GetCurrentMethod().Name
 				);
 			}
 			#endregion
