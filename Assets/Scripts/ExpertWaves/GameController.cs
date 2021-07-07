@@ -24,7 +24,7 @@ namespace ExpertWaves {
 			private void Awake() {
 				Configure();
 				log.LogInfo(
-					message: "!!!!!!!!!!!!!!!!GameController is Awake.",
+					message: "GameController is Awake.",
 					classType: GetType().Name,
 					classMethod: MethodBase.GetCurrentMethod().Name
 				);

@@ -20,6 +20,7 @@ namespace ExpertWaves {
 			private Animator animator;
 			IFlag targetState = IFlag.None;
 			CallbackPageLoaded callbackPageLoaded;
+
 			#endregion
 
 			#region Variables Properties			

@@ -117,7 +117,8 @@ namespace ExpertWaves {
 				hierarchy.Root.Level = Level.All;
 				hierarchy.Configured = true;
 
-				string consoleMessage = $"{classType}{classMethod} {message} \n {exception}";
+				string consoleException = _exception == null ? "" : $"\n{_exception.Source}\n\t{_exception.Message}\n\t{_exception.StackTrace}";
+				string consoleMessage = $"{classType}{classMethod} {message}";
 
 				switch (_level.ToString()) {
 					case "Fatal":
