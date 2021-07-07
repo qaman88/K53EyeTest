@@ -1,7 +1,7 @@
 using ExpertWaves.Utility;
 using ExpertWaves.Enum;
+using ExpertWaves.Page.Enum;
 using ExpertWaves.Log;
-using ExpertWaves.UserInput;
 using System.Collections;
 using UnityEngine;
 using System.Reflection;
@@ -269,7 +269,7 @@ public class PageController : MonoBehaviour {
 
 	private IEnumerator AwaitPageSwitch(Page offPage, Page onPage) {
 		// wait for off page to complete unload.
-		while (offPage.TargetState != IFlag.None) {
+		while (offPage.TargetState != ISwitch.None) {
 			yield return null;
 		}
 

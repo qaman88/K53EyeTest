@@ -1,10 +1,11 @@
-﻿using ExpertWaves.Enum;
+﻿using ExpertWaves.Scene.Enum;
 using ExpertWaves.Log;
 using ExpertWaves.Utility;
 using System.Collections;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using ExpertWaves.Page.Enum;
 
 namespace ExpertWaves {
 	namespace Scene {

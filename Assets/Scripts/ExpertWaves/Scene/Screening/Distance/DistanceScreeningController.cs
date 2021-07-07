@@ -3,6 +3,8 @@ using ExpertWaves.Scene.Screening.Distance;
 using UnityEngine;
 using UnityEngine.UI;
 using ExpertWaves.Enum;
+using ExpertWaves.Page.Enum;
+using ExpertWaves.Scene.Enum;
 using ExpertWaves.Log;
 
 namespace ExpertWaves {

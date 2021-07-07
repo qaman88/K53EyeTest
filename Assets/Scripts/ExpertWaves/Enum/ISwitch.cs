@@ -1,6 +1,6 @@
 ﻿namespace ExpertWaves {
 	namespace Enum {
-		public enum IFlag {
+		public enum ISwitch {
 			None,
 			On,
 			Off

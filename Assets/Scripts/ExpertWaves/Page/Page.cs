@@ -1,6 +1,7 @@
 using ExpertWaves.Log;
 using System.Collections;
 using System.Reflection;
+using ExpertWaves.Page.Enum;
 using UnityEngine;
 
 namespace ExpertWaves {
@@ -18,7 +19,7 @@ namespace ExpertWaves {
 			#region Private Variables
 			private bool active;
 			private Animator animator;
-			IFlag targetState = IFlag.None;
+			ISwitch targetState = ISwitch.None;
 			CallbackPageLoaded callbackPageLoaded;
 
 			#endregion
@@ -34,7 +35,7 @@ namespace ExpertWaves {
 				}
 			}
 			public bool AnimationEnable { get => this.animationEnable; set => this.animationEnable = value; }
-			public IFlag TargetState { get => this.targetState; set => this.targetState = value; }
+			public ISwitch TargetState { get => this.targetState; set => this.targetState = value; }
 			public IPageType Type { get => this.type; set => this.type = value; }
 
 			#endregion
@@ -84,7 +85,7 @@ namespace ExpertWaves {
 			#region Private Functions
 			private IEnumerator AwaitAnimation(bool state) {
 				// set target state
-				targetState = state ? IFlag.On : IFlag.Off;
+				targetState = state ? ISwitch.On : ISwitch.Off;
 
 				// wait until animation move to next stage
 				while (animator.GetCurrentAnimatorStateInfo(0).IsName(TargetState.ToString())) {
@@ -126,7 +127,7 @@ namespace ExpertWaves {
 				}
 
 				// reset target state
-				TargetState = IFlag.None;
+				TargetState = ISwitch.None;
 			}
 
 			public void CheckAnimatorIntegrity() {

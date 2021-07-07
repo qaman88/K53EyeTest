@@ -1,7 +1,7 @@
 using UnityEngine;
 using log4net;
 using System;
-using ExpertWaves.Enum;
+using ExpertWaves.Log.Enum;
 using System.Reflection;
 using log4net.Repository.Hierarchy;
 using log4net.Config;

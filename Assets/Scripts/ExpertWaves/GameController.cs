@@ -1,10 +1,10 @@
 using ExpertWaves.UserInput;
-using ExpertWaves.Scene.Screening.Distance;
 using UnityEngine;
-using UnityEngine.UI;
 using ExpertWaves.Enum;
 using ExpertWaves.Log;
 using System.Reflection;
+using ExpertWaves.Scene.Enum;
+using ExpertWaves.Page.Enum;
 
 namespace ExpertWaves {
 	namespace Scene {
