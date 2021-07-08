@@ -56,7 +56,7 @@ namespace ExpertWaves {
 					// save data to file
 					string json = JsonConvert.SerializeObject(data);
 					byte[] byteData = Encoding.ASCII.GetBytes(json);
-					UnityEngine.Windows.File.WriteAllBytes(LogFileFullPath, byteData);
+					File.WriteAllBytes(LogFileFullPath, byteData);
 
 					// log
 					log.LogInfo(
@@ -134,25 +134,25 @@ namespace ExpertWaves {
 
 			#region Private Functions			
 			private string GetPersistentDataPath() {
-#if UNITY_EDITOR_WIN
+//#if UNITY_EDITOR_WIN
 				// Windows-specific
 				string winPath = Application.persistentDataPath.Replace("/", "\\");
 				return winPath;
-#else
+/*#else
 				// Unix-specific
 				string unixPath = Application.persistentDataPath;
 				return unixPath;
-#endif
+#endif*/
 			}
 
 			private string CombinePath(string left, string right) {
-#if UNITY_EDITOR_WIN
+//#if UNITY_EDITOR_WIN
 				// do Windows-specific stuff
 				return $"{left}\\{right}";
-#else
+/*#else
 				// do Unix-specific stuff
 				return $"{left}/{right}";
-#endif
+#endif*/
 			}
 
 			private void CreateDirectory() {

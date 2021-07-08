@@ -1,5 +1,6 @@
 ﻿using ExpertWaves.Utility;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ExpertWaves {
@@ -63,28 +64,22 @@ namespace ExpertWaves {
 
 
 				#region Public Functions
-				public void onLoadFileNotFound() {
+				public override void onLoadFileNotFound() {
 					AppInstalled =  Constant.EpochTimeNow;
 					AppLastUsed =  Constant.EpochTimeNow;
 					AppUseCount = 0;
 				}
 
-				public void onBeforeLoad() {
-				}
-
-				public void onAfterLoad() {
+				public override void onAfterLoad() {
 					if (AppInstalled == Constant.EpochTimeZero)
 						AppInstalled =Constant.EpochTimeNow;
 					if (AppLastUsed == Constant.EpochTimeZero)
 						AppLastUsed = Constant.EpochTimeNow;
 				}
-
-				public void onBeforeSave() {
+				
+				public override void onBeforeSave() {
 					AppUseCount += 1;
 					AppLastUsed = Constant.EpochTimeNow;
-				}
-
-				public void onAfterSave() {
 				}
 				#endregion
 			}
