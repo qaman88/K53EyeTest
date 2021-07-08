@@ -127,7 +127,7 @@ namespace ExpertWaves {
 							);
 						}
 						else {
-							log.LogInfo(
+							log.LogWarn(
 								message: $"Already added effect audio clip of {item.clipType} type. No duplicates for same clip type allowed",
 								classType: System.Reflection.MethodBase.GetCurrentMethod().Name,
 								classMethod: GetType().Name
@@ -156,7 +156,7 @@ namespace ExpertWaves {
 							);
 						}
 						else {
-							log.LogInfo(
+							log.LogWarn(
 								message: $"Already added sound audio clip of {item.clipType} type. No duplicates for same clip type allowed",
 								classType: System.Reflection.MethodBase.GetCurrentMethod().Name,
 								classMethod: GetType().Name
@@ -185,7 +185,7 @@ namespace ExpertWaves {
 							);
 						}
 						else {
-							log.LogInfo(
+							log.LogWarn(
 								message: $"Already added voice audio clip of {item.clipType} type. No duplicates for same clip type allowed",
 								classType: System.Reflection.MethodBase.GetCurrentMethod().Name,
 								classMethod: GetType().Name
