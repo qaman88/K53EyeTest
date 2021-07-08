@@ -13,8 +13,6 @@ namespace ExpertWaves {
 			#region Public Variables
 			public static LogController instance;
 			public ILogLevel logLevel = ILogLevel.All;
-			public string fileName = "K53EyeTest.log";
-			public string filePath = "E:\\UnitySpace\\K53 Eye Test\\Logs";
 			public bool fileLoggerEnable = true;
 			public bool consoleLoggerEnable = true;
 			public bool sqlServerLoggerEnable = true;
@@ -26,6 +24,8 @@ namespace ExpertWaves {
 			private FileConsoleConfig fileConsoleConfig;
 			private Hierarchy hierarchy = (Hierarchy) LogManager.GetRepository();
 			private string pattern = $"%utcdate [%-5level] [Thread%thread] %logger '%message' %exception %newline";
+			private string fileName = "K53EyeTest.log";
+			private string filePath;
 			#endregion
 
 			#region Unity Function
@@ -49,6 +49,8 @@ namespace ExpertWaves {
 				else {
 					Destroy(gameObject);
 				}
+
+				filePath = $"{Application.persistentDataPath}\\Logs";
 
 				// define template to define the log4net
 				XmlConfigurator.Configure();
