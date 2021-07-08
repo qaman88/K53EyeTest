@@ -1,8 +1,11 @@
 ﻿namespace ExpertWaves {
 	namespace Audio {
 		namespace Enum {
-			public enum IAudioEffect {
-				Reward,
+			public enum ITrackType {
+				None,
+				Effect,
+				Sound,
+				Voice,
 			}
 		}
 	}
