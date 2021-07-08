@@ -5,6 +5,9 @@ using ExpertWaves.Log;
 using System.Reflection;
 using ExpertWaves.Scene.Enum;
 using ExpertWaves.Page.Enum;
+using ExpertWaves.Audio.Enum;
+using ExpertWaves.Audio;
+using ExpertWaves.Vibration;
 
 namespace ExpertWaves {
 	namespace Scene {
@@ -15,6 +18,8 @@ namespace ExpertWaves {
 			public InputController inputController;
 			public PageController pageController;
 			public SceneController sceneController;
+			public AudioController audioController;
+			public VibrationController vibrationController; 
 			#endregion
 
 			#region Public Functions
@@ -23,11 +28,11 @@ namespace ExpertWaves {
 			#region Unity Functions
 			private void Awake() {
 				Configure();
-				log.LogInfo(
-					message: "GameController is Awake.",
-					classType: GetType().Name,
-					classMethod: MethodBase.GetCurrentMethod().Name
-				);
+				vibrationController.Vibrate();
+				vibrationController.Vibrate();
+				vibrationController.Vibrate();
+				vibrationController.Vibrate();
+				vibrationController.Vibrate();
 			}
 
 			private void OnDestroy() {
@@ -68,6 +73,16 @@ namespace ExpertWaves {
 					sceneController = SceneController.instance;
 				}
 
+				// ensure scene controller is defined
+				if (!audioController) {
+					audioController = AudioController.instance;
+				}
+
+				// ensure scene controller is defined
+				if (!vibrationController) {
+					vibrationController = VibrationController.instance;
+				}
+
 				// subscribe to controllers events
 				inputController.SubscribeKeyPressListener(onKeyPress);
 				inputController.SubscribeSwipeListener(onSwipe);
@@ -77,27 +92,24 @@ namespace ExpertWaves {
 
 			#region Callback Functions
 			private void onKeyPress(KeyCode key) {
-				log.LogInfo(
-					message: $"Key Press Event, Key: {key}",
-					classType: MethodBase.GetCurrentMethod().Name,
-					classMethod: GetType().Name
-				);
-
 				switch (key) {
 					case KeyCode.W:
-						pageController.SwichPage(IPageType.Loading);
+						audioController.PlaySound(ISoundType.Background1);
+						audioController.PlayEffect(IEffectType.Warinig);
+						audioController.PlayVoice(IVoiceType.Warning1);
 						break;
 
 					case KeyCode.A:
-						pageController.SwichPage(IPageType.About);
+						audioController.PlayEffect(IEffectType.Swipe);
 						break;
 
 					case KeyCode.D:
-						pageController.SwichPage(IPageType.Menu);
+						audioController.PlayVoice(IVoiceType.Success1);
 						break;
 
 					case KeyCode.S:
 						pageController.SwichPage(IPageType.Privacy);
+						vibrationController.Vibrate();
 						break;
 
 					case KeyCode.Z:
@@ -114,12 +126,15 @@ namespace ExpertWaves {
 			}
 
 			private void onSwipe(IDirection swipe) {
+				audioController.PlayEffect(IEffectType.Swipe);
+				vibrationController.Vibrate();
 				log.LogInfo(
 					message: $"Touch event, swipe {swipe}.",
 					classType: GetType().Name,
 					classMethod: MethodBase.GetCurrentMethod().Name
 				);
 			}
+
 			public void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene) {
 				log.LogInfo(
 					message: $"Scene loaded event, scene: {scene.name}",
