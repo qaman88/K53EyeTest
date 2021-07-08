@@ -50,8 +50,6 @@ namespace ExpertWaves {
 			private void Awake() {
 				Configure();
 			}
-			private void OnDisable() {
-			}
 			#endregion
 
 			#region Public Functions

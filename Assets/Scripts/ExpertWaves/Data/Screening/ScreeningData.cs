@@ -61,20 +61,13 @@ namespace ExpertWaves {
 				return $"level: {Level}, high level: { HighLevel}, score: {Score}, high score: {HighScore}";
 			}
 
-			public void onBeforeLoad() {
+			public override void onLoadFileNotFound() { 
 			}
 
-			public void onAfterLoad() {
+			public override void onAfterLoad() {
 			}
 
-			public void onBeforeSave() {
-			}
-
-			public void onAfterSave() {
-			}
-
-			public void onLoadFileNotFound() {
-
+			public override void onBeforeSave() {
 			}
 
 			#endregion
