@@ -651,11 +651,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logLevel: 0
-  fileName: K53EyeTest.log
-  filePath: 
-  fileLoggerEnable: 0
-  consoleLoggerEnable: 0
-  sqlServerLoggerEnable: 0
+  fileLoggerEnable: 1
+  consoleLoggerEnable: 1
+  sqlServerLoggerEnable: 1
 --- !u!4 &243166910
 Transform:
   m_ObjectHideFlags: 0
@@ -1881,7 +1879,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   log: {fileID: 243166909}
-  userInputKeys: 
+  userInputKeys: 610000007700000073000000640000007a00000078000000
   swipeRange: 50
   tapRange: 10
 --- !u!4 &1491314289
