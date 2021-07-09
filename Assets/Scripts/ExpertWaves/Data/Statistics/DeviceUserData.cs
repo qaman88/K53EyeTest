@@ -25,6 +25,8 @@ namespace ExpertWaves {
 				public int AppLastUsed { get; set; }
 				public int AppUseCount { get; set; }
 				public string AppVersion { get => Application.version; }
+				public string AppName { get => Application.productName; }
+				
 				public string AppDirectory => Application.dataPath;
 				public string AppInstallerName => Application.installerName;
 				public string AppLocation { get; set; }
@@ -65,21 +67,21 @@ namespace ExpertWaves {
 
 				#region Public Functions
 				public override void onLoadFileNotFound() {
-					AppInstalled =  Constant.EpochTimeNow;
-					AppLastUsed =  Constant.EpochTimeNow;
+					AppInstalled =  Common.EpochDateTimeNow();
+					AppLastUsed =   Common.EpochDateTimeNow();
 					AppUseCount = 0;
 				}
 
 				public override void onAfterLoad() {
-					if (AppInstalled == Constant.EpochTimeZero)
-						AppInstalled =Constant.EpochTimeNow;
-					if (AppLastUsed == Constant.EpochTimeZero)
-						AppLastUsed = Constant.EpochTimeNow;
+					if (AppInstalled == Common.EpochDateTimeZero())
+						AppInstalled = Common.EpochDateTimeNow();
+					if (AppLastUsed == Common.EpochDateTimeZero())
+						AppLastUsed =  Common.EpochDateTimeNow();
 				}
 				
 				public override void onBeforeSave() {
 					AppUseCount += 1;
-					AppLastUsed = Constant.EpochTimeNow;
+					AppLastUsed =  Common.EpochDateTimeNow();
 				}
 				#endregion
 			}

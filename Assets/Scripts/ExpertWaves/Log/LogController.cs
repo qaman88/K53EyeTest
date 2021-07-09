@@ -1,7 +1,7 @@
 using ExpertWaves.Log.Enum;
 using ExpertWaves.Utility;
-using System;
 using System.Reflection;
+using System;
 using UnityEngine;
 
 namespace ExpertWaves {
@@ -11,9 +11,12 @@ namespace ExpertWaves {
 			public static LogController instance;
 			public ILogLevel logLevel = ILogLevel.All;
 			public bool consoleLoggerEnable = true;
+			public bool fileLoggerEnable = true;
+			public int fileBufferSize = 2500;
 			#endregion
 
 			#region Private Variables
+			private FileLogger fileLogger;
 			#endregion
 
 			#region Unity Function
@@ -24,6 +27,13 @@ namespace ExpertWaves {
 					classType: GetType().Name,
 					classMethod: MethodBase.GetCurrentMethod().Name
 				);
+			}
+
+			private void Update() {
+			}
+
+			private void OnDestroy() {
+				fileLogger.SaveAllBuffer();
 			}
 			#endregion
 
@@ -37,19 +47,22 @@ namespace ExpertWaves {
 				else {
 					Destroy(gameObject);
 				}
+
+				// config file logger
+				string filePath = $"{Application.persistentDataPath}\\Logs";
+				string fileName = $"{Application.productName.Replace(" ", "")}";
+				fileLogger = new FileLogger(filePath, fileName, fileBufferSize);
 			}
 
 			private void ConsoleLog(string _message, ILogLevel _level, string _classType = null, string _classMethod = null, Exception _exception = null) {
 				string message = _message;
-				string classType = _classType != null ? $"[{_classType}]" : "";
-				string classMethod = _classMethod != null ? $"[{_classMethod}] " : "";
-
-				string consoleException = _exception == null ? "" : $"\n{_exception.Source}\n\t{_exception.Message}\n\t{_exception.StackTrace}";
-				string consoleMessage = $"{Constant.EpochTimeNow} [{_level.ToString()}] {classType}{classMethod} {message} {consoleException}";
-
+				string classType = _classType != null ? _classType : MethodBase.GetCurrentMethod().Name;
+				string classMethod = _classMethod != null ? _classMethod : GetType().Name;
+				string consoleException = _exception == null ? "" : $"{_exception.Source}\n\t{_exception.Message}\n\t{_exception.StackTrace}";
+				string consoleMessage = $"[{Common.DateTimeEpochTtcNow()}] [{Common.EpochDateTimeUtcNow()}] [{_level}] [{classType}.{classMethod}] [{message}] \n {consoleException}";
 				switch (_level.ToString()) {
 					case "Fatal":
-						if (consoleLoggerEnable)
+						if (consoleLoggerEnable && ( logLevel == ILogLevel.All || (int) logLevel <= (int) ILogLevel.Fatal ))
 							Debug.LogError(consoleMessage);
 						break;
 					case "Error":
@@ -65,7 +78,7 @@ namespace ExpertWaves {
 							Debug.Log(consoleMessage);
 						break;
 					case "Debug":
-						if (consoleLoggerEnable && ( logLevel == ILogLevel.All || (int) logLevel <= (int) ILogLevel.Debug))
+						if (consoleLoggerEnable && ( logLevel == ILogLevel.All || (int) logLevel <= (int) ILogLevel.Debug ))
 							Debug.Log(consoleMessage);
 						break;
 					default:
@@ -73,6 +86,15 @@ namespace ExpertWaves {
 				}
 			}
 
+			private void FileLog(string message, ILogLevel level, string classType = null, string classMethod = null, Exception exception = null) {
+				fileLogger.Log(new LogRecord(
+					message,
+					level,
+					classType,
+					classMethod,
+					exception
+				));
+			}
 			#endregion
 
 			#region public Function
@@ -82,21 +104,26 @@ namespace ExpertWaves {
 
 			public void LogFatal(string message, string classType = null, string classMethod = null, Exception exception = null) {
 				ConsoleLog(message, ILogLevel.Fatal, classType, classMethod, exception);
+				FileLog(message, ILogLevel.Fatal, classType, classMethod, exception);
 			}
 
 			public void LogError(string message, string classType = null, string classMethod = null, Exception exception = null) {
 				ConsoleLog(message, ILogLevel.Error, classType, classMethod, exception);
+				FileLog(message, ILogLevel.Error, classType, classMethod, exception);
 			}
 
 			public void LogWarn(string message, string classType = null, string classMethod = null, Exception exception = null) {
 				ConsoleLog(message, ILogLevel.Warn, classType, classMethod, exception);
+				FileLog(message, ILogLevel.Warn, classType, classMethod, exception);
 			}
 			public void LogInfo(string message, string classType = null, string classMethod = null, Exception exception = null) {
 				ConsoleLog(message, ILogLevel.Info, classType, classMethod, exception);
+				FileLog(message, ILogLevel.Info, classType, classMethod, exception);
 			}
 
 			public void LogDebug(string message, string classType = null, string classMethod = null, Exception exception = null) {
 				ConsoleLog(message, ILogLevel.Debug, classType, classMethod, exception);
+				FileLog(message, ILogLevel.Debug, classType, classMethod, exception);
 			}
 			#endregion
 		}
