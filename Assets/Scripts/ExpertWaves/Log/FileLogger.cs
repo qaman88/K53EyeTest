@@ -24,9 +24,15 @@ namespace ExpertWaves {
 			#endregion
 
 			#region Variables Properties
-			public string FilePath { get => this.filePath; set => this.filePath = value; }
-			public string FileName { get => this.fileName; set => this.fileName = value; }
-			public string FilePathName { get => this.filePathName; set => this.filePathName = value; }
+			public string FilePath {
+				get => this.filePath; set => this.filePath = value;
+			}
+			public string FileName {
+				get => this.fileName; set => this.fileName = value;
+			}
+			public string FilePathName {
+				get => this.filePathName; set => this.filePathName = value;
+			}
 			#endregion
 
 			#region Unity Functions
@@ -37,7 +43,12 @@ namespace ExpertWaves {
 			public FileLogger(string path, string file, int bufferSize) {
 				FilePath = path; // $"{Constant.PersistentDataPath}\\Logs";
 				FileName = file; // $"{Constant.ApplicationName.Replace(" ", "")}.log";
-				FilePathName = $"{FilePath}\\{FileName}";
+				if (Application.platform == RuntimePlatform.WindowsPlayer) {
+					FilePathName = $"{FilePath}\\{FileName}";
+				}
+				else if (Application.platform == RuntimePlatform.Android) {
+					FilePathName = $"{FilePath}/{FileName}";
+				}
 
 				if (!Directory.Exists(FilePath)) {
 					Common.CreateDirectory(FilePath);

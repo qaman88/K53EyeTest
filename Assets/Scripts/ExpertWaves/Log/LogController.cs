@@ -59,7 +59,7 @@ namespace ExpertWaves {
 				string classType = _classType != null ? _classType : MethodBase.GetCurrentMethod().Name;
 				string classMethod = _classMethod != null ? _classMethod : GetType().Name;
 				string consoleException = _exception == null ? "" : $"{_exception.Source}\n\t{_exception.Message}\n\t{_exception.StackTrace}";
-				string consoleMessage = $"[{Common.DateTimeEpochTtcNow()}] [{Common.EpochDateTimeUtcNow()}] [{_level}] [{classType}.{classMethod}] [{message}] \n {consoleException}";
+				string consoleMessage = $"[{Common.DateTimeEpochTtcNow()}] [{Common.EpochDateTimeUtcNow()}] [{_level}] [{classType}.{classMethod}] {message} \n {consoleException}";
 				switch (_level.ToString()) {
 					case "Fatal":
 						if (consoleLoggerEnable && ( logLevel == ILogLevel.All || (int) logLevel <= (int) ILogLevel.Fatal ))

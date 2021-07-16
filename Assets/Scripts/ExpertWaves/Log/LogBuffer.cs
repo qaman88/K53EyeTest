@@ -16,12 +16,24 @@ namespace ExpertWaves {
 			#endregion
 
 			#region Variables Properties
-			public bool Active { get => this.active; set => this.active = value; }
-			public string FilePath { get => this.filePath; set => this.filePath = value; }
-			public string FileName { get => this.fileName; set => this.fileName = value; }
-			public int BufferSizeLimit { get => this.bufferSizeLimit; set => this.bufferSizeLimit = value; }
-			public Queue<LogRecord> Buffer { get => this.buffer; set => this.buffer =  value ; }
-			public int Id { get; set; }
+			public bool Active {
+				get => this.active; set => this.active = value;
+			}
+			public string FilePath {
+				get => this.filePath; set => this.filePath = value;
+			}
+			public string FileName {
+				get => this.fileName; set => this.fileName = value;
+			}
+			public int BufferSizeLimit {
+				get => this.bufferSizeLimit; set => this.bufferSizeLimit = value;
+			}
+			public Queue<LogRecord> Buffer {
+				get => this.buffer; set => this.buffer = value;
+			}
+			public int Id {
+				get; set;
+			}
 			#endregion
 
 			#region Public Functions
@@ -66,7 +78,13 @@ namespace ExpertWaves {
 			}
 
 			public void SaveToFile() {
-				string filePathName = $"{filePath}\\{Common.EpochDateTimeUtcNow()}.Buffer{Id}.{fileName}.json";
+				string filePathName;
+				if (Application.platform == RuntimePlatform.WindowsPlayer) {
+					filePathName = $"{filePath}\\{Common.EpochDateTimeUtcNow()}.Buffer{Id}.{fileName}.json";
+				}
+				else {
+					filePathName = $"{filePath}/{Common.EpochDateTimeUtcNow()}.Buffer{Id}.{fileName}.json";
+				}
 				string json = JsonConvert.SerializeObject(Buffer);
 				byte[] byteData = System.Text.Encoding.ASCII.GetBytes(json);
 				File.WriteAllBytes(filePathName, byteData);
