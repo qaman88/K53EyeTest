@@ -2,11 +2,12 @@ using ExpertWaves.Audio.Enum;
 using ExpertWaves.Audio.Track;
 using ExpertWaves.Log;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 namespace ExpertWaves {
 	namespace Audio {
-		public class AudioController : MonoBehaviour {
+		public class AudioController :MonoBehaviour {
 			#region Public Variables
 			// instance
 			public static AudioController instance;
@@ -28,9 +29,15 @@ namespace ExpertWaves {
 			#endregion
 
 			#region Variables Properties
-			public Dictionary<IEffectType, AudioClip> EffectAudioClips { get => effectAudioClips; set => effectAudioClips = value; }
-			public Dictionary<ISoundType, AudioClip> SoundAudioClips { get => soundAudioClips; set => soundAudioClips = value; }
-			public Dictionary<IVoiceType, AudioClip> VoiceAudioClips { get => voiceAudioClips; set => voiceAudioClips = value; }
+			public Dictionary<IEffectType, AudioClip> EffectAudioClips {
+				get => effectAudioClips; set => effectAudioClips = value;
+			}
+			public Dictionary<ISoundType, AudioClip> SoundAudioClips {
+				get => soundAudioClips; set => soundAudioClips = value;
+			}
+			public Dictionary<IVoiceType, AudioClip> VoiceAudioClips {
+				get => voiceAudioClips; set => voiceAudioClips = value;
+			}
 			#endregion
 
 			#region Unity Functions
@@ -44,6 +51,19 @@ namespace ExpertWaves {
 				if (EffectAudioClips.ContainsKey(type)) {
 					effectTrack.source.clip = EffectAudioClips[type];
 					effectTrack.source.Play();
+					log.LogInfo(
+						message: $"Playing audio clip: {type}",
+						classType: GetType().Name,
+						classMethod: MethodBase.GetCurrentMethod().Name
+					);
+				}
+				else {
+					effectTrack.source.Play();
+					log.LogWarn(
+						message: $"Failed to play audio clip: {type}",
+						classType: GetType().Name,
+						classMethod: MethodBase.GetCurrentMethod().Name
+					);
 				}
 			}
 
@@ -61,6 +81,19 @@ namespace ExpertWaves {
 				if (SoundAudioClips.ContainsKey(type)) {
 					soundTrack.source.clip = SoundAudioClips[type];
 					soundTrack.source.Play();
+					log.LogInfo(
+						message: $"Playing audio clip: {type}",
+						classType: GetType().Name,
+						classMethod: MethodBase.GetCurrentMethod().Name
+					);
+				}
+				else {
+					effectTrack.source.Play();
+					log.LogWarn(
+						message: $"Failed to play audio clip: {type}",
+						classType: GetType().Name,
+						classMethod: MethodBase.GetCurrentMethod().Name
+					);
 				}
 			}
 
@@ -73,11 +106,23 @@ namespace ExpertWaves {
 			#endregion
 
 			#region Public Functions - Voice Audio Player
-
 			public void PlayVoice(IVoiceType type) {
 				if (VoiceAudioClips.ContainsKey(type)) {
 					voiceTrack.source.clip = VoiceAudioClips[type];
 					voiceTrack.source.Play();
+					log.LogInfo(
+						message: $"Playing audio clip: {type}",
+						classType: GetType().Name,
+						classMethod: MethodBase.GetCurrentMethod().Name
+					);
+				}
+				else {
+					effectTrack.source.Play();
+					log.LogWarn(
+						message: $"Failed to play audio clip: {type}",
+						classType: GetType().Name,
+						classMethod: MethodBase.GetCurrentMethod().Name
+					);
 				}
 			}
 
