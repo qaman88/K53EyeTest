@@ -1,60 +1,70 @@
-using ExpertWaves.UserInput;
 using ExpertWaves.Scene.Screening.Distance;
 using UnityEngine;
 using UnityEngine.UI;
 using ExpertWaves.Enum;
-using ExpertWaves.Page.Enum;
-using ExpertWaves.Scene.Enum;
 using ExpertWaves.Log;
+using System.Reflection;
+using ExpertWaves.UserInput.Touch;
+using ExpertWaves.UserInput.Key;
 
 namespace ExpertWaves {
 	namespace Scene {
-		public class DistanceScreeningController : MonoBehaviour {
+		public class DistanceScreeningController :MonoBehaviour {
 			#region Public Variables
 			public Image imageOptotype;
-			public Text status;
-			public DistanceScreening distanceScene;
-			public InputController inputController;
 			public LogController log;
+			public KeyInputController keyInput;
+			public TouchInputController touchInput;
+			public Text status;
 			public SceneController sceneController;
+			public Engine engine;
 			#endregion
 
 			#region Public Functions
-			void Start() {
-				this.status.text = "K53EyeTest.Distance";
-				inputController.SubscribeKeyPressListener(onKeyPress);
-				inputController.SubscribeSwipeListener(onSwipe);
+			private void Awake() {
+				status.text = "K53 Eye Test";
+				engine = new Engine();
+				touchInput.RaiseTouchInputEvent += onSwipe;
+				keyInput.SubscribeKeyPressListener(onKeyPress);
+				// log
+				log.LogDebug(
+					message: $"Game stated. Game over: {engine.Gameover}. Engine direction: {engine.Direction}.",
+					classType: GetType().Name,
+					classMethod: MethodBase.GetCurrentMethod().Name
+				);
 			}
 
 			private void OnDestroy() {
-				inputController.UnsubscribeKeyPressListener(onKeyPress);
-				inputController.UnsubscribeSwipeListener(onSwipe);
+				touchInput.RaiseTouchInputEvent -= onSwipe;
+				keyInput.UnsubscribeKeyPressListener(onKeyPress);
 			}
 			#endregion
 
 			#region Private Functions
+
 			private void onKeyPress(KeyCode key) {
-				Debug.Log($"Key Press Event, Key: {key}");
+				// log
+				log.LogDebug(
+					message: $"Key press {key}",
+					classType: GetType().Name,
+					classMethod: MethodBase.GetCurrentMethod().Name
+				);
 
 				switch (key) {
 					case KeyCode.W:
-						this.NextLevel(IDirection.Up);
+						NextLevel(IDirection.Up);
 						break;
 
 					case KeyCode.A:
-						this.NextLevel(IDirection.Left);
+						NextLevel(IDirection.Left);
 						break;
 
 					case KeyCode.D:
-						this.NextLevel(IDirection.Right);
+						NextLevel(IDirection.Right);
 						break;
 
 					case KeyCode.S:
-						this.NextLevel(IDirection.Down);
-						break;
-
-					case KeyCode.Z:
-						sceneController.LoadSceneOnPage(ISceneType.Menu, IPageType.Loading);
+						NextLevel(IDirection.Down);
 						break;
 
 					default:
@@ -62,32 +72,40 @@ namespace ExpertWaves {
 				}
 			}
 
-			private void onSwipe(IDirection type) {
-				Debug.Log($"### Swipe Event from InputController. Swipe: {type}");
-				this.NextLevel(type);
+			private void onSwipe(object sender, TouchInputEvent e) {
+				IDirection type = e.Direction;
+				NextLevel(type);
 			}
 
 			private void NextLevel(IDirection direction) {
-				if (distanceScene.getGameOver() == false && direction == distanceScene.Direction) {
+				if (engine.Gameover == false && direction == engine.Direction) {
 					// game manager move to next level
-					distanceScene.NextLevel();
+					engine.NextLevel();
 
 					// change angles
-					this.imageOptotype.transform.localEulerAngles = new Vector3(0f, 0f, distanceScene.Angle);
+					imageOptotype.transform.localEulerAngles = new Vector3(0f, 0f, engine.Angle);
 
 					// change size
-					this.imageOptotype.transform.localScale = new Vector3(distanceScene.OptotypeScale, distanceScene.OptotypeScale, 1.0f);
+					imageOptotype.transform.localScale = new Vector3(engine.OptotypeScale, engine.OptotypeScale, 1.0f);
 					;
 
 					// score 
-					this.status.text = $"Score: {distanceScene.Score} %";
+					status.text = $"Score: {engine.Score} %";
 				}
 				else {
 					// game over on incorrect answer or end of levels
-					distanceScene.setGameOver(true);
+					engine.Gameover = true;
+
 					// status text
-					this.status.text = $"Score: {distanceScene.Score} %";
+					status.text = $"Game Over Score: {engine.Score} %";
 				}
+
+				// log
+				log.LogDebug(
+					message: $"Move to next level scope. Gameover: {engine.Gameover}. Engine Direction: {engine.Direction}. Swipe: {direction}",
+					classType: GetType().Name,
+					classMethod: MethodBase.GetCurrentMethod().Name
+				);
 			}
 			#endregion
 		}

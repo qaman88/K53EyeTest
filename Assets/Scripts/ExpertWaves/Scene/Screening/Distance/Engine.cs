@@ -1,13 +1,12 @@
 using ExpertWaves.Enum;
 using ExpertWaves.Scene.Screening.Distance.Data;
 using System;
-using UnityEngine;
 
 namespace ExpertWaves {
 	namespace Scene {
 		namespace Screening {
 			namespace Distance {
-				public class DistanceScreening : MonoBehaviour {
+				public class Engine {
 					#region Variables
 					private System.Random randomGenerator;
 					private double score;
@@ -34,19 +33,21 @@ namespace ExpertWaves {
 						set => this.direction = value;
 					}
 
-					public bool getGameOver() {
-						return this.gameover;
-					}
-
-					public void setGameOver(bool state) {
-						this.gameover = state;
-					}
-
 					public float OptotypeScale {
-						get => 1.0f - ( this.Levels[this.level] / 100 );
+						get => 1.0f - ( this.Levels[this.Level] / 100 );
 					}
 
 					public float[] Levels => this.levels;
+
+					public bool Gameover {
+						get => this.gameover;
+						set => this.gameover =  value ;
+					}
+
+					public int Level {
+						get => this.level;
+						set => this.level =  value ;
+					}
 					#endregion
 
 					#region Private Functions
@@ -81,24 +82,24 @@ namespace ExpertWaves {
 					#endregion
 
 					#region Public Functions
-					public DistanceScreening() {
+					public Engine() {
 						this.randomGenerator = new System.Random();
 						this.Reset();
 					}
 
 					public void Reset() {
-						this.gameover = false;
-						this.level = 0;
+						this.Gameover = false;
+						this.Level = 0;
 						this.Score = 0;
 						this.Angle = 0;
 						this.Direction = IDirection.Right;
 					}
 
 					public void NextLevel() {
-						if (this.level < this.Levels.Length - 1) {
+						if (this.Level < this.Levels.Length - 1) {
 							this.RandomAngle();
-							this.level += 1;
-							this.score = (float) Math.Round((decimal) ( 100 * this.level / ( this.Levels.Length - 1 ) ), 2);
+							this.Level += 1;
+							this.Score = (float) Math.Round((decimal) ( 100 * this.Level / ( this.Levels.Length - 1 ) ), 2);
 						}
 					}
 
