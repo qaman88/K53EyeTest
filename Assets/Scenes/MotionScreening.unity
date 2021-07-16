@@ -141,7 +141,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &7198902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,7 +240,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &291789806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -517,7 +517,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1645040825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -532,10 +532,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   imageOptotype: {fileID: 876914047}
   status: {fileID: 786270578}
-  distanceScene: {fileID: 1645040827}
-  inputController: {fileID: 1645040829}
+  touchInput: {fileID: 0}
   log: {fileID: 1645040828}
   sceneController: {fileID: 1645040830}
+  keyInput: {fileID: 0}
 --- !u!4 &1645040826
 Transform:
   m_ObjectHideFlags: 0
@@ -575,11 +575,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   logLevel: 0
-  fileName: LogK53EyeTest.log
-  filePath: E:\UnitySpace\K53 Eye Test III\Logs
-  fileLoggerEnable: 1
   consoleLoggerEnable: 1
-  sqlServerLoggerEnable: 1
+  fileLoggerEnable: 1
+  fileBufferSize: 2500
 --- !u!114 &1645040829
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -594,8 +592,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   log: {fileID: 1645040828}
   userInputKeys: 610000007700000073000000640000007a00000078000000
-  swipeRange: 50
-  tapRange: 10
 --- !u!114 &1645040830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -662,7 +658,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.4745098, g: 0.2209542, b: 0.19215688, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
