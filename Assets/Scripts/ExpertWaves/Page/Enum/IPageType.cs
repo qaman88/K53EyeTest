@@ -10,6 +10,7 @@ namespace ExpertWaves {
 				About,
 				TermsConditions,
 				Privacy,
+				Share,
 			}
 		}
 	}

@@ -87,7 +87,6 @@ namespace ExpertWaves {
 
 					// change size
 					imageOptotype.transform.localScale = new Vector3(engine.OptotypeScale, engine.OptotypeScale, 1.0f);
-					;
 
 					// score 
 					status.text = $"Score: {engine.Score} %";

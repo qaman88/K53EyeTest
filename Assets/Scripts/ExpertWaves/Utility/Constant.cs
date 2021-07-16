@@ -15,6 +15,7 @@ namespace ExpertWaves {
 			public static bool Negative = false;
 			public static int LayerUI = 5;
 			public static string LogFolder = "Logs";
+			public static string Website = "https://qaman88.github.io";
 		}
 	}
 }

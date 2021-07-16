@@ -6,6 +6,7 @@ using ExpertWaves.Page.Enum;
 using ExpertWaves.Scene.Enum;
 using ExpertWaves.UserInput.Key;
 using ExpertWaves.UserInput.Touch;
+using ExpertWaves.Utility;
 using ExpertWaves.Vibration;
 using System.Reflection;
 using UnityEngine;
@@ -48,6 +49,7 @@ namespace ExpertWaves {
 			#endregion
 
 			#region Private Functions		
+
 			private void Configure() {
 				// ensure instance is defined
 				if (!instance) {
@@ -84,7 +86,9 @@ namespace ExpertWaves {
 				}
 
 				// initialize UI components
-				InitButtonComponents();
+				if (SceneManager.GetActiveScene().name == ISceneType.Menu.ToString()) {
+					InitButtonComponents();
+				}
 			}
 
 			private void InitButtonComponents() {
@@ -114,8 +118,7 @@ namespace ExpertWaves {
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
 
-						// handle click event
-						SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().name);
+						Application.OpenURL(Constant.Website);
 					});
 					rateButton.onClick = callback;
 				}
@@ -130,6 +133,7 @@ namespace ExpertWaves {
 							classType: GetType().Name,
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
+						pageController.LoadPage(IPageType.About);
 					});
 					aboutButton.onClick = callback;
 				}
@@ -144,6 +148,7 @@ namespace ExpertWaves {
 							classType: GetType().Name,
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
+						pageController.LoadPage(IPageType.Share);
 					});
 					shareButton.onClick = callback;
 				}
@@ -158,6 +163,7 @@ namespace ExpertWaves {
 							classType: GetType().Name,
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
+						pageController.LoadPage(IPageType.Privacy);
 					});
 					privacyButton.onClick = callback;
 				}
@@ -172,6 +178,7 @@ namespace ExpertWaves {
 							classType: GetType().Name,
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
+						pageController.LoadPage(IPageType.TermsConditions);
 					});
 					termsButton.onClick = callback;
 				}
@@ -186,6 +193,7 @@ namespace ExpertWaves {
 							classType: GetType().Name,
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
+						pageController.LoadPage(IPageType.Help);
 					});
 					helpButton.onClick = callback;
 				}
@@ -200,7 +208,7 @@ namespace ExpertWaves {
 							classType: GetType().Name,
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
-						sceneController.LoadSceneOnPage(ISceneType.DistanceScreening,  IPageType.Loading);
+						sceneController.LoadSceneOnPage(ISceneType.DistanceScreening, IPageType.Loading);
 					});
 					distanceTestButton.onClick = callback;
 				}
@@ -215,7 +223,7 @@ namespace ExpertWaves {
 							classType: GetType().Name,
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
-						sceneController.LoadSceneOnPage(ISceneType.MotionScreening,  IPageType.Loading);
+						sceneController.LoadSceneOnPage(ISceneType.MotionScreening, IPageType.Loading);
 					});
 					motionTestButton.onClick = callback;
 				}
@@ -230,14 +238,16 @@ namespace ExpertWaves {
 							classType: GetType().Name,
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
-						sceneController.LoadSceneOnPage(ISceneType.ColorScreening,  IPageType.Loading);
+						sceneController.LoadSceneOnPage(ISceneType.ColorScreening, IPageType.Loading);
 					});
 					colorTestButton.onClick = callback;
 				}
 			}
+
 			#endregion
 
 			#region Callback Functions
+
 			private void OnKeyPress(KeyCode key) {
 				switch (key) {
 					case KeyCode.W:
@@ -253,7 +263,7 @@ namespace ExpertWaves {
 						break;
 
 					case KeyCode.S:
-						sceneController.LoadSceneOnPage(ISceneType.DistanceScreening,  IPageType.Loading);
+						sceneController.LoadSceneOnPage(ISceneType.DistanceScreening, IPageType.Loading);
 						break;
 
 					default:
@@ -270,6 +280,9 @@ namespace ExpertWaves {
 					classMethod: MethodBase.GetCurrentMethod().Name
 				);
 
+				audioController.PlayEffect(IEffectType.Swipe);
+				vibrationController.Vibrate();
+
 				switch (swipe) {
 					case IDirection.Down:
 						break;
@@ -280,8 +293,6 @@ namespace ExpertWaves {
 					case IDirection.Right:
 						break;
 					default:
-						audioController.PlayEffect(IEffectType.Swipe);
-						vibrationController.Vibrate();
 						break;
 				}
 			}
@@ -293,6 +304,7 @@ namespace ExpertWaves {
 					classMethod: MethodBase.GetCurrentMethod().Name
 				);
 			}
+
 			#endregion
 		}
 	}
