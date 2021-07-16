@@ -4,6 +4,7 @@
 			public enum ISceneType {
 				None,
 				Menu,
+				Setting,
 				DistanceScreening,
 				MotionScreening,
 				ColorScreening

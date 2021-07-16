@@ -147,10 +147,11 @@ namespace ExpertWaves {
 				PageManager.LoadPage(page);
 
 				// load a scene on the current page
-				string name = scene.ToString();
-				SceneManager.LoadScene(scene.ToString());
+				string currentSceneName = SceneManager.GetActiveScene().name;
+				string targetSceneName = scene.ToString();
+				SceneManager.LoadScene(targetSceneName, LoadSceneMode.Single);
 
-				log.LogDebug($"Waiting until {name} scene finish to load on {page} page.",
+				log.LogDebug($"Waiting until {targetSceneName} scene finish to load on {page} page.",
 						classType: GetType().Name,
 						classMethod: MethodBase.GetCurrentMethod().Name
 				);
@@ -160,7 +161,7 @@ namespace ExpertWaves {
 					yield return null;
 				}
 
-				log.LogDebug($"Completed loading {name} scene on {page} page.",
+				log.LogDebug($"Completed loading {targetSceneName} scene on {page} page.",
 						classType: GetType().Name,
 						classMethod: MethodBase.GetCurrentMethod().Name
 				);
@@ -180,7 +181,7 @@ namespace ExpertWaves {
 			}
 
 			private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode) {
-				log.LogDebug($"UnityEvent.SceneManger.onSceneLoaded event fired, loaded {scene.name} scene using {mode.ToString()} mode. Invoked OnSceneLoaded callbacks.",
+				log.LogDebug($"SceneManger.onSceneLoaded event fired, loaded {scene.name} scene using {mode} mode. Invoked OnSceneLoaded callbacks.",
 				classType: GetType().Name,
 				classMethod: MethodBase.GetCurrentMethod().Name
 				);
