@@ -39,6 +39,9 @@ namespace ExpertWaves {
 				keyInput.SubscribeKeyPressListener(OnKeyPress);
 			}
 
+			private void Start() {
+				audioController.PlayMusic(IMusicType.Background1);
+			}
 			private void OnDestroy() {
 				sceneController.UnsubscribeOnSceneLoaded(OnSceneLoaded);
 				touchInput.RaiseTouchInputEvent -= OnSwipe;
@@ -54,7 +57,6 @@ namespace ExpertWaves {
 				// ensure instance is defined
 				if (!instance) {
 					instance = this;
-					DontDestroyOnLoad(gameObject);
 				}
 				else {
 					Destroy(gameObject);
@@ -247,7 +249,6 @@ namespace ExpertWaves {
 			#endregion
 
 			#region Callback Functions
-
 			private void OnKeyPress(KeyCode key) {
 				switch (key) {
 					case KeyCode.W:
@@ -255,7 +256,7 @@ namespace ExpertWaves {
 						break;
 
 					case KeyCode.A:
-						audioController.PlaySound(ISoundType.Background1);
+						audioController.PlayVoice(IVoiceType.Warning1);
 						break;
 
 					case KeyCode.D:
@@ -263,7 +264,14 @@ namespace ExpertWaves {
 						break;
 
 					case KeyCode.S:
-						sceneController.LoadSceneOnPage(ISceneType.DistanceScreening, IPageType.Loading);
+						audioController.PlayEffect(IEffectType.Warinig);
+						break;
+
+					case KeyCode.M:
+						pageController.SwitchPage(IPageType.Menu);
+						break;
+
+					case KeyCode.Z:
 						break;
 
 					default:

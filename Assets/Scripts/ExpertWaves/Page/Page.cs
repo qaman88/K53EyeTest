@@ -12,16 +12,15 @@ namespace ExpertWaves {
 
 			#region Public Variables
 			public bool animationEnable;
-			public LogController log;
 			public IPageType type;
 			#endregion
 
 			#region Private Variables
+			private LogController log;
 			private bool active;
 			private Animator animator;
 			ISwitch targetState = ISwitch.None;
 			CallbackPageLoaded callbackPageLoaded;
-
 			#endregion
 
 			#region Variables Properties			

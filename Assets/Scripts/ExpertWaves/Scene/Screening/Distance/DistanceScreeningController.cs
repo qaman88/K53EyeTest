@@ -6,29 +6,43 @@ using ExpertWaves.Log;
 using System.Reflection;
 using ExpertWaves.UserInput.Touch;
 using ExpertWaves.UserInput.Key;
+using ExpertWaves.Audio;
+using ExpertWaves.Audio.Enum;
+using ExpertWaves.Vibration;
 
 namespace ExpertWaves {
 	namespace Scene {
 		public class DistanceScreeningController :MonoBehaviour {
 			#region Public Variables
 			public Image imageOptotype;
-			public LogController log;
-			public KeyInputController keyInput;
-			public TouchInputController touchInput;
 			public Text status;
+			public PageController pageController;
 			public SceneController sceneController;
 			public Engine engine;
+			public AudioController audioController;
+			#endregion
+
+			#region Private Variables
+			private LogController log;
+			private KeyInputController keyInput;
+			private TouchInputController touchInput;
+			private VibrationController vibrationController;
 			#endregion
 
 			#region Public Functions
 			private void Awake() {
+				Configure();
+			}
+
+			private void Start() {
 				status.text = "K53 Eye Test";
 				engine = new Engine();
 				touchInput.RaiseTouchInputEvent += onSwipe;
 				keyInput.SubscribeKeyPressListener(onKeyPress);
+
 				// log
 				log.LogDebug(
-					message: $"Game stated. Game over: {engine.Gameover}. Engine direction: {engine.Direction}.",
+					message: $"Game states. Gameover: {engine.Gameover}. Engine direction: {engine.Direction}.",
 					classType: GetType().Name,
 					classMethod: MethodBase.GetCurrentMethod().Name
 				);
@@ -42,7 +56,45 @@ namespace ExpertWaves {
 
 			#region Private Functions
 
+			private void Configure() {
+				// ensure log controller is defined
+				if (!log) {
+					log = LogController.instance;
+				}
+				// ensure key input controller is defined
+				if (!keyInput) {
+					keyInput = KeyInputController.instance;
+				}
+
+				// ensure touch input controller is defined
+				if (!touchInput) {
+					touchInput = TouchInputController.instance;
+				}
+
+				// ensure vibration controller is defined
+				if (!vibrationController) {
+					vibrationController = VibrationController.instance;
+				}
+
+				// ensure scene controller is defined
+				if (!sceneController) {
+					sceneController = SceneController.instance;
+					sceneController.Log = log;
+
+					if (!pageController) {
+						pageController.Log = log;
+						sceneController.pageController = pageController;
+					}
+				}
+
+				// ensure audio controller is defined
+				if (!audioController) {
+					audioController = AudioController.instance;
+				}
+			}
+
 			private void onKeyPress(KeyCode key) {
+				audioController.PlayEffect(IEffectType.Success);
 				// log
 				log.LogDebug(
 					message: $"Key press {key}",
@@ -79,6 +131,7 @@ namespace ExpertWaves {
 
 			private void NextLevel(IDirection direction) {
 				if (engine.Gameover == false && direction == engine.Direction) {
+					audioController.PlayEffect(IEffectType.Success);
 					// game manager move to next level
 					engine.NextLevel();
 
@@ -92,6 +145,7 @@ namespace ExpertWaves {
 					status.text = $"Score: {engine.Score} %";
 				}
 				else {
+					audioController.PlayEffect(IEffectType.Failure);
 					// game over on incorrect answer or end of levels
 					engine.Gameover = true;
 

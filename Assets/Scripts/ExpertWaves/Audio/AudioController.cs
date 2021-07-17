@@ -23,7 +23,7 @@ namespace ExpertWaves {
 
 			#region Private Variables
 			private Dictionary<IEffectType, AudioClip> effectAudioClips;
-			private Dictionary<ISoundType, AudioClip> soundAudioClips;
+			private Dictionary<IMusicType, AudioClip> soundAudioClips;
 			private Dictionary<IVoiceType, AudioClip> voiceAudioClips;
 
 			#endregion
@@ -32,7 +32,7 @@ namespace ExpertWaves {
 			public Dictionary<IEffectType, AudioClip> EffectAudioClips {
 				get => effectAudioClips; set => effectAudioClips = value;
 			}
-			public Dictionary<ISoundType, AudioClip> SoundAudioClips {
+			public Dictionary<IMusicType, AudioClip> SoundAudioClips {
 				get => soundAudioClips; set => soundAudioClips = value;
 			}
 			public Dictionary<IVoiceType, AudioClip> VoiceAudioClips {
@@ -46,7 +46,7 @@ namespace ExpertWaves {
 			}
 			#endregion
 
-			#region Public Functions - Effect Audio Player
+			#region Public Functions - Effect Player
 			public void PlayEffect(IEffectType type) {
 				if (EffectAudioClips.ContainsKey(type)) {
 					effectTrack.source.clip = EffectAudioClips[type];
@@ -75,9 +75,8 @@ namespace ExpertWaves {
 			#endregion
 
 
-			#region Public Functions - Sound Audio Player
-
-			public void PlaySound(ISoundType type) {
+			#region Public Functions - Music Player
+			public void PlayMusic(IMusicType type) {
 				if (SoundAudioClips.ContainsKey(type)) {
 					soundTrack.source.clip = SoundAudioClips[type];
 					soundTrack.source.Play();
@@ -97,7 +96,7 @@ namespace ExpertWaves {
 				}
 			}
 
-			public void StopSound(ISoundType type) {
+			public void StopMusic(IMusicType type) {
 				if (soundTrack.source.clip == SoundAudioClips[type]) {
 					soundTrack.source.Stop();
 				}
@@ -105,7 +104,7 @@ namespace ExpertWaves {
 
 			#endregion
 
-			#region Public Functions - Voice Audio Player
+			#region Public Functions - Voice Player
 			public void PlayVoice(IVoiceType type) {
 				if (VoiceAudioClips.ContainsKey(type)) {
 					voiceTrack.source.clip = VoiceAudioClips[type];
@@ -151,7 +150,7 @@ namespace ExpertWaves {
 
 				// initialize variables
 				EffectAudioClips = new Dictionary<IEffectType, AudioClip>();
-				SoundAudioClips = new Dictionary<ISoundType, AudioClip>();
+				SoundAudioClips = new Dictionary<IMusicType, AudioClip>();
 				VoiceAudioClips = new Dictionary<IVoiceType, AudioClip>();
 
 				// retrieve audio clips

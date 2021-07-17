@@ -61,7 +61,12 @@ namespace ExpertWaves {
 				private void Configure() {
 					// ensure instance is defined
 					if (!instance) {
-						instance = this;
+						if (!this) {
+							instance = new KeyInputController();
+						}
+						else {
+							instance = this;
+						}
 						DontDestroyOnLoad(gameObject);
 					}
 					else {

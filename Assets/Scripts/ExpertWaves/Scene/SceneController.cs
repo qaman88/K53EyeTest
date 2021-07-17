@@ -15,14 +15,13 @@ namespace ExpertWaves {
 			#region Public Variables
 			public static SceneController instance;
 			public PageController pageController;
-			public LogController log;
 			public CallbackOnSceneLoaded callbackOnSceneLoaded;
-
 			#endregion
 
 			#region Private Variables
+			private LogController log;
 			private bool isLoadingScene = Constant.Enable;
-			UnityEngine.SceneManagement.Scene currentScene;
+			private UnityEngine.SceneManagement.Scene currentScene;
 			#endregion
 
 			#region Variables Properties
@@ -44,6 +43,10 @@ namespace ExpertWaves {
 				get => this.isLoadingScene;
 				set => this.isLoadingScene = value;
 			}
+
+			public LogController Log {
+				set => this.log =  value ;
+			}
 			#endregion
 
 			#region Unity Functions	
@@ -57,7 +60,6 @@ namespace ExpertWaves {
 				// ensure instance is defined
 				if (!instance) {
 					instance = this;
-					DontDestroyOnLoad(gameObject);
 				}
 				else {
 					Destroy(gameObject);

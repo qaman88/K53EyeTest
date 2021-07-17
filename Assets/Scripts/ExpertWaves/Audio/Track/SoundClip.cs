@@ -6,7 +6,7 @@ namespace ExpertWaves {
 		namespace Track {
 			[System.Serializable]
 			public struct SoundClip {
-				public ISoundType clipType;
+				public IMusicType clipType;
 				public AudioClip audioClip;
 			}
 		}

@@ -6,21 +6,25 @@ using System.Collections;
 using UnityEngine;
 using System.Reflection;
 
-public class PageController : MonoBehaviour {
+public class PageController :MonoBehaviour {
 	#region Public Variables
 	public static PageController instance;
-	public LogController log;
 	public IPageType entryPage;
 	public Page[] pages;
 	#endregion
 
 	#region Private Variables
+	private LogController log;
 	private Hashtable register;
 	private Page currentPage;
 
 	public Page CurrentPage {
 		get => currentPage = GetPage(IPageType.None);
 		set => this.currentPage = value;
+	}
+
+	public LogController Log {
+		set => this.log =  value ;
 	}
 
 	#endregion
@@ -32,9 +36,20 @@ public class PageController : MonoBehaviour {
 	private void Awake() {
 		// configure instance
 		Configure();
+	}
+
+	private void Start() {
+		register = new Hashtable();
+		RegisterAllPages();
+		currentPage = GetPage(IPageType.None);
+
+		// load entry page is not none
+		if (entryPage != IPageType.None) {
+			LoadPage(entryPage);
+		}
 
 		log.LogInfo(
-			message: "PageController is Awake.",
+			message: "PageController is started.",
 			classType: GetType().Name,
 			classMethod: MethodBase.GetCurrentMethod().Name
 		);
@@ -122,7 +137,7 @@ public class PageController : MonoBehaviour {
 			);
 		}
 	}
-	public void SwichPage(IPageType onPageType) {
+	public void SwitchPage(IPageType onPageType) {
 		IPageType offPageType = currentPage.Type;
 
 		if (currentPage.Type == onPageType) {
@@ -178,25 +193,17 @@ public class PageController : MonoBehaviour {
 
 	#region Private Functions
 	private void Configure() {
-		// ensure instance is defined
-		if (instance == null) {
-			instance = this;
-			DontDestroyOnLoad(gameObject);
-			register = new Hashtable();
-			RegisterAllPages();
-			currentPage = GetPage(IPageType.None);
-
-			// load entry page is not none
-			if (entryPage != IPageType.None) {
-				LoadPage(entryPage);
-			}
-		}
-		else {
-			Destroy(gameObject);
-		}
 		// ensure log controller is defined
 		if (!log) {
 			log = LogController.instance;
+		}
+
+		// ensure instance is defined
+		if (instance == null) {
+			instance = this;
+		}
+		else {
+			Destroy(gameObject);
 		}
 	}
 

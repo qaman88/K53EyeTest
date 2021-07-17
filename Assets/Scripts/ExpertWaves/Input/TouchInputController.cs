@@ -54,12 +54,6 @@ namespace ExpertWaves {
 				}
 
 				private void Update() {
-					// ensure instance is defined
-					if (!instance) {
-						instance = this;
-						DontDestroyOnLoad(gameObject);
-					}
-
 					// listen swipe input
 					SwipeListener();
 				}
