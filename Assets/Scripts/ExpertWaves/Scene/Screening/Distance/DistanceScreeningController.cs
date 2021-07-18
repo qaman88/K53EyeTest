@@ -149,7 +149,6 @@ namespace ExpertWaves {
 					}
 
 					private void OnKeyPress(KeyCode key) {
-						audioController.PlayEffect(IEffectType.Success);
 						// log
 						log.LogDebug(
 							message: $"Key press {key}",
