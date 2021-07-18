@@ -53,6 +53,14 @@ namespace ExpertWaves {
 			private void Awake() {
 				Configure();
 			}
+
+			private void Start() {
+				SceneManager.sceneLoaded += OnSceneLoaded;
+			}
+
+			private void OnDestroy() {
+				SceneManager.sceneLoaded -= OnSceneLoaded;
+			}
 			#endregion
 
 			#region Public Functions
@@ -183,9 +191,10 @@ namespace ExpertWaves {
 			}
 
 			private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode) {
-				log.LogDebug($"SceneManger.onSceneLoaded event fired, loaded {scene.name} scene using {mode} mode. Invoked OnSceneLoaded callbacks.",
-				classType: GetType().Name,
-				classMethod: MethodBase.GetCurrentMethod().Name
+				log.LogDebug(
+					$"SceneManger.onSceneLoaded event fired, loaded {scene.name} scene using {mode} mode. Invoked OnSceneLoaded callbacks.",
+					classType: GetType().Name,
+					classMethod: MethodBase.GetCurrentMethod().Name
 				);
 				currentScene = scene;
 				callbackOnSceneLoaded.Invoke(scene);

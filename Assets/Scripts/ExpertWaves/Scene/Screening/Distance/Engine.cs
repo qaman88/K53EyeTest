@@ -1,5 +1,4 @@
 using ExpertWaves.Enum;
-using ExpertWaves.Scene.Screening.Distance.Data;
 using System;
 
 namespace ExpertWaves {
@@ -7,18 +6,41 @@ namespace ExpertWaves {
 		namespace Screening {
 			namespace Distance {
 				public class Engine {
-					#region Variables
-					private System.Random randomGenerator;
-					private double score;
+					#region Private Variables 
+					private readonly float[] levels = new float[] {
+							0,
+							5,
+							10,
+							20,
+							30,
+							40,
+							52,
+							60,
+							70,
+							80,
+							85,
+							90,
+							95,
+							96.0f,
+							96.5f,
+							97.0f,
+							97.5f,
+							98.0f,
+							98.5f,
+							99.0f,
+							99.5f,
+							99.75f
+						};
+					private Random randomGenerator;
+					private float score;
 					private int level;
 					private float angle;
 					private IDirection direction = IDirection.Right;
 					private bool gameover = false;
-					private readonly float[] levels = new DataLoader().Levels;
 					#endregion
 
 					#region Properties
-					public double Score {
+					public float Score {
 						get => this.score;
 						set => this.score = value;
 					}
@@ -41,12 +63,12 @@ namespace ExpertWaves {
 
 					public bool Gameover {
 						get => this.gameover;
-						set => this.gameover =  value ;
+						set => this.gameover = value;
 					}
 
 					public int Level {
 						get => this.level;
-						set => this.level =  value ;
+						set => this.level = value;
 					}
 					#endregion
 
@@ -84,10 +106,10 @@ namespace ExpertWaves {
 					#region Public Functions
 					public Engine() {
 						this.randomGenerator = new System.Random();
-						this.Reset();
+						this.Restart();
 					}
 
-					public void Reset() {
+					public void Restart() {
 						this.Gameover = false;
 						this.Level = 0;
 						this.Score = 0;

@@ -11,6 +11,8 @@ namespace ExpertWaves {
 				TermsConditions,
 				Privacy,
 				Share,
+				GameOver,
+				Game,
 			}
 		}
 	}

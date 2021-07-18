@@ -40,7 +40,6 @@ namespace ExpertWaves {
 			}
 
 			private void Start() {
-				audioController.PlayMusic(IMusicType.Background1);
 			}
 			private void OnDestroy() {
 				sceneController.UnsubscribeOnSceneLoaded(OnSceneLoaded);
