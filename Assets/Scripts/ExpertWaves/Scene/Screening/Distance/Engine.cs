@@ -61,7 +61,7 @@ namespace ExpertWaves {
 
 					public float[] Levels => this.levels;
 
-					public bool Gameover {
+					public bool GameOver {
 						get => this.gameover;
 						set => this.gameover = value;
 					}
@@ -69,6 +69,10 @@ namespace ExpertWaves {
 					public int Level {
 						get => this.level;
 						set => this.level = value;
+					}
+
+					public int MaxLevel {
+						get => Levels.Length - 1;
 					}
 					#endregion
 
@@ -110,7 +114,7 @@ namespace ExpertWaves {
 					}
 
 					public void Restart() {
-						this.Gameover = false;
+						this.GameOver = false;
 						this.Level = 0;
 						this.Score = 0;
 						this.Angle = 0;

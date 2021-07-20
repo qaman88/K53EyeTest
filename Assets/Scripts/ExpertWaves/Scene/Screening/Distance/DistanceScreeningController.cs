@@ -4,10 +4,12 @@ using ExpertWaves.Enum;
 using ExpertWaves.Log;
 using ExpertWaves.Page.Enum;
 using ExpertWaves.Scene.Enum;
-using ExpertWaves.Scene.Screening.Distance;
+using ExpertWaves.Scene.Screening.Enum;
 using ExpertWaves.UserInput.Key;
 using ExpertWaves.UserInput.Touch;
+using ExpertWaves.Utility;
 using ExpertWaves.Vibration;
+using System.Collections;
 using System.Reflection;
 using TMPro;
 using UnityEngine;
@@ -18,7 +20,7 @@ namespace ExpertWaves {
 	namespace Scene {
 		namespace Screening {
 			namespace Distance {
-				public class DistanceScreeningController :MonoBehaviour {
+				public class DistanceScreeningController : MonoBehaviour {
 					#region Public Variables
 					public Image gameOptotypeImage;
 					public TextMeshProUGUI gameOverScore;
@@ -27,7 +29,7 @@ namespace ExpertWaves {
 					public Engine engine;
 					public Button restartButton;
 					public Button menuButton;
-					public Slider progressSlider;
+					public Slider timerBar;
 					#endregion
 
 					#region Private Variables
@@ -36,6 +38,9 @@ namespace ExpertWaves {
 					private TouchInputController touchInput;
 					private AudioController audioController;
 					private VibrationController vibrationController;
+					private IGameOverReason  gameOverReason = IGameOverReason.None;
+					private Coroutine awaitTimeoutCoroutine;
+					private float timeout = 5.0f;
 					#endregion
 
 					#region Public Functions
@@ -56,7 +61,7 @@ namespace ExpertWaves {
 
 						// log
 						log.LogDebug(
-							message: $"Game states. Gameover: {engine.Gameover}. Engine direction: {engine.Direction}.",
+							message: $"Game states. Gameover: {engine.GameOver}. Engine direction: {engine.Direction}.",
 							classType: GetType().Name,
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
@@ -148,6 +153,40 @@ namespace ExpertWaves {
 
 					}
 
+					public IEnumerator AwaitTimout(int level) {
+						// stop previous task
+						if (awaitTimeoutCoroutine != null) {
+							StopCoroutine(awaitTimeoutCoroutine);
+						}
+
+						int N = 100;
+						float step = timeout / N;
+						for (int i = 0 ; i < N && engine.Level == level ; i++) {
+							yield return new WaitForSeconds(step);
+							timerBar.value = 100.0f * step * i / timeout;
+						}
+
+						if (engine.Level == level && engine.GameOver == Constant.Negative) {
+							// log
+							log.LogInfo(
+								message: $"Gameover by timeout, Level {engine.Level}, " +
+													$"Engine Answer {engine.Direction}, GameOverReasom {gameOverReason}.",
+								classType: GetType().Name,
+								classMethod: MethodBase.GetCurrentMethod().Name
+							);
+
+							// set engine game over
+							engine.GameOver = Constant.Positive;
+							gameOverReason = IGameOverReason.Timeout;
+
+							// update inverted timer bar
+							timerBar.value = 100.0f;
+							OnGameOver();
+						}
+
+						yield return null;
+					}
+
 					private void OnKeyPress(KeyCode key) {
 						// log
 						log.LogDebug(
@@ -183,7 +222,7 @@ namespace ExpertWaves {
 					}
 
 					private void OnGameUpdate(IDirection direction) {
-						if (engine.Gameover == false && direction == engine.Direction) {
+						if (engine.GameOver == false && direction == engine.Direction) {
 							// log
 							log.LogDebug(
 								message: $"Move to next level scope. Engine Direction: {engine.Direction}. Swipe: {direction}",
@@ -194,15 +233,49 @@ namespace ExpertWaves {
 							// move to the next level
 							OnGameNextLevel();
 						}
-						else {
+
+						else if (direction != engine.Direction) {
 							// log
-							log.LogDebug(
-								message: $"Game over. EngineGameOver: {engine.Gameover}. Optotype Direction: {engine.Direction}. Swipe: {direction}",
+							log.LogInfo(
+								message: $"Gameover by incorrect answer, Level {engine.Level}, " +
+													$"Engine Answer {engine.Direction}, Choice: {direction}, GameOver {engine.GameOver}.",
 								classType: GetType().Name,
 								classMethod: MethodBase.GetCurrentMethod().Name
 							);
 
-							// switch to game over page
+							// set engine game over
+							engine.GameOver = Constant.Positive;
+							gameOverReason = IGameOverReason.IncorrectChoice;
+							OnGameOver();
+						}
+
+						else if (engine.Level == engine.MaxLevel) {
+							// log
+							log.LogInfo(
+								message: $"Gameover by completed levels, Level {engine.Level}, " +
+													$"Engine Answer {engine.Direction}, Choice: {direction}, GameOver {engine.GameOver}.",
+								classType: GetType().Name,
+								classMethod: MethodBase.GetCurrentMethod().Name
+							);
+
+							// set engine game over
+							engine.GameOver = Constant.Positive;
+							gameOverReason = IGameOverReason.LevelsComplete;
+							OnGameOver();
+						}
+
+						else {
+							// log
+							log.LogInfo(
+								message: $"Gameover by unknown reason, Level {engine.Level}, " +
+													$"Engine Answer {engine.Direction}, Choice: {direction}, GameOverResason {gameOverReason}.",
+								classType: GetType().Name,
+								classMethod: MethodBase.GetCurrentMethod().Name
+							);
+
+							// set engine game over
+							engine.GameOver = Constant.Positive;
+							gameOverReason = IGameOverReason.None;
 							OnGameOver();
 						}
 					}
@@ -215,18 +288,22 @@ namespace ExpertWaves {
 						gameOptotypeImage.transform.localEulerAngles = new Vector3(0f, 0f, engine.Angle);
 						gameOptotypeImage.transform.localScale = new Vector3(engine.OptotypeScale, engine.OptotypeScale, 1.0f);
 
-						// set progress slider
-						progressSlider.value = engine.Score / 100;
-
 						// log
 						log.LogInfo(
-							message: $"Game restarted. EngineGameOver: {engine.Gameover}. Optotype Direction: {engine.Direction}.",
+							message: $"Game restarted. EngineGameOver: {engine.GameOver}. Optotype Direction: {engine.Direction}.",
 							classType: GetType().Name,
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
-
 						// switch the page to game page
 						pageController.SwitchPage(IPageType.Game);
+
+						// stop previous task
+						if (awaitTimeoutCoroutine != null) {
+							StopCoroutine(awaitTimeoutCoroutine);
+						}
+
+						// update inverted timer bar
+						timerBar.value = 0.0f;
 
 						// log
 						log.LogInfo(
@@ -246,14 +323,17 @@ namespace ExpertWaves {
 						// game manager move to next level
 						engine.NextLevel();
 
+						// update inverted timer bar
+						timerBar.value = 0.0f;
+
 						// change angles
 						gameOptotypeImage.transform.localEulerAngles = new Vector3(0f, 0f, engine.Angle);
 
 						// change size
 						gameOptotypeImage.transform.localScale = new Vector3(engine.OptotypeScale, engine.OptotypeScale, 1.0f);
 
-						// set progress slider
-						progressSlider.value = engine.Score / 100;
+						// start timeout coroutine
+						awaitTimeoutCoroutine = StartCoroutine(AwaitTimout(engine.Level));
 
 						// log
 						log.LogInfo(
@@ -275,7 +355,7 @@ namespace ExpertWaves {
 						audioController.PlayEffect(IEffectType.Failure);
 
 						// game over on incorrect answer or end of levels
-						engine.Gameover = true;
+						engine.GameOver = true;
 
 						// set the score for game over page
 						gameOverScore.text = $"{engine.Score}%";
