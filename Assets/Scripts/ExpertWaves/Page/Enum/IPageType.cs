@@ -13,6 +13,7 @@ namespace ExpertWaves {
 				Share,
 				GameOver,
 				Game,
+				Setting,
 			}
 		}
 	}

@@ -16,7 +16,7 @@ using static UnityEngine.UI.Button;
 
 namespace ExpertWaves {
 	namespace Scene {
-		public class GameController :MonoBehaviour {
+		public class GameController : MonoBehaviour {
 			#region Public Variables
 			public static GameController instance;
 			public LogController log;
@@ -103,7 +103,24 @@ namespace ExpertWaves {
 							classType: GetType().Name,
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
-						sceneController.LoadSceneOnPage(ISceneType.Setting, IPageType.Loading);
+
+						// Switch to setting page
+						pageController.LoadPage(IPageType.Setting);
+						
+						// Setting Menu Button
+						Button settingMenuButton = GameObject.Find("settingMenuButton").GetComponent<Button>();
+						if (settingMenuButton) {
+							ButtonClickedEvent callback = new ButtonClickedEvent();
+							callback.AddListener(() => {
+								log.LogInfo(
+									message: $"Setting menu button is clicked.",
+									classType: GetType().Name,
+									classMethod: MethodBase.GetCurrentMethod().Name
+								);
+								pageController.SwitchPage(IPageType.Menu);
+							});
+							settingMenuButton.onClick = callback;
+						}
 					});
 					settingButton.onClick = callback;
 				}

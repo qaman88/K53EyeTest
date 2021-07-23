@@ -4,6 +4,7 @@ using ExpertWaves.Log;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ExpertWaves {
 	namespace Audio {
@@ -15,15 +16,21 @@ namespace ExpertWaves {
 			// log
 			public LogController log;
 
+			// volume controller
+			public Slider voiceVolumeSlider;
+			public Slider effectsVolumeSlider;
+			public Slider musicVolumeSlider;
+
 			// audio tracks
-			public SoundTrack soundTrack = new SoundTrack();
+			public SoundTrack musicTrack = new SoundTrack();
 			public VoiceTrack voiceTrack = new VoiceTrack();
 			public EffectTrack effectTrack = new EffectTrack();
+
 			#endregion
 
 			#region Private Variables
 			private Dictionary<IEffectType, AudioClip> effectAudioClips;
-			private Dictionary<IMusicType, AudioClip> soundAudioClips;
+			private Dictionary<IMusicType, AudioClip> musicAudioClips;
 			private Dictionary<IVoiceType, AudioClip> voiceAudioClips;
 
 			#endregion
@@ -32,8 +39,8 @@ namespace ExpertWaves {
 			public Dictionary<IEffectType, AudioClip> EffectAudioClips {
 				get => effectAudioClips; set => effectAudioClips = value;
 			}
-			public Dictionary<IMusicType, AudioClip> SoundAudioClips {
-				get => soundAudioClips; set => soundAudioClips = value;
+			public Dictionary<IMusicType, AudioClip> MusicAudioClips {
+				get => musicAudioClips; set => musicAudioClips = value;
 			}
 			public Dictionary<IVoiceType, AudioClip> VoiceAudioClips {
 				get => voiceAudioClips; set => voiceAudioClips = value;
@@ -58,7 +65,6 @@ namespace ExpertWaves {
 					);
 				}
 				else {
-					effectTrack.source.Play();
 					log.LogWarn(
 						message: $"Failed to play audio clip: {type}",
 						classType: GetType().Name,
@@ -77,9 +83,9 @@ namespace ExpertWaves {
 
 			#region Public Functions - Music Player
 			public void PlayMusic(IMusicType type) {
-				if (SoundAudioClips.ContainsKey(type)) {
-					soundTrack.source.clip = SoundAudioClips[type];
-					soundTrack.source.Play();
+				if (MusicAudioClips.ContainsKey(type)) {
+					musicTrack.source.clip = MusicAudioClips[type];
+					musicTrack.source.Play();
 					log.LogInfo(
 						message: $"Playing audio clip: {type}",
 						classType: GetType().Name,
@@ -87,7 +93,6 @@ namespace ExpertWaves {
 					);
 				}
 				else {
-					effectTrack.source.Play();
 					log.LogWarn(
 						message: $"Failed to play audio clip: {type}",
 						classType: GetType().Name,
@@ -97,8 +102,8 @@ namespace ExpertWaves {
 			}
 
 			public void StopMusic(IMusicType type) {
-				if (soundTrack.source.clip == SoundAudioClips[type]) {
-					soundTrack.source.Stop();
+				if (musicTrack.source.clip == MusicAudioClips[type]) {
+					musicTrack.source.Stop();
 				}
 			}
 
@@ -150,13 +155,45 @@ namespace ExpertWaves {
 
 				// initialize variables
 				EffectAudioClips = new Dictionary<IEffectType, AudioClip>();
-				SoundAudioClips = new Dictionary<IMusicType, AudioClip>();
+				MusicAudioClips = new Dictionary<IMusicType, AudioClip>();
 				VoiceAudioClips = new Dictionary<IVoiceType, AudioClip>();
 
 				// retrieve audio clips
 				RetrieveSoundAudioClips();
 				RetrieveVoiceAudioClips();
 				RetrieveEffectAudioClips();
+
+				if (voiceVolumeSlider) {
+					Slider.SliderEvent sliderEvent = new Slider.SliderEvent();
+					sliderEvent.AddListener((float volume) => {
+						log.LogInfo(
+							message: $"Slider event for voice track.  Volume: {volume}",
+							classType: GetType().Name,
+							classMethod: MethodBase.GetCurrentMethod().Name
+						);
+						voiceTrack.source.volume = volume;
+						PlayVoice(IVoiceType.Success1);
+					});
+					voiceVolumeSlider.onValueChanged = sliderEvent;
+				}
+
+				if (musicVolumeSlider) {
+					Slider.SliderEvent sliderEvent = new Slider.SliderEvent();
+					sliderEvent.AddListener((float volume) => {
+						musicTrack.source.volume = volume;
+						PlayMusic(IMusicType.Launch1);
+					});
+					musicVolumeSlider.onValueChanged = sliderEvent;
+				}
+
+				if (effectsVolumeSlider) {
+					Slider.SliderEvent sliderEvent = new Slider.SliderEvent();
+					sliderEvent.AddListener((float volume) => {
+						effectTrack.source.volume = volume;
+						PlayEffect(IEffectType.Success);
+					});
+					effectsVolumeSlider.onValueChanged = sliderEvent;
+				}
 			}
 
 			private void RetrieveEffectAudioClips() {
@@ -189,10 +226,10 @@ namespace ExpertWaves {
 			}
 
 			private void RetrieveSoundAudioClips() {
-				foreach (SoundClip item in soundTrack.clips) {
+				foreach (SoundClip item in musicTrack.clips) {
 					if (item.audioClip != null) {
-						if (!SoundAudioClips.ContainsKey(item.clipType)) {
-							SoundAudioClips.Add(item.clipType, item.audioClip);
+						if (!MusicAudioClips.ContainsKey(item.clipType)) {
+							MusicAudioClips.Add(item.clipType, item.audioClip);
 							log.LogInfo(
 								message: $"Added sound audio clip of {item.clipType} type.",
 								classMethod: System.Reflection.MethodBase.GetCurrentMethod().Name,

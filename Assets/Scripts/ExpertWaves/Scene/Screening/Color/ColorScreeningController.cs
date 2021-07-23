@@ -8,7 +8,6 @@ using ExpertWaves.UserInput.Key;
 using ExpertWaves.UserInput.Touch;
 using ExpertWaves.Utility;
 using ExpertWaves.Vibration;
-using System;
 using System.Collections;
 using System.Reflection;
 using TMPro;
@@ -31,8 +30,12 @@ namespace ExpertWaves {
 					public Image clockImage;
 					public Slider timerBar;
 					public TextMeshProUGUI gameOverScore;
+					public TextMeshProUGUI gameOverRedScore;
+					public TextMeshProUGUI gameOverGreenScore;
+					public TextMeshProUGUI gameOverBlueScore;
 					public Button restartButton;
 					public Button menuButton;
+					public float timeout = 2.0f;
 					#endregion
 
 					#region Private Variables
@@ -44,7 +47,6 @@ namespace ExpertWaves {
 					private ColorScreeningEngine engine;
 					private IGameOverReason  gameOverReason = IGameOverReason.None;
 					private Coroutine awaitTimeoutCoroutine;
-					private float timeout = 5.0f;
 					#endregion
 
 					#region Variables Properties
@@ -219,6 +221,9 @@ namespace ExpertWaves {
 
 						// set the score for game over page
 						gameOverScore.text = $"{engine.Score}%";
+						gameOverRedScore.text = $"{engine.RedScore}%";
+						gameOverGreenScore.text = $"{engine.GreenScore}%";
+						gameOverBlueScore.text = $"{engine.BlueScore}%";
 
 						// switch to game over page
 						pageController.LoadPage(IPageType.GameOver);
@@ -273,9 +278,12 @@ namespace ExpertWaves {
 					}
 
 					private void OnGameNextLevel(IColorChoice colorChoice) {
-						if (colorChoice == engine.Answer && engine.GameOver == Constant.Negative) {
+						// play audio effect
+						audioController.PlayEffect(engine.Answer == colorChoice ? IEffectType.Success : IEffectType.Failure);
+
+						if (engine.GameOver == Constant.Negative) {
 							// move engine to next level
-							engine.NextLevel();
+							engine.NextLevel(colorChoice);
 
 							// change car color
 							carImage.color = engine.CurrentColor;
@@ -305,20 +313,6 @@ namespace ExpertWaves {
 							// set engine game over
 							engine.GameOver = Constant.Positive;
 							gameOverReason = IGameOverReason.LevelsComplete;
-							OnGameOver();
-						}
-						else if (colorChoice != engine.Answer) {
-							// log
-							log.LogInfo(
-								message: $"Gameover by incorrect answer, Level {engine.Level}, " +
-													$"Engine Answer {engine.Answer}, Choice: {colorChoice}, GameOver {engine.GameOver}.",
-								classType: GetType().Name,
-								classMethod: MethodBase.GetCurrentMethod().Name
-							);
-
-							// set engine game over
-							engine.GameOver = Constant.Positive;
-							gameOverReason = IGameOverReason.IncorrectChoice;
 							OnGameOver();
 						}
 						else {

@@ -40,7 +40,7 @@ namespace ExpertWaves {
 					private VibrationController vibrationController;
 					private IGameOverReason  gameOverReason = IGameOverReason.None;
 					private Coroutine awaitTimeoutCoroutine;
-					private float timeout = 5.0f;
+					private float timeout = 2.0f;
 					#endregion
 
 					#region Public Functions
