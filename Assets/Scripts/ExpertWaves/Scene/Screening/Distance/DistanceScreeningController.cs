@@ -56,9 +56,6 @@ namespace ExpertWaves {
 						// scene manager onSceneLoaded subscription
 						sceneController.SubscribeOnSceneLoaded(OnSceneLoaded);
 
-						// restart game
-						OnGameRestart();
-
 						// log
 						log.LogDebug(
 							message: $"Game states. Gameover: {engine.GameOver}. Engine direction: {engine.Direction}.",

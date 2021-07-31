@@ -1061,6 +1061,7 @@ MonoBehaviour:
   gameOverBlueScore: {fileID: 2060360816}
   restartButton: {fileID: 120941212}
   menuButton: {fileID: 1568711940}
+  timeout: 2
 --- !u!114 &343112593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2929,14 +2930,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 2a00da92b7066324481d6b40dda43e8c, type: 2}
-  m_Color: {r: 0.35065857, g: 0.59097433, b: 0.9433962, a: 1}
+  m_Color: {r: 0.509434, g: 0.2799996, b: 0, a: 1}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6d1e3d78fbfb45e41b588edf54518bf0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0fe7164c06fb5684cb1e80923570b4d5, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

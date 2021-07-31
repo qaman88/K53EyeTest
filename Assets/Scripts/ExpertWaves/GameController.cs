@@ -9,6 +9,7 @@ using ExpertWaves.UserInput.Touch;
 using ExpertWaves.Utility;
 using ExpertWaves.Vibration;
 using System.Reflection;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -26,6 +27,8 @@ namespace ExpertWaves {
 			public AudioController audioController;
 			public VibrationController vibrationController;
 			public KeyInputController keyInput;
+			public TextAsset privacyTextAsset;
+			public TextAsset termsTextAsset;
 			#endregion
 
 			#region Private Variables
@@ -106,7 +109,7 @@ namespace ExpertWaves {
 
 						// Switch to setting page
 						pageController.LoadPage(IPageType.Setting);
-						
+
 						// Setting Menu Button
 						Button settingMenuButton = GameObject.Find("settingMenuButton").GetComponent<Button>();
 						if (settingMenuButton) {
@@ -144,15 +147,79 @@ namespace ExpertWaves {
 				// About Button
 				Button aboutButton = GameObject.Find("aboutButton").GetComponent<Button>();
 				if (aboutButton) {
+					// button event
 					ButtonClickedEvent callback = new ButtonClickedEvent();
+					// event listener
 					callback.AddListener(() => {
 						log.LogInfo(
 							message: $"About button is clicked.",
 							classType: GetType().Name,
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
+
+						// switch page
 						pageController.LoadPage(IPageType.About);
+
+						// about version text
+						TextMeshProUGUI aboutVersionText = GameObject.Find("versionText").GetComponent<TextMeshProUGUI>();
+						if (aboutVersionText) {
+							aboutVersionText.text = $"Version {Application.version}";
+						}
+
+						// About Menu Button
+						Button aboutMenuButton = GameObject.Find("aboutMenuButton").GetComponent<Button>();
+						if (aboutMenuButton) {
+							ButtonClickedEvent callback = new ButtonClickedEvent();
+							callback.AddListener(() => {
+								log.LogInfo(
+									message: $"About menu button is clicked.",
+									classType: GetType().Name,
+									classMethod: MethodBase.GetCurrentMethod().Name
+								);
+								pageController.SwitchPage(IPageType.Menu);
+							});
+							aboutMenuButton.onClick = callback;
+						}
+
+						// Privacy Button
+						Button privacyButton = GameObject.Find("privacyButton").GetComponent<Button>();
+						if (privacyButton) {
+							ButtonClickedEvent callback = new ButtonClickedEvent();
+							callback.AddListener(() => {
+								log.LogInfo(
+									message: $"Privacy button is clicked.",
+									classType: GetType().Name,
+									classMethod: MethodBase.GetCurrentMethod().Name
+								);
+								pageController.LoadPage(IPageType.Privacy);
+							});
+							privacyButton.onClick = callback;
+						}
+
+						// Terms Button
+						Button termsButton = GameObject.Find("termsButton").GetComponent<Button>();
+						if (termsButton) {
+							ButtonClickedEvent callback = new ButtonClickedEvent();
+							callback.AddListener(() => {
+								log.LogInfo(
+									message: $"Terms button is clicked.",
+									classType: GetType().Name,
+									classMethod: MethodBase.GetCurrentMethod().Name
+								);
+								pageController.LoadPage(IPageType.TermsConditions);
+
+								// load terms
+
+								// about version text
+								TextMeshProUGUI termsText = GameObject.Find("termsText").GetComponent<TextMeshProUGUI>();
+								if (termsText) {
+									termsText.text = termsTextAsset.text;
+								}
+							});
+							termsButton.onClick = callback;
+						}
 					});
+
 					aboutButton.onClick = callback;
 				}
 
@@ -171,35 +238,7 @@ namespace ExpertWaves {
 					shareButton.onClick = callback;
 				}
 
-				// Privacy Button
-				Button privacyButton = GameObject.Find("privacyButton").GetComponent<Button>();
-				if (privacyButton) {
-					ButtonClickedEvent callback = new ButtonClickedEvent();
-					callback.AddListener(() => {
-						log.LogInfo(
-							message: $"Privacy button is clicked.",
-							classType: GetType().Name,
-							classMethod: MethodBase.GetCurrentMethod().Name
-						);
-						pageController.LoadPage(IPageType.Privacy);
-					});
-					privacyButton.onClick = callback;
-				}
 
-				// Terms Button
-				Button termsButton = GameObject.Find("termsButton").GetComponent<Button>();
-				if (termsButton) {
-					ButtonClickedEvent callback = new ButtonClickedEvent();
-					callback.AddListener(() => {
-						log.LogInfo(
-							message: $"Terms button is clicked.",
-							classType: GetType().Name,
-							classMethod: MethodBase.GetCurrentMethod().Name
-						);
-						pageController.LoadPage(IPageType.TermsConditions);
-					});
-					termsButton.onClick = callback;
-				}
 
 				// Help Button
 				Button helpButton = GameObject.Find("helpButton").GetComponent<Button>();
@@ -229,21 +268,6 @@ namespace ExpertWaves {
 						sceneController.LoadSceneOnPage(ISceneType.DistanceScreening, IPageType.Loading);
 					});
 					distanceTestButton.onClick = callback;
-				}
-
-				// Motion Test Button
-				Button motionTestButton = GameObject.Find("motionTestButton").GetComponent<Button>();
-				if (motionTestButton) {
-					ButtonClickedEvent callback = new ButtonClickedEvent();
-					callback.AddListener(() => {
-						log.LogInfo(
-							message: $"Motion test button is clicked.",
-							classType: GetType().Name,
-							classMethod: MethodBase.GetCurrentMethod().Name
-						);
-						sceneController.LoadSceneOnPage(ISceneType.MotionScreening, IPageType.Loading);
-					});
-					motionTestButton.onClick = callback;
 				}
 
 				// Color Test Button
