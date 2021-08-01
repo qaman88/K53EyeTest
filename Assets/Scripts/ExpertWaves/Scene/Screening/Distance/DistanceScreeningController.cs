@@ -143,7 +143,7 @@ namespace ExpertWaves {
 								);
 
 								// restart the game
-								OnGameRestart();
+								StartCoroutine(OnGameRestart());
 							});
 							restartButton.onClick = callback;
 						}
@@ -277,7 +277,10 @@ namespace ExpertWaves {
 						}
 					}
 
-					private void OnGameRestart() {
+					private IEnumerator OnGameRestart() {
+						// await for previous page to finish loading
+						yield return new WaitForSeconds(1);
+
 						// restart game engine
 						engine.Restart();
 
@@ -338,6 +341,21 @@ namespace ExpertWaves {
 							classType: GetType().Name,
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
+
+						if (engine.Level == engine.MaxLevel) {
+							// log
+							log.LogInfo(
+								message: $"Gameover by completed levels, Level {engine.Level}, " +
+													$"Engine Answer {engine.Direction}.  GameOver {engine.GameOver}.",
+								classType: GetType().Name,
+								classMethod: MethodBase.GetCurrentMethod().Name
+							);
+
+							// set engine game over
+							engine.GameOver = Constant.Positive;
+							gameOverReason = IGameOverReason.LevelsComplete;
+							OnGameOver();
+						}
 					}
 
 					private void OnGameOver() {

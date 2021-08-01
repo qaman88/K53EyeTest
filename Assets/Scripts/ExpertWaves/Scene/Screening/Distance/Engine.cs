@@ -127,6 +127,9 @@ namespace ExpertWaves {
 							this.Level += 1;
 							this.Score = (float) Math.Round((decimal) ( 100 * this.Level / ( this.Levels.Length - 1 ) ), 2);
 						}
+						else {
+							GameOver = true;
+						}
 					}
 
 					public void setCurrentOptotypeSize(float x, float y) {
