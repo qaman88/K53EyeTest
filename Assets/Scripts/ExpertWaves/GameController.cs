@@ -27,6 +27,7 @@ namespace ExpertWaves {
 			public AudioController audioController;
 			public VibrationController vibrationController;
 			public KeyInputController keyInput;
+			public TextAsset helpTextAsset;
 			public TextAsset privacyTextAsset;
 			public TextAsset termsTextAsset;
 			#endregion
@@ -192,6 +193,27 @@ namespace ExpertWaves {
 									classMethod: MethodBase.GetCurrentMethod().Name
 								);
 								pageController.LoadPage(IPageType.Privacy);
+
+								// content text
+								TextMeshProUGUI privacyContent = GameObject.Find("privacyContent").GetComponent<TextMeshProUGUI>();
+								if (privacyContent) {
+									privacyContent.text = privacyTextAsset.text;
+								}
+
+								// Return Button
+								Button privacyReturnButton = GameObject.Find("privacyReturnButton").GetComponent<Button>();
+								if (privacyReturnButton) {
+									ButtonClickedEvent callback = new ButtonClickedEvent();
+									callback.AddListener(() => {
+										log.LogInfo(
+											message: $"Privacy Return button is clicked.",
+											classType: GetType().Name,
+											classMethod: MethodBase.GetCurrentMethod().Name
+										);
+										pageController.SwitchPage(IPageType.About);
+									});
+									privacyReturnButton.onClick = callback;
+								}
 							});
 							privacyButton.onClick = callback;
 						}
@@ -208,12 +230,25 @@ namespace ExpertWaves {
 								);
 								pageController.LoadPage(IPageType.TermsConditions);
 
-								// load terms
+								// content text
+								TextMeshProUGUI termsContent = GameObject.Find("termsContent").GetComponent<TextMeshProUGUI>();
+								if (termsContent) {
+									termsContent.text = termsTextAsset.text;
+								}
 
-								// about version text
-								TextMeshProUGUI termsText = GameObject.Find("termsText").GetComponent<TextMeshProUGUI>();
-								if (termsText) {
-									termsText.text = termsTextAsset.text;
+								// Return Button
+								Button termsReturnButton = GameObject.Find("termsReturnButton").GetComponent<Button>();
+								if (termsReturnButton) {
+									ButtonClickedEvent callback = new ButtonClickedEvent();
+									callback.AddListener(() => {
+										log.LogInfo(
+											message: $"Terms return button is clicked.",
+											classType: GetType().Name,
+											classMethod: MethodBase.GetCurrentMethod().Name
+										);
+										pageController.SwitchPage(IPageType.About);
+									});
+									termsReturnButton.onClick = callback;
 								}
 							});
 							termsButton.onClick = callback;
@@ -251,6 +286,27 @@ namespace ExpertWaves {
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
 						pageController.LoadPage(IPageType.Help);
+
+						// content text
+						TextMeshProUGUI helpContent = GameObject.Find("helpContent").GetComponent<TextMeshProUGUI>();
+						if (helpContent) {
+							helpContent.text = helpTextAsset.text;
+						}
+
+						// Menu Button
+						Button helpMenuButton = GameObject.Find("helpMenuButton").GetComponent<Button>();
+						if (helpMenuButton) {
+							ButtonClickedEvent callback = new ButtonClickedEvent();
+							callback.AddListener(() => {
+								log.LogInfo(
+									message: $"Help menu button is clicked.",
+									classType: GetType().Name,
+									classMethod: MethodBase.GetCurrentMethod().Name
+								);
+								pageController.SwitchPage(IPageType.Menu);
+							});
+							helpMenuButton.onClick = callback;
+						}
 					});
 					helpButton.onClick = callback;
 				}
