@@ -1436,6 +1436,7 @@ GameObject:
   m_Component:
   - component: {fileID: 287068389}
   - component: {fileID: 287068390}
+  - component: {fileID: 287068385}
   m_Layer: 0
   m_Name: Game Controller
   m_TagString: Untagged
@@ -1443,6 +1444,26 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &287068385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 287068384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ff11dae1f5ec1e479e55e0060854624, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  log: {fileID: 243166909}
+  voiceVolumeSlider: {fileID: 1745557447}
+  effectsVolumeSlider: {fileID: 976738423}
+  musicVolumeSlider: {fileID: 1091399367}
+  audioController: {fileID: 601533941}
+  vibrationController: {fileID: 518185502}
+  vibrationToggle: {fileID: 301687572}
+  vibrationSwitchLabelText: {fileID: 1307863254}
 --- !u!4 &287068389
 Transform:
   m_ObjectHideFlags: 0
@@ -1490,7 +1511,7 @@ GameObject:
   - component: {fileID: 301687571}
   - component: {fileID: 301687572}
   m_Layer: 5
-  m_Name: Toggle
+  m_Name: vibrationToggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2933,6 +2954,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   log: {fileID: 243166909}
+  vibrationEnabled: 1
 --- !u!4 &518185503
 Transform:
   m_ObjectHideFlags: 0
@@ -3528,11 +3550,11 @@ MonoBehaviour:
     on\r\nAbout 10 500 000 results (0,50 seconds) \r\nVideos\r\n\r\nPREVIEW\r\n2:56\r\nHow
     to make scrollable UI (user interface) text area in Unity ...\r\nYouTube \xB7
     Alexander Zotov\r\n24 Aug 2017\r\n\r\nPREVIEW\r\n9:03\r\nMaking a Scrollable
-    Text Label in Unity 4.6 Tutorial\r\nYouTube \xB7 Sloan Kelly\r\n01 Jan 2015\r\n5\r\n
-    key moments in this video\r\n\r\nPREVIEW\r\n22:47\r\nUnity UI - Scroll Menu Pt
-    4: Text Log - A scrolling, vertical list of ...\r\nYouTube \xB7 c00pala\r\n16
-    May 2017\r\n\r\n8\r\n key moments in this video\r\nView all\r\n\r\nScroll View
-    with text - Unity Answershttps://answers.unity.com \u203A questions \u203A scroll-view-with...\r\n16
+    Text Label in Unity 4.6 Tutorial\r\nYouTube \xB7 Sloan Kelly\r\n01 Jan 2015\r\n5\r\nkey
+    moments in this video\r\n\r\nPREVIEW\r\n22:47\r\nUnity UI - Scroll Menu Pt 4:
+    Text Log - A scrolling, vertical list of ...\r\nYouTube \xB7 c00pala\r\n16 May
+    2017\r\n\r\n8\r\n key moments in this video\r\nView all\r\n\r\nScroll View with
+    text - Unity Answershttps://answers.unity.com \u203A questions \u203A scroll-view-with...\r\n16
     Feb 2016 \u2014 The scroll bars do not show the large amount of text within the
     ScrollView. What could be wrong? Here is a picture of how it is setup.\r\n\r\nHow
     to make text with a scroll bar? - Unity Forumhttps://forum.unity.com \u203A ...
@@ -3652,9 +3674,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   log: {fileID: 243166909}
-  voiceVolumeSlider: {fileID: 1745557447}
-  effectsVolumeSlider: {fileID: 1091399367}
-  musicVolumeSlider: {fileID: 976738423}
   musicTrack:
     source: {fileID: 26058776}
     clips:
@@ -10762,7 +10781,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: -100.135315}
+  m_AnchoredPosition: {x: 0, y: -81.62618}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1984854538
@@ -11016,7 +11035,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2029754049
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11162,7 +11181,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: -200.27063}
+  m_AnchoredPosition: {x: 0, y: -163.25237}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2049733033

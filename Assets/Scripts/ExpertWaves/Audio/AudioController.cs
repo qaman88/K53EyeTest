@@ -16,11 +16,6 @@ namespace ExpertWaves {
 			// log
 			public LogController log;
 
-			// volume controller
-			public Slider voiceVolumeSlider;
-			public Slider effectsVolumeSlider;
-			public Slider musicVolumeSlider;
-
 			// audio tracks
 			public SoundTrack musicTrack = new SoundTrack();
 			public VoiceTrack voiceTrack = new VoiceTrack();
@@ -162,38 +157,6 @@ namespace ExpertWaves {
 				RetrieveSoundAudioClips();
 				RetrieveVoiceAudioClips();
 				RetrieveEffectAudioClips();
-
-				if (voiceVolumeSlider) {
-					Slider.SliderEvent sliderEvent = new Slider.SliderEvent();
-					sliderEvent.AddListener((float volume) => {
-						log.LogInfo(
-							message: $"Slider event for voice track.  Volume: {volume}",
-							classType: GetType().Name,
-							classMethod: MethodBase.GetCurrentMethod().Name
-						);
-						voiceTrack.source.volume = volume;
-						PlayVoice(IVoiceType.Success1);
-					});
-					voiceVolumeSlider.onValueChanged = sliderEvent;
-				}
-
-				if (musicVolumeSlider) {
-					Slider.SliderEvent sliderEvent = new Slider.SliderEvent();
-					sliderEvent.AddListener((float volume) => {
-						musicTrack.source.volume = volume;
-						PlayMusic(IMusicType.Launch1);
-					});
-					musicVolumeSlider.onValueChanged = sliderEvent;
-				}
-
-				if (effectsVolumeSlider) {
-					Slider.SliderEvent sliderEvent = new Slider.SliderEvent();
-					sliderEvent.AddListener((float volume) => {
-						effectTrack.source.volume = volume;
-						PlayEffect(IEffectType.Success);
-					});
-					effectsVolumeSlider.onValueChanged = sliderEvent;
-				}
 			}
 
 			private void RetrieveEffectAudioClips() {

@@ -1,5 +1,5 @@
 ﻿using ExpertWaves.Log;
-using System.Collections;
+using ExpertWaves.Utility;
 using UnityEngine;
 
 namespace ExpertWaves {
@@ -8,12 +8,17 @@ namespace ExpertWaves {
 			#region Public Variables
 			public static VibrationController instance;
 			public LogController log;
+			public bool vibrationEnabled = Constant.SwitchOn;
 			#endregion
 
 			#region Private Variables
 			#endregion
 
 			#region Variables Properties
+			public bool VibrationEnabled {
+				get => vibrationEnabled;
+				set => vibrationEnabled = value;
+			}
 			#endregion
 
 			#region Unity Functions
@@ -24,12 +29,22 @@ namespace ExpertWaves {
 
 			#region Public Functions
 			public void Vibrate() {
-				Handheld.Vibrate();
-				log.LogInfo(
-					message: "Device is vibrating.",
-					classType: GetType().Name,
-					classMethod: System.Reflection.MethodBase.GetCurrentMethod().Name
-				);
+				if (VibrationEnabled) {
+					Handheld.Vibrate();
+					log.LogInfo(
+						message: "Device is vibrating.",
+						classType: GetType().Name,
+						classMethod: System.Reflection.MethodBase.GetCurrentMethod().Name
+					);
+
+				}
+				else {
+					log.LogInfo(
+						message: "Vibration is disabled.",
+						classType: GetType().Name,
+						classMethod: System.Reflection.MethodBase.GetCurrentMethod().Name
+					);
+				}
 			}
 			#endregion
 

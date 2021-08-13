@@ -13,7 +13,7 @@ namespace ExpertWaves {
 		public class DataStore<T> where T : IBaseData {
 
 			#region Public Variables
-			private T data;
+			public T data;
 			#endregion
 
 			#region Private Variables
