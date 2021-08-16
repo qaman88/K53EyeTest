@@ -78,7 +78,3 @@ ProjectSettings/
 packages.config
 Assets/Resources/Audio/Effect/achievement.mp3
 
-# ignore for debug developemnt
-Assets/Resources/Audio/
-Assets/Resources/Images/
-Assets/TextMesh Pro/
