@@ -67,6 +67,9 @@ crashlytics-build.properties
 # Packed Addressables
 /Assets/AddressableAssetsData/*/*.bin*
 
+# Android Plugin Project
+.idea
+
 # Temporary auto-generated Android Assets
 /Assets/StreamingAssets/aa.meta
 /Assets/StreamingAssets/aa/*

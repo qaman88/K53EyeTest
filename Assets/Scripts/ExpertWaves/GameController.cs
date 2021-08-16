@@ -32,9 +32,6 @@ namespace ExpertWaves {
 			public TextAsset termsTextAsset;
 			#endregion
 
-			#region Private Variables
-			#endregion
-
 			#region Unity Functions
 			private void Awake() {
 				Configure();
@@ -44,7 +41,9 @@ namespace ExpertWaves {
 			}
 
 			private void Start() {
+				InitializePlugin(androidPluginName);
 			}
+
 			private void OnDestroy() {
 				sceneController.UnsubscribeOnSceneLoaded(OnSceneLoaded);
 				touchInput.RaiseTouchInputEvent -= OnSwipe;
@@ -139,7 +138,6 @@ namespace ExpertWaves {
 							classType: GetType().Name,
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
-
 						Application.OpenURL(Constant.Website);
 					});
 					rateButton.onClick = callback;
@@ -268,12 +266,12 @@ namespace ExpertWaves {
 							classType: GetType().Name,
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
-						pageController.LoadPage(IPageType.Share);
+
+						// native share intent
+						Share();
 					});
 					shareButton.onClick = callback;
 				}
-
-
 
 				// Help Button
 				Button helpButton = GameObject.Find("helpButton").GetComponent<Button>();
@@ -409,6 +407,81 @@ namespace ExpertWaves {
 				);
 			}
 
+			#endregion
+
+			#region Android Library
+			private string androidPluginName = "za.co.expertwaves.k53eyetest.unityk53javaplugin.NativeShare";
+			private AndroidJavaObject androidPlugin;
+			private void InitializePlugin(string plugin) {
+#if UNITY_EDITOR
+				log.LogWarn(
+					message: $"Android is required to run the script.",
+					classType: GetType().Name,
+					classMethod: MethodBase.GetCurrentMethod().Name
+				);
+#else
+				try {
+					AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+					AndroidJavaObject activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+					AndroidJavaObject context = activity.Call<AndroidJavaObject>("getApplicationContext");
+					androidPlugin = new AndroidJavaObject(plugin);
+
+					if (androidPlugin == null) {
+						log.LogError(
+							message: $"Failed initialize Android plugin, pluginInstance is null.",
+							classType: GetType().Name,
+							classMethod: MethodBase.GetCurrentMethod().Name
+						);
+					}
+					else {
+						androidPlugin.CallStatic("SetUnityActivity", activity);
+						log.LogInfo(
+							message: $"Android plugin initiated and activity setup completed.",
+							classType: GetType().Name,
+							classMethod: MethodBase.GetCurrentMethod().Name
+						);
+					}
+				}
+				catch (System.Exception e) {
+					log.LogError(
+						message: $"Failed initialize Android plugin.",
+						classType: GetType().Name,
+						classMethod: MethodBase.GetCurrentMethod().Name,
+						exception: e
+					);
+				}
+#endif
+			}
+
+			public void Toast(string msg) {
+#if UNITY_EDITOR
+				log.LogWarn(
+					message: $"Android is required to run the script.",
+					classType: GetType().Name,
+					classMethod: MethodBase.GetCurrentMethod().Name
+				);
+#else
+				if (androidPlugin != null) {
+					androidPlugin.Call("Toast", msg);
+				}
+				Share();
+#endif
+			}
+
+			public void Share() {
+#if UNITY_EDITOR
+				log.LogWarn(
+					message: $"Android is required to run the script.",
+					classType: GetType().Name,
+					classMethod: MethodBase.GetCurrentMethod().Name
+				);
+#else
+				string info =  $"Hey \nHere is an app to help you pass K53 eye test on a GO. Download {Application.productName} App on {Constant.Website}. \nThanks";
+				if (androidPlugin != null) {
+					androidPlugin.Call("Share", info);
+				}
+#endif
+			}
 			#endregion
 		}
 	}

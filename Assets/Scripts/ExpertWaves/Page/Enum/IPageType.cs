@@ -10,7 +10,6 @@ namespace ExpertWaves {
 				About,
 				TermsConditions,
 				Privacy,
-				Share,
 				GameOver,
 				Game,
 				Setting,
