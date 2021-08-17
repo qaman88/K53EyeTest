@@ -104,26 +104,38 @@ namespace ExpertWaves {
 
 			public void LogFatal(string message, string classType = null, string classMethod = null, Exception exception = null) {
 				ConsoleLog(message, ILogLevel.Fatal, classType, classMethod, exception);
-				FileLog(message, ILogLevel.Fatal, classType, classMethod, exception);
+				if (fileLoggerEnable) {
+					FileLog(message, ILogLevel.Fatal, classType, classMethod, exception);
+				}
 			}
 
 			public void LogError(string message, string classType = null, string classMethod = null, Exception exception = null) {
 				ConsoleLog(message, ILogLevel.Error, classType, classMethod, exception);
-				FileLog(message, ILogLevel.Error, classType, classMethod, exception);
+				if (fileLoggerEnable) {
+					FileLog(message, ILogLevel.Error, classType, classMethod, exception);
+				}
 			}
 
 			public void LogWarn(string message, string classType = null, string classMethod = null, Exception exception = null) {
 				ConsoleLog(message, ILogLevel.Warn, classType, classMethod, exception);
-				FileLog(message, ILogLevel.Warn, classType, classMethod, exception);
+				if (fileLoggerEnable) {
+
+					FileLog(message, ILogLevel.Warn, classType, classMethod, exception);
+				}
 			}
+
 			public void LogInfo(string message, string classType = null, string classMethod = null, Exception exception = null) {
 				ConsoleLog(message, ILogLevel.Info, classType, classMethod, exception);
-				FileLog(message, ILogLevel.Info, classType, classMethod, exception);
+				if (fileLoggerEnable) {
+					FileLog(message, ILogLevel.Info, classType, classMethod, exception);
+				}
 			}
 
 			public void LogDebug(string message, string classType = null, string classMethod = null, Exception exception = null) {
 				ConsoleLog(message, ILogLevel.Debug, classType, classMethod, exception);
-				FileLog(message, ILogLevel.Debug, classType, classMethod, exception);
+				if (fileLoggerEnable) {
+					FileLog(message, ILogLevel.Debug, classType, classMethod, exception);
+				}
 			}
 			#endregion
 		}
