@@ -6,7 +6,7 @@ using System.Collections;
 using UnityEngine;
 using System.Reflection;
 
-public class PageController :MonoBehaviour {
+public class PageController : MonoBehaviour {
 	#region Public Variables
 	public static PageController instance;
 	public IPageType entryPage;
@@ -19,12 +19,12 @@ public class PageController :MonoBehaviour {
 	private Page currentPage;
 
 	public Page CurrentPage {
-		get => currentPage = GetPage(IPageType.None);
-		set => this.currentPage = value;
+		get => currentPage != null ? currentPage : GetPage(IPageType.None);
+		set => currentPage = value;
 	}
 
 	public LogController Log {
-		set => this.log =  value ;
+		set => log = value;
 	}
 
 	#endregion
