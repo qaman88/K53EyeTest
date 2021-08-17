@@ -39,6 +39,10 @@ public class PageController : MonoBehaviour {
 	}
 
 	private void Start() {
+		if (!log) {
+			log = LogController.instance;
+		}
+
 		register = new Hashtable();
 		RegisterAllPages();
 		currentPage = GetPage(IPageType.None);
@@ -137,6 +141,7 @@ public class PageController : MonoBehaviour {
 			);
 		}
 	}
+
 	public void SwitchPage(IPageType onPageType) {
 		IPageType offPageType = currentPage.Type;
 
@@ -199,7 +204,7 @@ public class PageController : MonoBehaviour {
 		}
 
 		// ensure instance is defined
-		if (instance == null) {
+		if (!instance) {
 			instance = this;
 		}
 		else {

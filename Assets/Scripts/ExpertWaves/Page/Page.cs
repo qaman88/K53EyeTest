@@ -46,6 +46,12 @@ namespace ExpertWaves {
 					log = LogController.instance;
 				}
 			}
+
+			private void Start() {
+				if (!log) {
+					log = LogController.instance;
+				}
+			}
 			#endregion
 
 			#region Public Functions

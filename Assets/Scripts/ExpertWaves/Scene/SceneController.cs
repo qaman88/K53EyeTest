@@ -40,12 +40,12 @@ namespace ExpertWaves {
 			}
 
 			public bool IsLoadingScene {
-				get => this.isLoadingScene;
-				set => this.isLoadingScene = value;
+				get => isLoadingScene;
+				set => isLoadingScene = value;
 			}
 
 			public LogController Log {
-				set => this.log =  value ;
+				set => log = value;
 			}
 			#endregion
 
@@ -55,6 +55,10 @@ namespace ExpertWaves {
 			}
 
 			private void Start() {
+				if (!log) {
+					log = LogController.instance;
+				}
+
 				SceneManager.sceneLoaded += OnSceneLoaded;
 			}
 
@@ -196,8 +200,13 @@ namespace ExpertWaves {
 					classType: GetType().Name,
 					classMethod: MethodBase.GetCurrentMethod().Name
 				);
+
 				currentScene = scene;
-				callbackOnSceneLoaded.Invoke(scene);
+
+				if (callbackOnSceneLoaded != null) {
+					callbackOnSceneLoaded.Invoke(scene);
+				}
+
 				IsLoadingScene = Constant.Disable;
 			}
 			#endregion
