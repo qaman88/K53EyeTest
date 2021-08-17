@@ -4,6 +4,7 @@ using ExpertWaves.Enum;
 using ExpertWaves.Log;
 using ExpertWaves.Page.Enum;
 using ExpertWaves.Scene.Enum;
+using ExpertWaves.Setting;
 using ExpertWaves.UserInput.Key;
 using ExpertWaves.UserInput.Touch;
 using ExpertWaves.Utility;
@@ -14,34 +15,53 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using static UnityEngine.UI.Button;
+using static UnityEngine.UI.Toggle;
 
 namespace ExpertWaves {
 	namespace Scene {
 		public class GameController : MonoBehaviour {
 			#region Public Variables
 			public static GameController instance;
-			public LogController log;
-			public TouchInputController touchInput;
 			public PageController pageController;
 			public SceneController sceneController;
-			public AudioController audioController;
-			public VibrationController vibrationController;
-			public KeyInputController keyInput;
 			public TextAsset helpTextAsset;
 			public TextAsset privacyTextAsset;
 			public TextAsset termsTextAsset;
+			public SettingController settingController;
+
+			// setting page UI components
+			public Slider voiceVolumeSlider;
+			public Slider effectsVolumeSlider;
+			public Slider musicVolumeSlider;
+			public Toggle vibrationToggle;
+			#endregion
+
+			#region Private Variables
+			private LogController log;
+			private KeyInputController keyInput;
+			private TouchInputController touchInput;
+			private AudioController audioController;
+			private VibrationController vibrationController;
 			#endregion
 
 			#region Unity Functions
 			private void Awake() {
 				Configure();
 				sceneController.SubscribeOnSceneLoaded(OnSceneLoaded);
-				touchInput.RaiseTouchInputEvent += OnSwipe;
-				keyInput.SubscribeKeyPressListener(OnKeyPress);
 			}
 
 			private void Start() {
+				touchInput.RaiseTouchInputEvent += OnSwipe;
+				keyInput.SubscribeKeyPressListener(OnKeyPress);
+				if (audioController) {
+					audioController.StopMusic(IMusicType.Launch1);
+				}
 				InitializePlugin(androidPluginName);
+
+				voiceVolumeSlider.value = settingController.VoiceVolume;
+				vibrationToggle.isOn = settingController.VibrationState;
+				musicVolumeSlider.value = settingController.MusicVolume;
+				effectsVolumeSlider.value = settingController.EffectVolume;
 			}
 
 			private void OnDestroy() {
@@ -69,6 +89,21 @@ namespace ExpertWaves {
 					log = LogController.instance;
 				}
 
+				// ensure key input controller is defined
+				if (!keyInput) {
+					keyInput = KeyInputController.instance;
+				}
+
+				// ensure touch input controller is defined
+				if (!touchInput) {
+					touchInput = TouchInputController.instance;
+				}
+
+				// ensure setting controller is defined
+				if (!settingController) {
+					settingController = SettingController.instance;
+				}
+
 				// ensure page controller is defined
 				if (!pageController) {
 					pageController = PageController.instance;
@@ -92,6 +127,59 @@ namespace ExpertWaves {
 				// initialize UI components
 				if (SceneManager.GetActiveScene().name == ISceneType.Menu.ToString()) {
 					InitButtonComponents();
+				}
+
+				InitSettingComponents();
+			}
+
+			private void InitSettingComponents() {
+
+				if (voiceVolumeSlider) {
+					Slider.SliderEvent sliderEvent = new Slider.SliderEvent();
+					sliderEvent.AddListener((float volume) => {
+						log.LogInfo(
+							message: $"Slider event for voice track.  Volume: {volume}",
+							classType: GetType().Name,
+							classMethod: MethodBase.GetCurrentMethod().Name
+						);
+						audioController.voiceTrack.source.volume = volume;
+						audioController.PlayVoice(IVoiceType.Success1);
+						settingController.VoiceVolume = volume;
+						settingController.SaveData();
+					});
+					voiceVolumeSlider.onValueChanged = sliderEvent;
+				}
+
+				if (musicVolumeSlider) {
+					Slider.SliderEvent sliderEvent = new Slider.SliderEvent();
+					sliderEvent.AddListener((float volume) => {
+						audioController.musicTrack.source.volume = volume;
+						audioController.PlayMusic(IMusicType.Launch1);
+						settingController.MusicVolume = volume;
+						settingController.SaveData();
+					});
+					musicVolumeSlider.onValueChanged = sliderEvent;
+				}
+
+				if (effectsVolumeSlider) {
+					Slider.SliderEvent sliderEvent = new Slider.SliderEvent();
+					sliderEvent.AddListener((float volume) => {
+						audioController.effectTrack.source.volume = volume;
+						audioController.PlayEffect(IEffectType.Success);
+						settingController.EffectVolume = volume;
+						settingController.SaveData();
+					});
+					effectsVolumeSlider.onValueChanged = sliderEvent;
+				}
+
+				if (vibrationToggle) {
+					ToggleEvent toggleEvent =  new ToggleEvent();
+					toggleEvent.AddListener((bool state) => {
+						vibrationController.VibrationEnabled = state;
+						settingController.VibrationState = state;
+						settingController.SaveData();
+					});
+					vibrationToggle.onValueChanged = toggleEvent;
 				}
 			}
 

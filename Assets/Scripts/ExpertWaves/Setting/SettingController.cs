@@ -2,7 +2,6 @@ using ExpertWaves.Audio;
 using ExpertWaves.Audio.Enum;
 using ExpertWaves.Data;
 using ExpertWaves.Log;
-using ExpertWaves.Utility;
 using ExpertWaves.Vibration;
 using System.Reflection;
 using TMPro;
@@ -17,18 +16,14 @@ namespace ExpertWaves {
 			// log
 			public LogController log;
 
-			// volume controller
-			public Slider voiceVolumeSlider;
-			public Slider effectsVolumeSlider;
-			public Slider musicVolumeSlider;
-
 			// audio controller
 			public AudioController audioController;
 
 			// vibration controller
 			public VibrationController vibrationController;
-			public Toggle vibrationToggle;
-			public TextMeshProUGUI vibrationSwitchLabelText;
+
+			// setting controller singleton instance
+			public static SettingController instance;
 			#endregion
 
 			#region Private Variables
@@ -36,6 +31,25 @@ namespace ExpertWaves {
 			#endregion
 
 			#region Public Variables Properties
+			public bool VibrationState {
+				get => settingDataStore.data.VibrationState;
+				set => settingDataStore.data.VibrationState = value;
+			}
+
+			public float VoiceVolume {
+				get => settingDataStore.data.VoiceVolume;
+				set => settingDataStore.data.VoiceVolume = value;
+			}
+
+			public float MusicVolume {
+				get => settingDataStore.data.MusicVolume;
+				set => settingDataStore.data.MusicVolume = value;
+			}
+
+			public float EffectVolume {
+				get => settingDataStore.data.EffectVolume;
+				set => settingDataStore.data.EffectVolume = value;
+			}
 			#endregion
 
 			#region Unity Functions
@@ -45,18 +59,10 @@ namespace ExpertWaves {
 
 			private void Start() {
 				settingDataStore.LoadData();
-
 				vibrationController.VibrationEnabled = settingDataStore.data.VibrationState;
-				vibrationToggle.isOn = settingDataStore.data.VibrationState;
-
 				audioController.voiceTrack.source.volume = settingDataStore.data.VoiceVolume;
-				voiceVolumeSlider.value = settingDataStore.data.VoiceVolume;
-
 				audioController.musicTrack.source.volume = settingDataStore.data.MusicVolume;
-				musicVolumeSlider.value = settingDataStore.data.MusicVolume;
-
 				audioController.effectTrack.source.volume = settingDataStore.data.EffectVolume;
-				effectsVolumeSlider.value = settingDataStore.data.EffectVolume;
 			}
 
 			private void OnDestroy() {
@@ -65,61 +71,25 @@ namespace ExpertWaves {
 			#endregion
 
 			#region Public Functions
+			public void SaveData() {
+				settingDataStore.SaveData();
+			}
 			#endregion
 
 			#region Private Functions
 			private void Configure() {
+				// ensure instance is defined
+				if (!instance) {
+					instance = this;
+					DontDestroyOnLoad(gameObject);
+				}
+				else {
+					Destroy(gameObject);
+				}
+
 				settingDataStore = new DataStore<SettingData>(new SettingData(), log, "Setting.in");
-
-				if (voiceVolumeSlider) {
-					Slider.SliderEvent sliderEvent = new Slider.SliderEvent();
-					sliderEvent.AddListener((float volume) => {
-						log.LogInfo(
-							message: $"Slider event for voice track.  Volume: {volume}",
-							classType: GetType().Name,
-							classMethod: MethodBase.GetCurrentMethod().Name
-						);
-						audioController.voiceTrack.source.volume = volume;
-						audioController.PlayVoice(IVoiceType.Success1);
-						settingDataStore.data.VoiceVolume = volume;
-						settingDataStore.SaveData();
-					});
-					voiceVolumeSlider.onValueChanged = sliderEvent;
-				}
-
-				if (musicVolumeSlider) {
-					Slider.SliderEvent sliderEvent = new Slider.SliderEvent();
-					sliderEvent.AddListener((float volume) => {
-						audioController.musicTrack.source.volume = volume;
-						audioController.PlayMusic(IMusicType.Launch1);
-						settingDataStore.data.MusicVolume = volume;
-						settingDataStore.SaveData();
-					});
-					musicVolumeSlider.onValueChanged = sliderEvent;
-				}
-
-				if (effectsVolumeSlider) {
-					Slider.SliderEvent sliderEvent = new Slider.SliderEvent();
-					sliderEvent.AddListener((float volume) => {
-						audioController.effectTrack.source.volume = volume;
-						audioController.PlayEffect(IEffectType.Success);
-						settingDataStore.data.EffectVolume = volume;
-						settingDataStore.SaveData();
-					});
-					effectsVolumeSlider.onValueChanged = sliderEvent;
-				}
-
-				if (vibrationToggle) {
-					ToggleEvent toggleEvent =  new ToggleEvent();
-					toggleEvent.AddListener((bool state) => {
-						vibrationController.VibrationEnabled = state;
-						settingDataStore.data.VibrationState = state;
-						settingDataStore.SaveData();
-					});
-					vibrationToggle.onValueChanged = toggleEvent;
-				}
+				#endregion
 			}
-			#endregion
 		}
 	}
 }
