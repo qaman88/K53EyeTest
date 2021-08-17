@@ -164,10 +164,9 @@ namespace ExpertWaves {
 						}
 
 						if (engine.Level == level && engine.GameOver == Constant.Negative) {
-							// log
 							log.LogInfo(
 								message: $"Gameover by timeout, Level {engine.Level}, " +
-													$"Engine Answer {engine.Direction}, GameOverReasom {gameOverReason}.",
+													$"Engine Answer {engine.Direction}, GameOver reason {gameOverReason}.",
 								classType: GetType().Name,
 								classMethod: MethodBase.GetCurrentMethod().Name
 							);
