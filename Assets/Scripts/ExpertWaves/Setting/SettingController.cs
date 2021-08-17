@@ -1,13 +1,8 @@
 using ExpertWaves.Audio;
-using ExpertWaves.Audio.Enum;
 using ExpertWaves.Data;
 using ExpertWaves.Log;
 using ExpertWaves.Vibration;
-using System.Reflection;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-using static UnityEngine.UI.Toggle;
 
 namespace ExpertWaves {
 	namespace Setting {
@@ -61,7 +56,7 @@ namespace ExpertWaves {
 				settingDataStore.LoadData();
 				vibrationController.VibrationEnabled = settingDataStore.data.VibrationState;
 				audioController.voiceTrack.source.volume = settingDataStore.data.VoiceVolume;
-				audioController.musicTrack.source.volume = settingDataStore.data.MusicVolume;
+				audioController.backgroundTrack.source.volume = settingDataStore.data.MusicVolume;
 				audioController.effectTrack.source.volume = settingDataStore.data.EffectVolume;
 			}
 

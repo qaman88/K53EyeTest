@@ -489,7 +489,6 @@ MonoBehaviour:
   imageCompanyIcon: {fileID: 878028655}
   sceneController: {fileID: 336002285}
   log: {fileID: 360340772}
-  audioController: {fileID: 531912009}
 --- !u!4 &336002284
 Transform:
   m_ObjectHideFlags: 0
@@ -916,7 +915,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   log: {fileID: 360340772}
-  musicTrack:
+  backgroundTrack:
     source: {fileID: 419964042}
     clips: []
   voiceTrack:

@@ -1,5 +1,4 @@
-﻿using ExpertWaves.Data.Statistics;
-using ExpertWaves.Log;
+﻿using ExpertWaves.Log;
 using ExpertWaves.Utility;
 using Newtonsoft.Json;
 using System;

@@ -1,7 +1,7 @@
 ﻿namespace ExpertWaves {
 	namespace Audio {
 		namespace Enum {
-			public enum IMusicType {
+			public enum IBackgroundType {
 				Launch1,
 				Launch2,
 				Launch3,

@@ -4,7 +4,6 @@ using ExpertWaves.Log;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace ExpertWaves {
 	namespace Audio {
@@ -17,7 +16,7 @@ namespace ExpertWaves {
 			public LogController log;
 
 			// audio tracks
-			public SoundTrack musicTrack = new SoundTrack();
+			public BackgroundTrack backgroundTrack = new BackgroundTrack();
 			public VoiceTrack voiceTrack = new VoiceTrack();
 			public EffectTrack effectTrack = new EffectTrack();
 
@@ -25,7 +24,7 @@ namespace ExpertWaves {
 
 			#region Private Variables
 			private Dictionary<IEffectType, AudioClip> effectAudioClips;
-			private Dictionary<IMusicType, AudioClip> musicAudioClips;
+			private Dictionary<IBackgroundType, AudioClip> backgroundAudioClips;
 			private Dictionary<IVoiceType, AudioClip> voiceAudioClips;
 
 			#endregion
@@ -34,8 +33,8 @@ namespace ExpertWaves {
 			public Dictionary<IEffectType, AudioClip> EffectAudioClips {
 				get => effectAudioClips; set => effectAudioClips = value;
 			}
-			public Dictionary<IMusicType, AudioClip> MusicAudioClips {
-				get => musicAudioClips; set => musicAudioClips = value;
+			public Dictionary<IBackgroundType, AudioClip> BackgroundAudioClips {
+				get => backgroundAudioClips; set => backgroundAudioClips = value;
 			}
 			public Dictionary<IVoiceType, AudioClip> VoiceAudioClips {
 				get => voiceAudioClips; set => voiceAudioClips = value;
@@ -76,29 +75,29 @@ namespace ExpertWaves {
 			#endregion
 
 
-			#region Public Functions - Music Player
-			public void PlayMusic(IMusicType type) {
-				if (MusicAudioClips.ContainsKey(type)) {
-					musicTrack.source.clip = MusicAudioClips[type];
-					musicTrack.source.Play();
+			#region Public Functions - Background Music Player
+			public void PlayBackgroundMusic(IBackgroundType type) {
+				if (BackgroundAudioClips.ContainsKey(type)) {
+					backgroundTrack.source.clip = BackgroundAudioClips[type];
+					backgroundTrack.source.Play();
 					log.LogInfo(
-						message: $"Playing audio clip: {type}",
+						message: $"Playing background track audio clip: {type}",
 						classType: GetType().Name,
 						classMethod: MethodBase.GetCurrentMethod().Name
 					);
 				}
 				else {
 					log.LogWarn(
-						message: $"Failed to play audio clip: {type}",
+						message: $"Failed to play background track audio clip: {type}",
 						classType: GetType().Name,
 						classMethod: MethodBase.GetCurrentMethod().Name
 					);
 				}
 			}
 
-			public void StopMusic(IMusicType type) {
-				if (musicTrack.source.clip == MusicAudioClips[type]) {
-					musicTrack.source.Stop();
+			public void StopBackgroundMusic(IBackgroundType type) {
+				if (backgroundTrack.source.clip == BackgroundAudioClips[type]) {
+					backgroundTrack.source.Stop();
 				}
 			}
 
@@ -150,7 +149,7 @@ namespace ExpertWaves {
 
 				// initialize variables
 				EffectAudioClips = new Dictionary<IEffectType, AudioClip>();
-				MusicAudioClips = new Dictionary<IMusicType, AudioClip>();
+				BackgroundAudioClips = new Dictionary<IBackgroundType, AudioClip>();
 				VoiceAudioClips = new Dictionary<IVoiceType, AudioClip>();
 
 				// retrieve audio clips
@@ -189,10 +188,10 @@ namespace ExpertWaves {
 			}
 
 			private void RetrieveSoundAudioClips() {
-				foreach (SoundClip item in musicTrack.clips) {
+				foreach (SoundClip item in backgroundTrack.clips) {
 					if (item.audioClip != null) {
-						if (!MusicAudioClips.ContainsKey(item.clipType)) {
-							MusicAudioClips.Add(item.clipType, item.audioClip);
+						if (!BackgroundAudioClips.ContainsKey(item.clipType)) {
+							BackgroundAudioClips.Add(item.clipType, item.audioClip);
 							log.LogInfo(
 								message: $"Added sound audio clip of {item.clipType} type.",
 								classMethod: System.Reflection.MethodBase.GetCurrentMethod().Name,

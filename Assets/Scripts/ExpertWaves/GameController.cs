@@ -38,8 +38,6 @@ namespace ExpertWaves {
 
 			#region Private Variables
 			private LogController log;
-			private KeyInputController keyInput;
-			private TouchInputController touchInput;
 			private AudioController audioController;
 			private VibrationController vibrationController;
 			#endregion
@@ -51,8 +49,6 @@ namespace ExpertWaves {
 			}
 
 			private void Start() {
-				touchInput.RaiseTouchInputEvent += OnSwipe;
-				keyInput.SubscribeKeyPressListener(OnKeyPress);
 				InitializePlugin(androidPluginName);
 
 				voiceVolumeSlider.value = settingController.VoiceVolume;
@@ -63,9 +59,6 @@ namespace ExpertWaves {
 
 			private void OnDestroy() {
 				sceneController.UnsubscribeOnSceneLoaded(OnSceneLoaded);
-				touchInput.RaiseTouchInputEvent -= OnSwipe;
-				keyInput.UnsubscribeKeyPressListener(OnKeyPress);
-
 				gameObject.SetActive(false);
 			}
 			#endregion
@@ -84,16 +77,6 @@ namespace ExpertWaves {
 				// ensure log controller is defined
 				if (!log) {
 					log = LogController.instance;
-				}
-
-				// ensure key input controller is defined
-				if (!keyInput) {
-					keyInput = KeyInputController.instance;
-				}
-
-				// ensure touch input controller is defined
-				if (!touchInput) {
-					touchInput = TouchInputController.instance;
 				}
 
 				// ensure setting controller is defined
@@ -150,8 +133,8 @@ namespace ExpertWaves {
 				if (musicVolumeSlider) {
 					Slider.SliderEvent sliderEvent = new Slider.SliderEvent();
 					sliderEvent.AddListener((float volume) => {
-						audioController.musicTrack.source.volume = volume;
-						audioController.PlayMusic(IMusicType.Launch1);
+						audioController.backgroundTrack.source.volume = volume;
+						audioController.PlayBackgroundMusic(IBackgroundType.Launch1);
 						settingController.MusicVolume = volume;
 						settingController.SaveData();
 					});
