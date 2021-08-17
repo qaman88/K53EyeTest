@@ -53,9 +53,6 @@ namespace ExpertWaves {
 			private void Start() {
 				touchInput.RaiseTouchInputEvent += OnSwipe;
 				keyInput.SubscribeKeyPressListener(OnKeyPress);
-				if (audioController) {
-					audioController.StopMusic(IMusicType.Launch1);
-				}
 				InitializePlugin(androidPluginName);
 
 				voiceVolumeSlider.value = settingController.VoiceVolume;

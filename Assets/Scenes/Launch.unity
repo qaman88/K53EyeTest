@@ -611,7 +611,7 @@ GameObject:
   - component: {fileID: 419964041}
   - component: {fileID: 419964042}
   m_Layer: 0
-  m_Name: TrackMusic
+  m_Name: TrackBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -641,8 +641,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 0
+  m_audioClip: {fileID: 8300000, guid: 46c6c447e9b8e384e8a0f92e4381b73a, type: 3}
+  m_PlayOnAwake: 1
   m_Volume: 0.37
   m_Pitch: 1
   Loop: 0
@@ -918,31 +918,13 @@ MonoBehaviour:
   log: {fileID: 360340772}
   musicTrack:
     source: {fileID: 419964042}
-    clips:
-    - clipType: 0
-      audioClip: {fileID: 8300000, guid: 46c6c447e9b8e384e8a0f92e4381b73a, type: 3}
-    - clipType: 3
-      audioClip: {fileID: 8300000, guid: 16d73a11865748448a0266dbce65ccb4, type: 3}
+    clips: []
   voiceTrack:
     source: {fileID: 1762520836}
-    clips:
-    - clipType: 0
-      audioClip: {fileID: 8300000, guid: d7d0c5d0b43e4f046b4ccecf342551f0, type: 3}
-    - clipType: 3
-      audioClip: {fileID: 8300000, guid: 13be2bb97be220e4785aa84a3db8993c, type: 3}
-    - clipType: 6
-      audioClip: {fileID: 8300000, guid: 4b54652f4f0d06c44a08043bc9d1364d, type: 3}
+    clips: []
   effectTrack:
     source: {fileID: 1261318217}
-    clips:
-    - clipType: 2
-      audioClip: {fileID: 8300000, guid: 7a8508dc5bbdc3c46960b012508ef47d, type: 3}
-    - clipType: 3
-      audioClip: {fileID: 8300000, guid: d7d0c5d0b43e4f046b4ccecf342551f0, type: 3}
-    - clipType: 9
-      audioClip: {fileID: 8300000, guid: 437c3f27d47d82148a75d0bdd3f58c13, type: 3}
-    - clipType: 4
-      audioClip: {fileID: 8300000, guid: 13be2bb97be220e4785aa84a3db8993c, type: 3}
+    clips: []
 --- !u!4 &531912010
 Transform:
   m_ObjectHideFlags: 0

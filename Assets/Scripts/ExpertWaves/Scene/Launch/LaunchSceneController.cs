@@ -13,7 +13,6 @@ namespace ExpertWaves {
 			public Image imageCompanyIcon;
 			public SceneController sceneController;
 			public LogController log;
-			public AudioController audioController;
 			#endregion
 
 			#region Private Variables
@@ -48,18 +47,9 @@ namespace ExpertWaves {
 				if (!log) {
 					log = LogController.instance;
 				}
-
-				// ensure scene controller is defined
-				if (!audioController) {
-					audioController = AudioController.instance;
-				}
 			}
 
 			private IEnumerator AsyncLoadMenu() {
-				if (audioController) {
-					audioController.PlayMusic(Audio.Enum.IMusicType.Launch1);
-				}
-
 				// wait for page to finish loading
 				yield return new WaitForSeconds(5);
 
