@@ -27,7 +27,6 @@ namespace ExpertWaves {
 			public TextAsset helpTextAsset;
 			public TextAsset privacyTextAsset;
 			public TextAsset termsTextAsset;
-			public SettingController settingController;
 
 			// setting page UI components
 			public Slider voiceVolumeSlider;
@@ -40,6 +39,7 @@ namespace ExpertWaves {
 			private LogController log;
 			private AudioController audioController;
 			private VibrationController vibrationController;
+			private SettingController settingController;
 			#endregion
 
 			#region Unity Functions

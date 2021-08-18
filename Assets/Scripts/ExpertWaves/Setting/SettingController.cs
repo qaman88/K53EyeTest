@@ -14,14 +14,15 @@ namespace ExpertWaves {
 			// audio controller
 			public AudioController audioController;
 
-			// vibration controller
-			public VibrationController vibrationController;
-
 			// setting controller singleton instance
 			public static SettingController instance;
+
+			// vibration controller
+			public VibrationController vibrationController;
 			#endregion
 
 			#region Private Variables
+			// data store
 			private DataStore<SettingData> settingDataStore;
 			#endregion
 
