@@ -4,8 +4,9 @@
 			public enum ITrackType {
 				None,
 				Effect,
-				Sound,
+				Background,
 				Voice,
+				Test
 			}
 		}
 	}

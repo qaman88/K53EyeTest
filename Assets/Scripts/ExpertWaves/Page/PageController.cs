@@ -145,17 +145,8 @@ public class PageController : MonoBehaviour {
 	public void SwitchPage(IPageType onPageType) {
 		IPageType offPageType = currentPage.Type;
 
-		if (currentPage.Type == onPageType) {
-			log.LogInfo(
-				message: $"Cannot switch loaded page, from {offPageType} to {onPageType} page.",
-				classType: GetType().Name,
-				classMethod: MethodBase.GetCurrentMethod().Name
-			);
-			return;
-		}
-
 		// switch only if onPage is registered and not none type. 
-		if (onPageType != IPageType.None && register.Contains(onPageType)) {
+		if (register.Contains(onPageType)) {
 			// unload off page
 			UnloadPage(offPageType);
 
@@ -174,7 +165,7 @@ public class PageController : MonoBehaviour {
 		}
 		else {
 			log.LogWarn(
-				message: $"Failed to switch from {offPageType} to {onPageType} page, cannot not switch to none or not registered.",
+				message: $"Failed to switch from {offPageType} to {onPageType} page, page not registered.",
 				classType: GetType().Name,
 				classMethod: MethodBase.GetCurrentMethod().Name
 			);

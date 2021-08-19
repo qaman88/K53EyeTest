@@ -26,7 +26,7 @@ namespace ExpertWaves {
 
 			public string LogFolder { get; set; }
 
-			public string PersistentPath { get => GetPersistentDataPath(); }
+			public string PersistentPath { get => Application.persistentDataPath; }
 
 			public string LogFolderPath { get => CombinePath(PersistentPath, LogFolder); }
 
@@ -35,8 +35,8 @@ namespace ExpertWaves {
 			#endregion
 
 			#region Public Functions
-			public DataStore(T source, LogController logController, string fileName = null, string subFolder = null) {
-				LogFile = fileName == null ? $"{source.GetType()}.Log.json" : fileName;
+			public DataStore(T source, LogController logController, string fileName, string subFolder = null) {
+				LogFile = fileName;
 				LogFolder = subFolder == null ? Constant.LogFolder : subFolder;
 				data = source;
 				log = logController;

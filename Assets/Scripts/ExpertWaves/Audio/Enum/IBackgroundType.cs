@@ -11,6 +11,7 @@
 				Exit1,
 				Exit2,
 				Exit3,
+				Test
 			}
 		}
 	}

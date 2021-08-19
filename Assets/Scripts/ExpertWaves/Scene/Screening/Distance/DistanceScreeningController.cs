@@ -293,6 +293,7 @@ namespace ExpertWaves {
 							classType: GetType().Name,
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
+
 						// switch the page to game page
 						pageController.SwitchPage(IPageType.Game);
 

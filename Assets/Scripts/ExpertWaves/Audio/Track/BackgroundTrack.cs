@@ -6,9 +6,9 @@ namespace ExpertWaves {
 		namespace Track {
 			[System.Serializable]
 			public class BackgroundTrack : NoneTrack {
-				public new readonly ITrackType track = ITrackType.Sound;
+				public new readonly ITrackType track = ITrackType.Background;
 				public AudioSource source;
-				public SoundClip[] clips;
+				public BackgroundClip[] clips;
 			}
 		}
 	}

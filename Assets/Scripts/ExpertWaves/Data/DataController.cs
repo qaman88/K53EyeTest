@@ -11,7 +11,7 @@ namespace ExpertWaves {
 			#endregion
 
 			#region Private Variables
-			private DataStore<ScreeningData> store; 
+			private DataStore<ScreeningData> screeningStore; 
 			DataStore<DeviceUserData> userDeviceStore;
 			int count = 0;
 			#endregion
@@ -27,13 +27,13 @@ namespace ExpertWaves {
 
 			private void Update() {
 				if (++count <= 20) {
-					store.Data.Level += 1;
-					store.Data.Score += 5;
-					if (store.Data.HighScore < store.Data.Score) {
-						store.Data.HighScore = store.Data.Score;
+					screeningStore.Data.Level += 1;
+					screeningStore.Data.Score += 5;
+					if (screeningStore.Data.HighScore < screeningStore.Data.Score) {
+						screeningStore.Data.HighScore = screeningStore.Data.Score;
 					}
-					if (store.Data.HighLevel < count) {
-						store.Data.HighLevel = count;
+					if (screeningStore.Data.HighLevel < count) {
+						screeningStore.Data.HighLevel = count;
 					}
 				}
 			}
@@ -45,12 +45,12 @@ namespace ExpertWaves {
 
 			#region Public Functions
 			public void LoadData() {
-				store.LoadData();
+				screeningStore.LoadData();
 				userDeviceStore.LoadData();
 			}
 
 			public void SaveData() {
-				store.SaveData();
+				screeningStore.SaveData();
 				userDeviceStore.SaveData();
 			}
 			#endregion
@@ -71,8 +71,8 @@ namespace ExpertWaves {
 					log = LogController.instance;
 				}
 
-				store = new DataStore<ScreeningData>(new ScreeningData(), log);
-				userDeviceStore = new DataStore<DeviceUserData>(new DeviceUserData("Expert", "Ngobeni"), log);
+				screeningStore = new DataStore<ScreeningData>(new ScreeningData(), log, "Screening");
+				userDeviceStore = new DataStore<DeviceUserData>(new DeviceUserData("Expert", "Ngobeni"), log, "DeviceData");
 			}
 			#endregion
 		}

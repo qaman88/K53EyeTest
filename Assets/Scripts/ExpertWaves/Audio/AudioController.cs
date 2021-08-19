@@ -188,7 +188,7 @@ namespace ExpertWaves {
 			}
 
 			private void RetrieveSoundAudioClips() {
-				foreach (SoundClip item in backgroundTrack.clips) {
+				foreach (BackgroundClip item in backgroundTrack.clips) {
 					if (item.audioClip != null) {
 						if (!BackgroundAudioClips.ContainsKey(item.clipType)) {
 							BackgroundAudioClips.Add(item.clipType, item.audioClip);

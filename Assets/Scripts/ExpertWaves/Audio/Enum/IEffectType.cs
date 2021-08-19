@@ -12,7 +12,8 @@
 				Select,
 				Unselect,
 				Swipe,
-				Tap
+				Tap,
+				Test
 			}
 		}
 	}

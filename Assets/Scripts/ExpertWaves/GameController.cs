@@ -123,7 +123,7 @@ namespace ExpertWaves {
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
 						audioController.voiceTrack.source.volume = volume;
-						audioController.PlayVoice(IVoiceType.Success1);
+						audioController.PlayVoice(IVoiceType.Test);
 						settingController.VoiceVolume = volume;
 						settingController.SaveData();
 					});
@@ -134,7 +134,7 @@ namespace ExpertWaves {
 					Slider.SliderEvent sliderEvent = new Slider.SliderEvent();
 					sliderEvent.AddListener((float volume) => {
 						audioController.backgroundTrack.source.volume = volume;
-						audioController.PlayBackgroundMusic(IBackgroundType.Launch1);
+						audioController.PlayBackgroundMusic(IBackgroundType.Test);
 						settingController.MusicVolume = volume;
 						settingController.SaveData();
 					});
@@ -145,7 +145,7 @@ namespace ExpertWaves {
 					Slider.SliderEvent sliderEvent = new Slider.SliderEvent();
 					sliderEvent.AddListener((float volume) => {
 						audioController.effectTrack.source.volume = volume;
-						audioController.PlayEffect(IEffectType.Success);
+						audioController.PlayEffect(IEffectType.Test);
 						settingController.EffectVolume = volume;
 						settingController.SaveData();
 					});
