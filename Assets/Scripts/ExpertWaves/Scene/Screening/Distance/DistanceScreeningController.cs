@@ -9,6 +9,7 @@ using ExpertWaves.UserInput.Key;
 using ExpertWaves.UserInput.Touch;
 using ExpertWaves.Utility;
 using ExpertWaves.Vibration;
+using System;
 using System.Collections;
 using System.Reflection;
 using TMPro;
@@ -125,6 +126,10 @@ namespace ExpertWaves {
 									classMethod: MethodBase.GetCurrentMethod().Name
 								);
 
+								// set game page active to allow access of game objects
+								pageController.SetPageActiveState(IPageType.Game, true);
+								pageController.SetPageActiveState(IPageType.GameOver, false);
+
 								// load menu scene
 								sceneController.IsLoadingScene = false;
 								sceneController.LoadSceneOnPage(ISceneType.Menu, IPageType.Game);
@@ -141,6 +146,10 @@ namespace ExpertWaves {
 									classType: GetType().Name,
 									classMethod: MethodBase.GetCurrentMethod().Name
 								);
+
+								// set game page active to allow access of game objects
+								pageController.SetPageActiveState(IPageType.Game, true);
+								pageController.SetPageActiveState(IPageType.GameOver, false);
 
 								// restart the game
 								StartCoroutine(OnGameRestart());
@@ -170,6 +179,9 @@ namespace ExpertWaves {
 								classType: GetType().Name,
 								classMethod: MethodBase.GetCurrentMethod().Name
 							);
+
+							// play sound effect for game over
+							audioController.PlayEffect(IEffectType.Warning);
 
 							// set engine game over
 							engine.GameOver = Constant.Positive;
@@ -231,6 +243,9 @@ namespace ExpertWaves {
 						}
 
 						else if (direction != engine.Direction) {
+							// play sound effect for game over
+							audioController.PlayEffect(IEffectType.Failure);
+
 							// log
 							log.LogInfo(
 								message: $"Gameover by incorrect answer, Level {engine.Level}, " +
@@ -246,6 +261,9 @@ namespace ExpertWaves {
 						}
 
 						else if (engine.Level == engine.MaxLevel) {
+							// play sound effect for game over in completion of levels
+							audioController.PlayEffect(IEffectType.Success);
+
 							// log
 							log.LogInfo(
 								message: $"Gameover by completed levels, Level {engine.Level}, " +
@@ -261,6 +279,9 @@ namespace ExpertWaves {
 						}
 
 						else {
+							// play sound effect for game over
+							audioController.PlayEffect(IEffectType.Warning);
+
 							// log
 							log.LogInfo(
 								message: $"Gameover by unknown reason, Level {engine.Level}, " +
@@ -276,44 +297,50 @@ namespace ExpertWaves {
 						}
 					}
 
+
 					private IEnumerator OnGameRestart() {
-						// await for previous page to finish loading
-						yield return new WaitForSeconds(1);
+						try {
+							// restart game engine
+							engine.Restart();
 
-						// restart game engine
-						engine.Restart();
+							// reset optotype letter
+							gameOptotypeImage.transform.localEulerAngles = new Vector3(0f, 0f, engine.Angle);
+							gameOptotypeImage.transform.localScale = new Vector3(engine.OptotypeScale, engine.OptotypeScale, 1.0f);
 
-						// reset optotype letter
-						gameOptotypeImage.transform.localEulerAngles = new Vector3(0f, 0f, engine.Angle);
-						gameOptotypeImage.transform.localScale = new Vector3(engine.OptotypeScale, engine.OptotypeScale, 1.0f);
+							// log
+							log.LogInfo(
+								message: $"Game restarted. EngineGameOver: {engine.GameOver}. Optotype Direction: {engine.Direction}.",
+								classType: GetType().Name,
+								classMethod: MethodBase.GetCurrentMethod().Name
+							);
 
-						// log
-						log.LogInfo(
-							message: $"Game restarted. EngineGameOver: {engine.GameOver}. Optotype Direction: {engine.Direction}.",
-							classType: GetType().Name,
-							classMethod: MethodBase.GetCurrentMethod().Name
-						);
+							// stop previous task
+							if (awaitTimeoutCoroutine != null) {
+								StopCoroutine(awaitTimeoutCoroutine);
+							}
 
-						// switch the page to game page
-						pageController.SwitchPage(IPageType.Game);
+							// update inverted timer bar
+							timerBar.value = 0.0f;
 
-						// stop previous task
-						if (awaitTimeoutCoroutine != null) {
-							StopCoroutine(awaitTimeoutCoroutine);
+							// log
+							log.LogInfo(
+								message: $"Switch to {IPageType.Game} page.",
+								classType: GetType().Name,
+								classMethod: MethodBase.GetCurrentMethod().Name
+							);
+
+							// switch the page to game page
+							pageController.SwitchPage(IPageType.Game);
 						}
-
-						// update inverted timer bar
-						timerBar.value = 0.0f;
-
-						// log
-						log.LogInfo(
-							message: $"Switch to {IPageType.Game} page.",
-							classType: GetType().Name,
-							classMethod: MethodBase.GetCurrentMethod().Name
-						);
-
-						// play sound effect
-						audioController.PlayEffect(IEffectType.Update);
+						catch (Exception error) {
+							log.LogError(
+								message: $"Error occurred while restarting the game.",
+								classType: GetType().Name,
+								classMethod: MethodBase.GetCurrentMethod().Name,
+								exception: error
+							);
+						}
+						yield return null;
 					}
 
 					private void OnGameNextLevel() {
@@ -377,6 +404,9 @@ namespace ExpertWaves {
 
 						// switch to game over page
 						pageController.LoadPage(IPageType.GameOver);
+
+						// play sound effect for game over
+						audioController.PlayEffect(IEffectType.Update);
 
 						// log
 						log.LogInfo(

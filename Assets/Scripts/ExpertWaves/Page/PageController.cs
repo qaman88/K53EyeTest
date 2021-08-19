@@ -85,10 +85,10 @@ public class PageController : MonoBehaviour {
 		return this;
 	}
 
-	public void LoadPage(IPageType targetPage) {
-		if (targetPage != IPageType.None && register.Contains(targetPage)) {
+	public void LoadPage(IPageType pageType) {
+		if (pageType != IPageType.None && register.Contains(pageType)) {
 			// get page to load
-			Page page = GetPage(targetPage);
+			Page page = GetPage(pageType);
 
 			// activate page game object
 			EnableOrDisablePage(page, Constant.SwitchOn);
@@ -104,14 +104,14 @@ public class PageController : MonoBehaviour {
 
 			// log
 			log.LogDebug(
-				message: $"Attempting to load {targetPage} page.",
+				message: $"Attempting to load {pageType} page.",
 				classType: GetType().Name,
 				classMethod: MethodBase.GetCurrentMethod().Name
 			);
 		}
 		else {
 			log.LogWarn(
-				message: $"Failed to load {targetPage} page, it is none or not registered.",
+				message: $"Failed to load {pageType} page, it is none or not registered.",
 				classType: GetType().Name,
 				classMethod: MethodBase.GetCurrentMethod().Name
 			);
@@ -123,7 +123,7 @@ public class PageController : MonoBehaviour {
 			Page page = GetPage(targetPage);
 
 			// unload if is active
-			if (page.gameObject.activeSelf) {
+			if (page.gameObject.activeSelf && targetPage != currentPage.Type) {
 				page.CheckAnimatorIntegrity();
 				page.Animate(Constant.SwitchOff);
 				log.LogDebug(
@@ -135,7 +135,7 @@ public class PageController : MonoBehaviour {
 		}
 		else {
 			log.LogWarn(
-				message: $"Failed to unload {targetPage} page, it is none or not registered.",
+				message: $"Failed to unload {targetPage} page. Page is either current page or is not registered.",
 				classType: GetType().Name,
 				classMethod: MethodBase.GetCurrentMethod().Name
 			);
@@ -143,31 +143,41 @@ public class PageController : MonoBehaviour {
 	}
 
 	public void SwitchPage(IPageType onPageType) {
-		IPageType offPageType = currentPage.Type;
+		try {
+			IPageType offPageType = currentPage.Type;
 
-		// switch only if onPage is registered and not none type. 
-		if (register.Contains(onPageType)) {
-			// unload off page
-			UnloadPage(offPageType);
+			// switch only if onPage is registered and not none type. 
+			if (register.Contains(onPageType)) {
+				// unload off page
+				UnloadPage(offPageType);
 
-			// async load onPage
-			Page offPage = GetPage(onPageType);
-			Page onPage = GetPage(onPageType);
-			string task = "AwaitPageSwitch";
-			StopCoroutine(task);
-			StartCoroutine(AwaitPageSwitch(offPage, onPage));
+				// async load onPage
+				Page offPage = GetPage(onPageType);
+				Page onPage = GetPage(onPageType);
+				string task = "AwaitPageSwitch";
+				StopCoroutine(task);
+				StartCoroutine(AwaitPageSwitch(offPage, onPage));
 
-			log.LogInfo(
-				message: $"Async switching from {offPageType} to {onPageType} page.",
-				classType: GetType().Name,
-				classMethod: MethodBase.GetCurrentMethod().Name
-			);
+				log.LogInfo(
+					message: $"Async switching from {offPageType} to {onPageType} page.",
+					classType: GetType().Name,
+					classMethod: MethodBase.GetCurrentMethod().Name
+				);
+			}
+			else {
+				log.LogWarn(
+					message: $"Failed to switch from {offPageType} to {onPageType} page, page not registered.",
+					classType: GetType().Name,
+					classMethod: MethodBase.GetCurrentMethod().Name
+				);
+			}
 		}
-		else {
-			log.LogWarn(
-				message: $"Failed to switch from {offPageType} to {onPageType} page, page not registered.",
+		catch (System.Exception error) {
+			log.LogError(
+				message: $"Error occurred while switching page.",
 				classType: GetType().Name,
-				classMethod: MethodBase.GetCurrentMethod().Name
+				classMethod: MethodBase.GetCurrentMethod().Name,
+				exception: error
 			);
 		}
 	}
@@ -184,6 +194,19 @@ public class PageController : MonoBehaviour {
 		);
 
 		return null;
+	}
+
+	public void SetPageActiveState(IPageType type, bool state = true) {
+		if (register.Contains(type)) {
+			Page page = (Page) register[type];
+			page.Active = state;
+		}
+
+		log.LogWarn(
+			message: $"Failed to set {type} page active, check if it is registered.",
+			classType: GetType().Name,
+			classMethod: MethodBase.GetCurrentMethod().Name
+		);
 	}
 	#endregion
 

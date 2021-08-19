@@ -856,14 +856,14 @@ MonoBehaviour:
       audioClip: {fileID: 8300000, guid: 659db9d0a45e40d469182a2cf233b07d, type: 3}
     - clipType: 1
       audioClip: {fileID: 8300000, guid: 5564f2609c5071144ac819c5f93ae70c, type: 3}
-    - clipType: 1
-      audioClip: {fileID: 8300000, guid: 5564f2609c5071144ac819c5f93ae70c, type: 3}
     - clipType: 3
       audioClip: {fileID: 8300000, guid: 9b2b929724edd0342b1bf690f12e9087, type: 3}
     - clipType: 11
       audioClip: {fileID: 8300000, guid: e98817a1026d2c441bccf571f283b875, type: 3}
     - clipType: 4
       audioClip: {fileID: 8300000, guid: bab525c88007d9c41b2ee71b1c61475b, type: 3}
+    - clipType: 7
+      audioClip: {fileID: 8300000, guid: e98817a1026d2c441bccf571f283b875, type: 3}
 --- !u!4 &531912010
 Transform:
   m_ObjectHideFlags: 0
@@ -918,7 +918,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 273.731, y: 60}
+  m_SizeDelta: {x: 336.87, y: 105.1031}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &686681759
 MonoBehaviour:
@@ -959,14 +959,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0}
+  m_Color: {r: 0.5943396, g: 0.5943396, b: 0.5943396, a: 0.28235295}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 917b4aa223e0b414daa0700a12f999c0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1269,7 +1269,7 @@ MonoBehaviour:
 '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2309,7 +2309,7 @@ MonoBehaviour:
   m_text: K53 Eye Test
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

@@ -3,7 +3,7 @@
 		namespace Enum {
 			public enum IEffectType {
 				Reward,
-				Warinig,
+				Warning,
 				Success,
 				Failure,
 				Update,

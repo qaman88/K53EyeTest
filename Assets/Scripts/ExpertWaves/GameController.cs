@@ -31,7 +31,7 @@ namespace ExpertWaves {
 			// setting page UI components
 			public Slider voiceVolumeSlider;
 			public Slider effectsVolumeSlider;
-			public Slider musicVolumeSlider;
+			public Slider backgroundVolumeSlider;
 			public Toggle vibrationToggle;
 			#endregion
 
@@ -53,7 +53,7 @@ namespace ExpertWaves {
 
 				voiceVolumeSlider.value = settingController.VoiceVolume;
 				vibrationToggle.isOn = settingController.VibrationState;
-				musicVolumeSlider.value = settingController.MusicVolume;
+				backgroundVolumeSlider.value = settingController.MusicVolume;
 				effectsVolumeSlider.value = settingController.EffectVolume;
 			}
 
@@ -113,12 +113,11 @@ namespace ExpertWaves {
 			}
 
 			private void InitSettingComponents() {
-
 				if (voiceVolumeSlider) {
 					Slider.SliderEvent sliderEvent = new Slider.SliderEvent();
 					sliderEvent.AddListener((float volume) => {
 						log.LogInfo(
-							message: $"Slider event for voice track.  Volume: {volume}",
+							message: $"Slider event for voice track. Volume: {volume}",
 							classType: GetType().Name,
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
@@ -130,20 +129,30 @@ namespace ExpertWaves {
 					voiceVolumeSlider.onValueChanged = sliderEvent;
 				}
 
-				if (musicVolumeSlider) {
+				if (backgroundVolumeSlider) {
 					Slider.SliderEvent sliderEvent = new Slider.SliderEvent();
 					sliderEvent.AddListener((float volume) => {
+						log.LogInfo(
+							message: $"Slider event for background track. Volume: {volume}",
+							classType: GetType().Name,
+							classMethod: MethodBase.GetCurrentMethod().Name
+						);
 						audioController.backgroundTrack.source.volume = volume;
 						audioController.PlayBackgroundMusic(IBackgroundType.Test);
 						settingController.MusicVolume = volume;
 						settingController.SaveData();
 					});
-					musicVolumeSlider.onValueChanged = sliderEvent;
+					backgroundVolumeSlider.onValueChanged = sliderEvent;
 				}
 
 				if (effectsVolumeSlider) {
 					Slider.SliderEvent sliderEvent = new Slider.SliderEvent();
 					sliderEvent.AddListener((float volume) => {
+						log.LogInfo(
+							message: $"Slider event for effect track. Volume: {volume}",
+							classType: GetType().Name,
+							classMethod: MethodBase.GetCurrentMethod().Name
+						);
 						audioController.effectTrack.source.volume = volume;
 						audioController.PlayEffect(IEffectType.Test);
 						settingController.EffectVolume = volume;
@@ -155,6 +164,14 @@ namespace ExpertWaves {
 				if (vibrationToggle) {
 					ToggleEvent toggleEvent =  new ToggleEvent();
 					toggleEvent.AddListener((bool state) => {
+						// play sound effect for item select
+						audioController.PlayEffect(IEffectType.Select);
+
+						log.LogInfo(
+							message: $"Toggle event for vibration. State: {state}",
+							classType: GetType().Name,
+							classMethod: MethodBase.GetCurrentMethod().Name
+						);
 						vibrationController.VibrationEnabled = state;
 						settingController.VibrationState = state;
 						settingController.SaveData();
@@ -169,6 +186,9 @@ namespace ExpertWaves {
 				if (settingButton) {
 					ButtonClickedEvent callback = new ButtonClickedEvent();
 					callback.AddListener(() => {
+						// play sound effect for item select
+						audioController.PlayEffect(IEffectType.Select);
+
 						log.LogInfo(
 							message: $"Setting button is clicked.",
 							classType: GetType().Name,
@@ -183,11 +203,20 @@ namespace ExpertWaves {
 						if (settingMenuButton) {
 							ButtonClickedEvent callback = new ButtonClickedEvent();
 							callback.AddListener(() => {
+								// play sound effect for item select
+								audioController.PlayEffect(IEffectType.Select);
+
 								log.LogInfo(
 									message: $"Setting menu button is clicked.",
 									classType: GetType().Name,
 									classMethod: MethodBase.GetCurrentMethod().Name
 								);
+
+								// set menu page active to allow access of game objects
+								pageController.SetPageActiveState(IPageType.Menu);
+								pageController.SetPageActiveState(IPageType.Setting, false);
+
+								// switch to menu page
 								pageController.SwitchPage(IPageType.Menu);
 							});
 							settingMenuButton.onClick = callback;
@@ -201,6 +230,9 @@ namespace ExpertWaves {
 				if (rateButton) {
 					ButtonClickedEvent callback = new ButtonClickedEvent();
 					callback.AddListener(() => {
+						// play sound effect for item select
+						audioController.PlayEffect(IEffectType.Select);
+
 						log.LogInfo(
 							message: $"Rate button is clicked.",
 							classType: GetType().Name,
@@ -218,6 +250,9 @@ namespace ExpertWaves {
 					ButtonClickedEvent callback = new ButtonClickedEvent();
 					// event listener
 					callback.AddListener(() => {
+						// play sound effect for item select
+						audioController.PlayEffect(IEffectType.Select);
+
 						log.LogInfo(
 							message: $"About button is clicked.",
 							classType: GetType().Name,
@@ -238,11 +273,20 @@ namespace ExpertWaves {
 						if (aboutMenuButton) {
 							ButtonClickedEvent callback = new ButtonClickedEvent();
 							callback.AddListener(() => {
+								// play sound effect for item select
+								audioController.PlayEffect(IEffectType.Select);
+
 								log.LogInfo(
 									message: $"About menu button is clicked.",
 									classType: GetType().Name,
 									classMethod: MethodBase.GetCurrentMethod().Name
 								);
+
+								// set menu page active to allow access of game objects
+								pageController.SetPageActiveState(IPageType.Menu);
+								pageController.SetPageActiveState(IPageType.About, false);
+
+								// switch to menu page
 								pageController.SwitchPage(IPageType.Menu);
 							});
 							aboutMenuButton.onClick = callback;
@@ -253,6 +297,9 @@ namespace ExpertWaves {
 						if (privacyButton) {
 							ButtonClickedEvent callback = new ButtonClickedEvent();
 							callback.AddListener(() => {
+								// play sound effect for item select
+								audioController.PlayEffect(IEffectType.Select);
+
 								log.LogInfo(
 									message: $"Privacy button is clicked.",
 									classType: GetType().Name,
@@ -271,11 +318,20 @@ namespace ExpertWaves {
 								if (privacyReturnButton) {
 									ButtonClickedEvent callback = new ButtonClickedEvent();
 									callback.AddListener(() => {
+										// play sound effect for item select
+										audioController.PlayEffect(IEffectType.Select);
+
 										log.LogInfo(
 											message: $"Privacy Return button is clicked.",
 											classType: GetType().Name,
 											classMethod: MethodBase.GetCurrentMethod().Name
 										);
+
+										// set menu page active to allow access of game objects
+										pageController.SetPageActiveState(IPageType.About);
+										pageController.SetPageActiveState(IPageType.Privacy, false);
+
+										// switch to menu page
 										pageController.SwitchPage(IPageType.About);
 									});
 									privacyReturnButton.onClick = callback;
@@ -289,6 +345,9 @@ namespace ExpertWaves {
 						if (termsButton) {
 							ButtonClickedEvent callback = new ButtonClickedEvent();
 							callback.AddListener(() => {
+								// play sound effect for item select
+								audioController.PlayEffect(IEffectType.Select);
+
 								log.LogInfo(
 									message: $"Terms button is clicked.",
 									classType: GetType().Name,
@@ -307,11 +366,20 @@ namespace ExpertWaves {
 								if (termsReturnButton) {
 									ButtonClickedEvent callback = new ButtonClickedEvent();
 									callback.AddListener(() => {
+										// play sound effect for item select
+										audioController.PlayEffect(IEffectType.Select);
+
 										log.LogInfo(
 											message: $"Terms return button is clicked.",
 											classType: GetType().Name,
 											classMethod: MethodBase.GetCurrentMethod().Name
 										);
+
+										// set menu page active to allow access of game objects
+										pageController.SetPageActiveState(IPageType.About);
+										pageController.SetPageActiveState(IPageType.TermsConditions, false);
+
+										// switch to menu page
 										pageController.SwitchPage(IPageType.About);
 									});
 									termsReturnButton.onClick = callback;
@@ -335,6 +403,9 @@ namespace ExpertWaves {
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
 
+						// play sound effect for item select
+						audioController.PlayEffect(IEffectType.Select);
+
 						// native share intent
 						Share();
 					});
@@ -346,6 +417,9 @@ namespace ExpertWaves {
 				if (helpButton) {
 					ButtonClickedEvent callback = new ButtonClickedEvent();
 					callback.AddListener(() => {
+						// play sound effect for item select
+						audioController.PlayEffect(IEffectType.Select);
+
 						log.LogInfo(
 							message: $"Help button is clicked.",
 							classType: GetType().Name,
@@ -364,11 +438,20 @@ namespace ExpertWaves {
 						if (helpMenuButton) {
 							ButtonClickedEvent callback = new ButtonClickedEvent();
 							callback.AddListener(() => {
+								// play sound effect for item select
+								audioController.PlayEffect(IEffectType.Select);
+
 								log.LogInfo(
 									message: $"Help menu button is clicked.",
 									classType: GetType().Name,
 									classMethod: MethodBase.GetCurrentMethod().Name
 								);
+
+								// set menu page active to allow access of game objects
+								pageController.SetPageActiveState(IPageType.Menu);
+								pageController.SetPageActiveState(IPageType.Help, false);
+
+								// switch to menu page
 								pageController.SwitchPage(IPageType.Menu);
 							});
 							helpMenuButton.onClick = callback;
@@ -380,6 +463,9 @@ namespace ExpertWaves {
 				// Distance Test Button
 				Button distanceTestButton = GameObject.Find("distanceTestButton").GetComponent<Button>();
 				if (distanceTestButton) {
+					// play sound effect for item select
+					audioController.PlayEffect(IEffectType.Select);
+
 					ButtonClickedEvent callback = new ButtonClickedEvent();
 					callback.AddListener(() => {
 						log.LogInfo(
@@ -397,6 +483,9 @@ namespace ExpertWaves {
 				if (colorTestButton) {
 					ButtonClickedEvent callback = new ButtonClickedEvent();
 					callback.AddListener(() => {
+						// play sound effect for item select
+						audioController.PlayEffect(IEffectType.Select);
+
 						log.LogInfo(
 							message: $"Color test button is clicked.",
 							classType: GetType().Name,
@@ -414,26 +503,27 @@ namespace ExpertWaves {
 			private void OnKeyPress(KeyCode key) {
 				switch (key) {
 					case KeyCode.W:
-						audioController.PlayEffect(IEffectType.Warinig);
+						audioController.PlayEffect(IEffectType.Select);
 						break;
 
 					case KeyCode.A:
-						audioController.PlayVoice(IVoiceType.Warning1);
+						audioController.PlayEffect(IEffectType.Select);
 						break;
 
 					case KeyCode.D:
-						audioController.PlayVoice(IVoiceType.Warning1);
+						audioController.PlayEffect(IEffectType.Select);
 						break;
 
 					case KeyCode.S:
-						audioController.PlayEffect(IEffectType.Warinig);
+						audioController.PlayEffect(IEffectType.Select);
 						break;
 
 					case KeyCode.M:
-						pageController.SwitchPage(IPageType.Menu);
+						audioController.PlayEffect(IEffectType.Select);
 						break;
 
 					case KeyCode.Z:
+						audioController.PlayEffect(IEffectType.Select);
 						break;
 
 					default:
@@ -480,8 +570,12 @@ namespace ExpertWaves {
 			#region Android Library
 			private string androidPluginName = "za.co.expertwaves.k53eyetest.unityk53javaplugin.NativeShare";
 			private AndroidJavaObject androidPlugin;
+
 			private void InitializePlugin(string plugin) {
 #if UNITY_EDITOR
+				// play effect for operation failure
+				audioController.PlayEffect(IEffectType.Failure);
+
 				log.LogWarn(
 					message: $"Android is required to run the script.",
 					classType: GetType().Name,
@@ -523,6 +617,9 @@ namespace ExpertWaves {
 
 			public void Toast(string msg) {
 #if UNITY_EDITOR
+				// play effect for operation failure
+				audioController.PlayEffect(IEffectType.Failure);
+
 				log.LogWarn(
 					message: $"Android is required to run the script.",
 					classType: GetType().Name,

@@ -175,6 +175,9 @@ namespace ExpertWaves {
 						if (menuButton) {
 							ButtonClickedEvent callback = new ButtonClickedEvent();
 							callback.AddListener(() => {
+								// play sound effect for item select
+								audioController.PlayEffect(IEffectType.Select);
+
 								log.LogInfo(
 									message: $"Menu button is clicked.",
 									classType: GetType().Name,
@@ -212,9 +215,6 @@ namespace ExpertWaves {
 							classType: GetType().Name,
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
-
-						// play sound effect
-						audioController.PlayEffect(IEffectType.Failure);
 
 						// game over on incorrect answer or end of levels
 						engine.GameOver = true;
@@ -257,9 +257,6 @@ namespace ExpertWaves {
 						// set game over score
 						gameOverScore.text = $"{engine.Score}%";
 
-						// play sound effect
-						audioController.PlayEffect(IEffectType.Update);
-
 						// stop previous task
 						if (awaitTimeoutCoroutine != null) {
 							StopCoroutine(awaitTimeoutCoroutine);
@@ -278,10 +275,10 @@ namespace ExpertWaves {
 					}
 
 					private void OnGameNextLevel(IColorChoice colorChoice) {
-						// play audio effect
-						audioController.PlayEffect(engine.Answer == colorChoice ? IEffectType.Success : IEffectType.Failure);
-
 						if (engine.GameOver == Constant.Negative) {
+							// play audio effect
+							audioController.PlayEffect(engine.Answer == colorChoice ? IEffectType.Success : IEffectType.Failure);
+
 							// move engine to next level
 							engine.NextLevel(colorChoice);
 
@@ -302,6 +299,9 @@ namespace ExpertWaves {
 							);
 						}
 						else if (engine.Level == engine.MaxLevel) {
+							// play sound effect for game over in completed levels event
+							audioController.PlayEffect(IEffectType.Success);
+
 							// log
 							log.LogInfo(
 								message: $"Gameover by completed levels, Level {engine.Level}, " +
@@ -316,6 +316,9 @@ namespace ExpertWaves {
 							OnGameOver();
 						}
 						else {
+							// play sound effect for game over
+							audioController.PlayEffect(IEffectType.Failure);
+
 							// log
 							log.LogInfo(
 								message: $"Gameover by unknown reason, Level {engine.Level}, " +
@@ -345,6 +348,9 @@ namespace ExpertWaves {
 						}
 
 						if (engine.Level == level && engine.GameOver == Constant.Negative) {
+							// play sound effect for game over in timeout event
+							audioController.PlayEffect(IEffectType.Warning);
+
 							// log
 							log.LogInfo(
 								message: $"Gameover by timeout, Level {engine.Level}, " +
