@@ -2,6 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="za.co.expertwaves.k53eyetest.unityk53javaplugin">
 
-  <application></application>
+  <uses-permission android:name="android.permission.VIBRATE" />
 
 </manifest>

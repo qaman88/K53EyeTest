@@ -2,17 +2,13 @@
 	namespace Audio {
 		namespace Enum {
 			public enum IEffectType {
-				Reward,
-				Warning,
 				Success,
+				Warning,
 				Failure,
 				Update,
-				Back,
-				Next,
 				Select,
-				Unselect,
 				Swipe,
-				Tap,
+				GameOver,
 				Test
 			}
 		}

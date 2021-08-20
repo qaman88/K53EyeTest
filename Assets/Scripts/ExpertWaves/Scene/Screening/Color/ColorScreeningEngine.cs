@@ -127,26 +127,24 @@ namespace ExpertWaves {
 					}
 
 					public void NextLevel(IColorChoice color) {
-						if (color == Answer) {
-							switch (color) {
-								case IColorChoice.Red:
-									++redScore;
-									break;
-								case IColorChoice.Green:
-									++greenScore;
-									break;
-								case IColorChoice.Blue:
-									++blueScore;
-									break;
-							}
+						switch (color) {
+							case IColorChoice.Red:
+								redScore += Answer == color ? 1 : 0;
+								break;
+							case IColorChoice.Green:
+								greenScore += Answer == color ? 1 : 0;
+								break;
+							case IColorChoice.Blue:
+								blueScore += Answer == color ? 1 : 0;
+								break;
+						}
 
-							Level++;
-							if (Level <= MaxLevel) {
-								Color = carColors[Level];
-							}
-							else {
-								GameOver = true;
-							}
+						Level++;
+						if (Level <= MaxLevel) {
+							Color = carColors[Level];
+						}
+						else {
+							GameOver = true;
 						}
 					}
 					#endregion

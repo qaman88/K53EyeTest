@@ -50,11 +50,6 @@ namespace ExpertWaves {
 
 			private void Start() {
 				InitializePlugin(androidPluginName);
-
-				voiceVolumeSlider.value = settingController.VoiceVolume;
-				vibrationToggle.isOn = settingController.VibrationState;
-				backgroundVolumeSlider.value = settingController.MusicVolume;
-				effectsVolumeSlider.value = settingController.EffectVolume;
 			}
 
 			private void OnDestroy() {
@@ -113,6 +108,7 @@ namespace ExpertWaves {
 			}
 
 			private void InitSettingComponents() {
+				voiceVolumeSlider.value = settingController.VoiceVolume;
 				if (voiceVolumeSlider) {
 					Slider.SliderEvent sliderEvent = new Slider.SliderEvent();
 					sliderEvent.AddListener((float volume) => {
@@ -121,14 +117,17 @@ namespace ExpertWaves {
 							classType: GetType().Name,
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
+						if (voiceVolumeSlider.value != settingController.VoiceVolume) {
+							audioController.PlayVoice(volume <= 0 ? IVoiceType.VoiceOff : IVoiceType.VoiceOn);
+						}
 						audioController.voiceTrack.source.volume = volume;
-						audioController.PlayVoice(IVoiceType.Test);
 						settingController.VoiceVolume = volume;
 						settingController.SaveData();
 					});
 					voiceVolumeSlider.onValueChanged = sliderEvent;
 				}
 
+				backgroundVolumeSlider.value = settingController.MusicVolume;
 				if (backgroundVolumeSlider) {
 					Slider.SliderEvent sliderEvent = new Slider.SliderEvent();
 					sliderEvent.AddListener((float volume) => {
@@ -138,13 +137,16 @@ namespace ExpertWaves {
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
 						audioController.backgroundTrack.source.volume = volume;
-						audioController.PlayBackgroundMusic(IBackgroundType.Test);
+						if (backgroundVolumeSlider.value != settingController.MusicVolume) {
+							audioController.PlayBackgroundMusic(IBackgroundType.Test);
+						}
 						settingController.MusicVolume = volume;
 						settingController.SaveData();
 					});
 					backgroundVolumeSlider.onValueChanged = sliderEvent;
 				}
 
+				effectsVolumeSlider.value = settingController.EffectVolume;
 				if (effectsVolumeSlider) {
 					Slider.SliderEvent sliderEvent = new Slider.SliderEvent();
 					sliderEvent.AddListener((float volume) => {
@@ -154,18 +156,23 @@ namespace ExpertWaves {
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
 						audioController.effectTrack.source.volume = volume;
-						audioController.PlayEffect(IEffectType.Test);
+						if (effectsVolumeSlider.value != settingController.EffectVolume) {
+							audioController.PlayEffect(IEffectType.Test);
+						}
 						settingController.EffectVolume = volume;
 						settingController.SaveData();
 					});
 					effectsVolumeSlider.onValueChanged = sliderEvent;
 				}
 
+				vibrationToggle.isOn = settingController.VibrationState;
 				if (vibrationToggle) {
 					ToggleEvent toggleEvent =  new ToggleEvent();
 					toggleEvent.AddListener((bool state) => {
 						// play sound effect for item select
-						audioController.PlayEffect(IEffectType.Select);
+						if (vibrationToggle.isOn = settingController.VibrationState) {
+							audioController.PlayEffect(IEffectType.Select);
+						}
 
 						log.LogInfo(
 							message: $"Toggle event for vibration. State: {state}",
@@ -463,16 +470,17 @@ namespace ExpertWaves {
 				// Distance Test Button
 				Button distanceTestButton = GameObject.Find("distanceTestButton").GetComponent<Button>();
 				if (distanceTestButton) {
-					// play sound effect for item select
-					audioController.PlayEffect(IEffectType.Select);
-
 					ButtonClickedEvent callback = new ButtonClickedEvent();
 					callback.AddListener(() => {
+						// play sound effect for item select
+						audioController.PlayEffect(IEffectType.Select);
+
 						log.LogInfo(
 							message: $"Distance test button is clicked.",
 							classType: GetType().Name,
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
+
 						sceneController.LoadSceneOnPage(ISceneType.DistanceScreening, IPageType.Loading);
 					});
 					distanceTestButton.onClick = callback;
@@ -500,63 +508,6 @@ namespace ExpertWaves {
 			#endregion
 
 			#region Callback Functions
-			private void OnKeyPress(KeyCode key) {
-				switch (key) {
-					case KeyCode.W:
-						audioController.PlayEffect(IEffectType.Select);
-						break;
-
-					case KeyCode.A:
-						audioController.PlayEffect(IEffectType.Select);
-						break;
-
-					case KeyCode.D:
-						audioController.PlayEffect(IEffectType.Select);
-						break;
-
-					case KeyCode.S:
-						audioController.PlayEffect(IEffectType.Select);
-						break;
-
-					case KeyCode.M:
-						audioController.PlayEffect(IEffectType.Select);
-						break;
-
-					case KeyCode.Z:
-						audioController.PlayEffect(IEffectType.Select);
-						break;
-
-					default:
-						break;
-				}
-			}
-
-			private void OnSwipe(object sender, TouchInputEvent e) {
-				IDirection swipe = e.Direction;
-
-				log.LogInfo(
-					message: $"Touch event, swipe {swipe}.",
-					classType: GetType().Name,
-					classMethod: MethodBase.GetCurrentMethod().Name
-				);
-
-				audioController.PlayEffect(IEffectType.Swipe);
-				vibrationController.Vibrate();
-
-				switch (swipe) {
-					case IDirection.Down:
-						break;
-					case IDirection.Up:
-						break;
-					case IDirection.Left:
-						break;
-					case IDirection.Right:
-						break;
-					default:
-						break;
-				}
-			}
-
 			public void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene) {
 				log.LogInfo(
 					message: $"Scene loaded event, scene: {scene.name}",
@@ -564,7 +515,6 @@ namespace ExpertWaves {
 					classMethod: MethodBase.GetCurrentMethod().Name
 				);
 			}
-
 			#endregion
 
 			#region Android Library
@@ -573,9 +523,6 @@ namespace ExpertWaves {
 
 			private void InitializePlugin(string plugin) {
 #if UNITY_EDITOR
-				// play effect for operation failure
-				audioController.PlayEffect(IEffectType.Failure);
-
 				log.LogWarn(
 					message: $"Android is required to run the script.",
 					classType: GetType().Name,
@@ -617,9 +564,6 @@ namespace ExpertWaves {
 
 			public void Toast(string msg) {
 #if UNITY_EDITOR
-				// play effect for operation failure
-				audioController.PlayEffect(IEffectType.Failure);
-
 				log.LogWarn(
 					message: $"Android is required to run the script.",
 					classType: GetType().Name,

@@ -843,27 +843,49 @@ MonoBehaviour:
     source: {fileID: 419964042}
     clips:
     - clipType: 9
-      audioClip: {fileID: 8300000, guid: e98817a1026d2c441bccf571f283b875, type: 3}
+      audioClip: {fileID: 8300000, guid: a13b03374bf00234e9ce9fdc7732466b, type: 3}
   voiceTrack:
     source: {fileID: 1762520836}
     clips:
+    - clipType: 10
+      audioClip: {fileID: 8300000, guid: 201246ca96f600e46932f5ea6626aca3, type: 3}
+    - clipType: 0
+      audioClip: {fileID: 8300000, guid: 201246ca96f600e46932f5ea6626aca3, type: 3}
+    - clipType: 1
+      audioClip: {fileID: 8300000, guid: 5cc5f2744e2b9744b99e70a8c7848852, type: 3}
+    - clipType: 2
+      audioClip: {fileID: 8300000, guid: d22258f7c8667af48bd4dc621b435242, type: 3}
+    - clipType: 3
+      audioClip: {fileID: 8300000, guid: afd05dde926f52541abfc38cc6d49b36, type: 3}
+    - clipType: 5
+      audioClip: {fileID: 8300000, guid: 25ab0c9627e04254a854e2a3041011a6, type: 3}
     - clipType: 6
-      audioClip: {fileID: 8300000, guid: e98817a1026d2c441bccf571f283b875, type: 3}
+      audioClip: {fileID: 8300000, guid: 228e09ebe54ddf347b18e860f9e13c77, type: 3}
+    - clipType: 7
+      audioClip: {fileID: 8300000, guid: 47587db3e5ee38e479507e826eac4b76, type: 3}
+    - clipType: 8
+      audioClip: {fileID: 8300000, guid: 9d3819aed9d88514bbb0e55289218ef9, type: 3}
+    - clipType: 9
+      audioClip: {fileID: 8300000, guid: 787dc75db8285164795e484b904d83d0, type: 3}
+    - clipType: 4
+      audioClip: {fileID: 8300000, guid: 9b92825905c85f541944bdb79d532f81, type: 3}
   effectTrack:
     source: {fileID: 1261318217}
     clips:
-    - clipType: 2
+    - clipType: 7
+      audioClip: {fileID: 8300000, guid: e98817a1026d2c441bccf571f283b875, type: 3}
+    - clipType: 0
       audioClip: {fileID: 8300000, guid: 659db9d0a45e40d469182a2cf233b07d, type: 3}
     - clipType: 1
       audioClip: {fileID: 8300000, guid: 5564f2609c5071144ac819c5f93ae70c, type: 3}
-    - clipType: 3
+    - clipType: 2
       audioClip: {fileID: 8300000, guid: 9b2b929724edd0342b1bf690f12e9087, type: 3}
-    - clipType: 11
-      audioClip: {fileID: 8300000, guid: e98817a1026d2c441bccf571f283b875, type: 3}
     - clipType: 4
-      audioClip: {fileID: 8300000, guid: bab525c88007d9c41b2ee71b1c61475b, type: 3}
-    - clipType: 7
       audioClip: {fileID: 8300000, guid: e98817a1026d2c441bccf571f283b875, type: 3}
+    - clipType: 5
+      audioClip: {fileID: 8300000, guid: ab5d541800fee904584491b47675a28a, type: 3}
+    - clipType: 6
+      audioClip: {fileID: 8300000, guid: 4fd70ee5ef4c7b241a595a7da32106a3, type: 3}
 --- !u!4 &531912010
 Transform:
   m_ObjectHideFlags: 0
@@ -1268,8 +1290,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d19f65d5c365758458617e2f1189d33d, type: 2}
+  m_sharedMaterial: {fileID: 2164040, guid: d19f65d5c365758458617e2f1189d33d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1402,15 +1424,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: Loading
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d19f65d5c365758458617e2f1189d33d, type: 2}
+  m_sharedMaterial: {fileID: 2164040, guid: d19f65d5c365758458617e2f1189d33d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294934784
-  m_fontColor: {r: 0, g: 0.5050709, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1427,13 +1449,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
+  m_fontSize: 50
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 30
-  m_fontSizeMax: 40
-  m_fontStyle: 1
+  m_fontSizeMax: 50
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -2308,8 +2330,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: K53 Eye Test
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d19f65d5c365758458617e2f1189d33d, type: 2}
+  m_sharedMaterial: {fileID: 2164040, guid: d19f65d5c365758458617e2f1189d33d, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

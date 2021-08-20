@@ -393,9 +393,6 @@ namespace ExpertWaves {
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
 
-						// play sound effect
-						audioController.PlayEffect(IEffectType.Failure);
-
 						// game over on incorrect answer or end of levels
 						engine.GameOver = true;
 
@@ -405,8 +402,26 @@ namespace ExpertWaves {
 						// switch to game over page
 						pageController.LoadPage(IPageType.GameOver);
 
-						// play sound effect for game over
-						audioController.PlayEffect(IEffectType.Update);
+						// play voice sound
+						float score =  engine.Score;
+						if (score >= 50 && score < 60) {
+							audioController.PlayVoice(IVoiceType.Good);
+						}
+						else if (score >= 60 && score < 70) {
+							audioController.PlayVoice(IVoiceType.Wow);
+						}
+						else if (score >= 70 && score < 80) {
+							audioController.PlayVoice(IVoiceType.Amazing);
+						}
+						else if (score >= 80 && score < 90) {
+							audioController.PlayVoice(IVoiceType.Awesome);
+						}
+						else if (score >= 90) {
+							audioController.PlayVoice(IVoiceType.Incredible);
+						}
+						else {
+							audioController.PlayVoice(IVoiceType.GameOver);
+						}
 
 						// log
 						log.LogInfo(

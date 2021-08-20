@@ -224,6 +224,27 @@ namespace ExpertWaves {
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
 
+						// play voice sound
+						float score =  engine.Score;
+						if (score >= 50 && score < 60) {
+							audioController.PlayVoice(IVoiceType.Good);
+						}
+						else if (score >= 60 && score < 70) {
+							audioController.PlayVoice(IVoiceType.Wow);
+						}
+						else if (score >= 70 && score < 80) {
+							audioController.PlayVoice(IVoiceType.Amazing);
+						}
+						else if (score >= 80 && score < 90) {
+							audioController.PlayVoice(IVoiceType.Awesome);
+						}
+						else if (score >= 90) {
+							audioController.PlayVoice(IVoiceType.Incredible);
+						}
+						else {
+							audioController.PlayVoice(IVoiceType.GameOver);
+						}
+
 						// game over on incorrect answer or end of levels
 						engine.GameOver = true;
 
@@ -279,7 +300,6 @@ namespace ExpertWaves {
 							classType: GetType().Name,
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
-
 					}
 
 					private void OnGameNextLevel(IColorChoice colorChoice) {
@@ -308,9 +328,6 @@ namespace ExpertWaves {
 						}
 
 						else if (engine.Level == engine.MaxLevel) {
-							// play sound effect for game over in completed levels event
-							audioController.PlayEffect(IEffectType.Success);
-
 							// move engine to next level
 							engine.NextLevel(colorChoice);
 
@@ -328,9 +345,6 @@ namespace ExpertWaves {
 						}
 
 						else {
-							// play sound effect for game over
-							audioController.PlayEffect(IEffectType.Failure);
-
 							// log
 							log.LogInfo(
 								message: $"Gameover by unknown reason, Level {engine.Level}, " +

@@ -6,7 +6,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class NativeShare {
-  private static final String TAG = "[UnityAndroidK53]";
+  private static final String TAG = "[NativeShare]";
   private static Activity unityActivity;
 
   public static void SetUnityActivity(Activity activity) {
