@@ -41,16 +41,27 @@ namespace ExpertWaves {
 
 					public IColorChoice Answer {
 						get {
-							UnityEngine.Color item = carColors[Level];
-							if (item.r > item.g && item.r > item.b) {
-								return IColorChoice.Red;
+							IColorChoice result = IColorChoice.None;
+
+							if (GameOver == false) {
+								UnityEngine.Color item = carColors[Level];
+								// red component dominant
+								if (item.r > item.g && item.r > item.b) {
+									result = IColorChoice.Red;
+								}
+
+								// green component dominant
+								else if (item.g > item.r && item.g > item.b) {
+									result = IColorChoice.Green;
+								}
+
+								// blue component dominant
+								else if (item.b > item.r && item.b > item.g) {
+									result = IColorChoice.Blue;
+								}
 							}
-							else if (item.g > item.r && item.g > item.b) {
-								return IColorChoice.Green;
-							}
-							else {
-								return IColorChoice.Blue;
-							}
+
+							return result;
 						}
 					}
 
@@ -116,26 +127,26 @@ namespace ExpertWaves {
 					}
 
 					public void NextLevel(IColorChoice color) {
-						if (Level < carColors.Count - 1) {
-							if (color == Answer) {
-								switch (color) {
-									case IColorChoice.Red:
-										++redScore;
-										break;
-									case IColorChoice.Green:
-										++greenScore;
-										break;
-									case IColorChoice.Blue:
-										++blueScore;
-										break;
-								}
+						if (color == Answer) {
+							switch (color) {
+								case IColorChoice.Red:
+									++redScore;
+									break;
+								case IColorChoice.Green:
+									++greenScore;
+									break;
+								case IColorChoice.Blue:
+									++blueScore;
+									break;
 							}
 
 							Level++;
-							Color = carColors[Level];
-						}
-						else {
-							GameOver = Constant.Positive;
+							if (Level <= MaxLevel) {
+								Color = carColors[Level];
+							}
+							else {
+								GameOver = true;
+							}
 						}
 					}
 					#endregion
@@ -144,7 +155,7 @@ namespace ExpertWaves {
 					private float RandomColorComponent(int start = 0, int end = 255) {
 						return 1.0f * randomGenerator.Next(start, end) / maxPixel;
 					}
-					
+
 					private void GenerateCarColors() {
 						// reset colors
 						carColors = new List<UnityEngine.Color>();

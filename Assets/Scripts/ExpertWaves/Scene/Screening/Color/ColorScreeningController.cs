@@ -184,6 +184,10 @@ namespace ExpertWaves {
 									classMethod: MethodBase.GetCurrentMethod().Name
 								);
 
+								// set game page active to allow access of game objects
+								pageController.SetPageActiveState(IPageType.Game, true);
+								pageController.SetPageActiveState(IPageType.GameOver, false);
+
 								// load menu scene
 								sceneController.IsLoadingScene = false;
 								sceneController.LoadSceneOnPage(ISceneType.Menu, IPageType.Game);
@@ -200,6 +204,10 @@ namespace ExpertWaves {
 									classType: GetType().Name,
 									classMethod: MethodBase.GetCurrentMethod().Name
 								);
+
+								// set game page active to allow access of game objects
+								pageController.SetPageActiveState(IPageType.Game, true);
+								pageController.SetPageActiveState(IPageType.GameOver, false);
 
 								// restart the game
 								OnGameRestart();
@@ -298,9 +306,13 @@ namespace ExpertWaves {
 								classMethod: MethodBase.GetCurrentMethod().Name
 							);
 						}
+
 						else if (engine.Level == engine.MaxLevel) {
 							// play sound effect for game over in completed levels event
 							audioController.PlayEffect(IEffectType.Success);
+
+							// move engine to next level
+							engine.NextLevel(colorChoice);
 
 							// log
 							log.LogInfo(
@@ -311,10 +323,10 @@ namespace ExpertWaves {
 							);
 
 							// set engine game over
-							engine.GameOver = Constant.Positive;
 							gameOverReason = IGameOverReason.LevelsComplete;
 							OnGameOver();
 						}
+
 						else {
 							// play sound effect for game over
 							audioController.PlayEffect(IEffectType.Failure);
