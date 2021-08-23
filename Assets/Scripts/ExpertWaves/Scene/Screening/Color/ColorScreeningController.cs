@@ -273,9 +273,6 @@ namespace ExpertWaves {
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
 
-						// switch the page to game page
-						pageController.SwitchPage(IPageType.Game);
-
 						// restart game engine
 						engine.Restart();
 						gameOverReason = IGameOverReason.None;
@@ -294,6 +291,12 @@ namespace ExpertWaves {
 						// update inverted timer bar
 						timerBar.value = 0.0f;
 
+						// switch the page to game page
+						pageController.SwitchPage(IPageType.Game);
+
+						// play audio
+						audioController.PlayVoice(IVoiceType.NewGame);
+
 						// log
 						log.LogInfo(
 							message: $"Game restarted. EngineGameOver: {engine.GameOver}. GameOverReason: {gameOverReason}.",
@@ -304,8 +307,17 @@ namespace ExpertWaves {
 
 					private void OnGameNextLevel(IColorChoice colorChoice) {
 						if (engine.GameOver == Constant.Negative) {
-							// play audio effect
-							audioController.PlayEffect(engine.Answer == colorChoice ? IEffectType.Success : IEffectType.Failure);
+							if (engine.Answer == colorChoice) {
+								// play audio effect
+								audioController.PlayEffect(IEffectType.Success);
+							}
+							else {
+								// play audio effect
+								audioController.PlayEffect(IEffectType.Failure);
+
+								// vibrate device on incorrect choice
+								vibrationController.Vibrate();
+							}
 
 							// move engine to next level
 							engine.NextLevel(colorChoice);
@@ -374,9 +386,6 @@ namespace ExpertWaves {
 						}
 
 						if (engine.Level == level && engine.GameOver == Constant.Negative) {
-							// play sound effect for game over in timeout event
-							audioController.PlayEffect(IEffectType.Warning);
-
 							// log
 							log.LogInfo(
 								message: $"Gameover by timeout, Level {engine.Level}, " +

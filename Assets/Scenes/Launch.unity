@@ -364,8 +364,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: EC Games
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 645cfe15b05af9e428c4aba7694cb661, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 645cfe15b05af9e428c4aba7694cb661, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1022,8 +1022,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: K53 Eye Test
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 9d8875c550a8f1d43bb2ab22922e8279, type: 2}
-  m_sharedMaterial: {fileID: 2140474, guid: 9d8875c550a8f1d43bb2ab22922e8279, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1565,10 +1565,10 @@ RectTransform:
   m_Father: {fileID: 686681758}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 166.4265, y: -57.6925}
+  m_SizeDelta: {x: 332.853, y: 115.385}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1093837347
 MonoBehaviour:
@@ -1592,8 +1592,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Loading
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d19f65d5c365758458617e2f1189d33d, type: 2}
-  m_sharedMaterial: {fileID: 2164040, guid: d19f65d5c365758458617e2f1189d33d, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

@@ -180,9 +180,6 @@ namespace ExpertWaves {
 								classMethod: MethodBase.GetCurrentMethod().Name
 							);
 
-							// play sound effect for game over
-							audioController.PlayEffect(IEffectType.Warning);
-
 							// set engine game over
 							engine.GameOver = Constant.Positive;
 							gameOverReason = IGameOverReason.Timeout;
@@ -243,9 +240,6 @@ namespace ExpertWaves {
 						}
 
 						else if (direction != engine.Direction) {
-							// play sound effect for game over
-							audioController.PlayEffect(IEffectType.Failure);
-
 							// log
 							log.LogInfo(
 								message: $"Gameover by incorrect answer, Level {engine.Level}, " +
@@ -261,9 +255,6 @@ namespace ExpertWaves {
 						}
 
 						else if (engine.Level == engine.MaxLevel) {
-							// play sound effect for game over in completion of levels
-							audioController.PlayEffect(IEffectType.Success);
-
 							// log
 							log.LogInfo(
 								message: $"Gameover by completed levels, Level {engine.Level}, " +
@@ -279,9 +270,6 @@ namespace ExpertWaves {
 						}
 
 						else {
-							// play sound effect for game over
-							audioController.PlayEffect(IEffectType.Warning);
-
 							// log
 							log.LogInfo(
 								message: $"Gameover by unknown reason, Level {engine.Level}, " +
@@ -331,6 +319,9 @@ namespace ExpertWaves {
 
 							// switch the page to game page
 							pageController.SwitchPage(IPageType.Game);
+
+							// play audio
+							audioController.PlayVoice(IVoiceType.NewGame);
 						}
 						catch (Exception error) {
 							log.LogError(
@@ -392,6 +383,8 @@ namespace ExpertWaves {
 							classType: GetType().Name,
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
+
+						vibrationController.Vibrate();
 
 						// game over on incorrect answer or end of levels
 						engine.GameOver = true;
