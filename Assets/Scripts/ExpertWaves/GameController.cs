@@ -1,12 +1,9 @@
 using ExpertWaves.Audio;
 using ExpertWaves.Audio.Enum;
-using ExpertWaves.Enum;
 using ExpertWaves.Log;
 using ExpertWaves.Page.Enum;
 using ExpertWaves.Scene.Enum;
 using ExpertWaves.Setting;
-using ExpertWaves.UserInput.Key;
-using ExpertWaves.UserInput.Touch;
 using ExpertWaves.Utility;
 using ExpertWaves.Vibration;
 using System.Reflection;
@@ -19,6 +16,12 @@ using static UnityEngine.UI.Toggle;
 
 namespace ExpertWaves {
 	namespace Scene {
+		public enum ITextReader {
+			Help,
+			Privacy,
+			Terms
+		}
+
 		public class GameController : MonoBehaviour {
 			#region Public Variables
 			public static GameController instance;
@@ -49,7 +52,15 @@ namespace ExpertWaves {
 			}
 
 			private void Start() {
-				InitializePlugin(androidPluginName);
+#if UNITY_EDITOR
+				log.LogWarn(
+					message: $"Android is required to run the script.",
+					classType: GetType().Name,
+					classMethod: MethodBase.GetCurrentMethod().Name
+				);
+#else
+				InitializePlugin();
+#endif
 			}
 
 			private void OnDestroy() {
@@ -169,19 +180,19 @@ namespace ExpertWaves {
 				if (vibrationToggle) {
 					ToggleEvent toggleEvent =  new ToggleEvent();
 					toggleEvent.AddListener((bool state) => {
-						// play sound effect for item select
-						if (vibrationToggle.isOn = settingController.VibrationState) {
-							audioController.PlayEffect(IEffectType.Select);
-						}
-
 						log.LogInfo(
 							message: $"Toggle event for vibration. State: {state}",
 							classType: GetType().Name,
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
+
 						vibrationController.VibrationEnabled = state;
 						settingController.VibrationState = state;
 						settingController.SaveData();
+
+						if (state) {
+							vibrationController.Vibrate();
+						}
 					});
 					vibrationToggle.onValueChanged = toggleEvent;
 				}
@@ -303,47 +314,7 @@ namespace ExpertWaves {
 						Button privacyButton = GameObject.Find("privacyButton").GetComponent<Button>();
 						if (privacyButton) {
 							ButtonClickedEvent callback = new ButtonClickedEvent();
-							callback.AddListener(() => {
-								// play sound effect for item select
-								audioController.PlayEffect(IEffectType.Select);
-
-								log.LogInfo(
-									message: $"Privacy button is clicked.",
-									classType: GetType().Name,
-									classMethod: MethodBase.GetCurrentMethod().Name
-								);
-								pageController.LoadPage(IPageType.Privacy);
-
-								// content text
-								TextMeshProUGUI privacyContent = GameObject.Find("privacyContent").GetComponent<TextMeshProUGUI>();
-								if (privacyContent) {
-									privacyContent.text = privacyTextAsset.text;
-								}
-
-								// Return Button
-								Button privacyReturnButton = GameObject.Find("privacyReturnButton").GetComponent<Button>();
-								if (privacyReturnButton) {
-									ButtonClickedEvent callback = new ButtonClickedEvent();
-									callback.AddListener(() => {
-										// play sound effect for item select
-										audioController.PlayEffect(IEffectType.Select);
-
-										log.LogInfo(
-											message: $"Privacy Return button is clicked.",
-											classType: GetType().Name,
-											classMethod: MethodBase.GetCurrentMethod().Name
-										);
-
-										// set menu page active to allow access of game objects
-										pageController.SetPageActiveState(IPageType.About);
-										pageController.SetPageActiveState(IPageType.Privacy, false);
-
-										// switch to menu page
-										pageController.SwitchPage(IPageType.About);
-									});
-									privacyReturnButton.onClick = callback;
-								}
-							});
+							callback.AddListener(() => CallbackTextReaderMenu(ITextReader.Privacy));
 							privacyButton.onClick = callback;
 						}
 
@@ -351,47 +322,7 @@ namespace ExpertWaves {
 						Button termsButton = GameObject.Find("termsButton").GetComponent<Button>();
 						if (termsButton) {
 							ButtonClickedEvent callback = new ButtonClickedEvent();
-							callback.AddListener(() => {
-								// play sound effect for item select
-								audioController.PlayEffect(IEffectType.Select);
-
-								log.LogInfo(
-									message: $"Terms button is clicked.",
-									classType: GetType().Name,
-									classMethod: MethodBase.GetCurrentMethod().Name
-								);
-								pageController.LoadPage(IPageType.TermsConditions);
-
-								// content text
-								TextMeshProUGUI termsContent = GameObject.Find("termsContent").GetComponent<TextMeshProUGUI>();
-								if (termsContent) {
-									termsContent.text = termsTextAsset.text;
-								}
-
-								// Return Button
-								Button termsReturnButton = GameObject.Find("termsReturnButton").GetComponent<Button>();
-								if (termsReturnButton) {
-									ButtonClickedEvent callback = new ButtonClickedEvent();
-									callback.AddListener(() => {
-										// play sound effect for item select
-										audioController.PlayEffect(IEffectType.Select);
-
-										log.LogInfo(
-											message: $"Terms return button is clicked.",
-											classType: GetType().Name,
-											classMethod: MethodBase.GetCurrentMethod().Name
-										);
-
-										// set menu page active to allow access of game objects
-										pageController.SetPageActiveState(IPageType.About);
-										pageController.SetPageActiveState(IPageType.TermsConditions, false);
-
-										// switch to menu page
-										pageController.SwitchPage(IPageType.About);
-									});
-									termsReturnButton.onClick = callback;
-								}
-							});
+							callback.AddListener(() => CallbackTextReaderMenu(ITextReader.Terms));
 							termsButton.onClick = callback;
 						}
 					});
@@ -423,47 +354,7 @@ namespace ExpertWaves {
 				Button helpButton = GameObject.Find("helpButton").GetComponent<Button>();
 				if (helpButton) {
 					ButtonClickedEvent callback = new ButtonClickedEvent();
-					callback.AddListener(() => {
-						// play sound effect for item select
-						audioController.PlayEffect(IEffectType.Select);
-
-						log.LogInfo(
-							message: $"Help button is clicked.",
-							classType: GetType().Name,
-							classMethod: MethodBase.GetCurrentMethod().Name
-						);
-						pageController.LoadPage(IPageType.Help);
-
-						// content text
-						TextMeshProUGUI helpContent = GameObject.Find("helpContent").GetComponent<TextMeshProUGUI>();
-						if (helpContent) {
-							helpContent.text = helpTextAsset.text;
-						}
-
-						// Menu Button
-						Button helpMenuButton = GameObject.Find("helpMenuButton").GetComponent<Button>();
-						if (helpMenuButton) {
-							ButtonClickedEvent callback = new ButtonClickedEvent();
-							callback.AddListener(() => {
-								// play sound effect for item select
-								audioController.PlayEffect(IEffectType.Select);
-
-								log.LogInfo(
-									message: $"Help menu button is clicked.",
-									classType: GetType().Name,
-									classMethod: MethodBase.GetCurrentMethod().Name
-								);
-
-								// set menu page active to allow access of game objects
-								pageController.SetPageActiveState(IPageType.Menu);
-								pageController.SetPageActiveState(IPageType.Help, false);
-
-								// switch to menu page
-								pageController.SwitchPage(IPageType.Menu);
-							});
-							helpMenuButton.onClick = callback;
-						}
-					});
+					callback.AddListener(() => CallbackTextReaderMenu(ITextReader.Help));
 					helpButton.onClick = callback;
 				}
 
@@ -505,6 +396,70 @@ namespace ExpertWaves {
 				}
 			}
 
+			public void CallbackTextReaderMenu(ITextReader text) {
+				// play sound effect for item select
+				audioController.PlayEffect(IEffectType.Select);
+
+				log.LogInfo(
+					message: $"TextReader button event of type {text}.",
+					classType: GetType().Name,
+					classMethod: MethodBase.GetCurrentMethod().Name
+				);
+				pageController.LoadPage(IPageType.TextReader);
+
+				// content text
+				TextMeshProUGUI title = GameObject.Find("titleTextReader").GetComponent<TextMeshProUGUI>();
+				TextMeshProUGUI content = GameObject.Find("contentTextReader").GetComponent<TextMeshProUGUI>();
+
+				Vector2 size = content.rectTransform.sizeDelta;
+				float length = 0;
+				switch (text) {
+					case ITextReader.Help:
+						content.text = helpTextAsset.text;
+						length = 1000;
+						title.text = "Help";
+						break;
+					case ITextReader.Privacy:
+						content.text = privacyTextAsset.text;
+						length = 4000;
+						title.text = "Privacy";
+						break;
+					case ITextReader.Terms:
+						content.text = termsTextAsset.text;
+						length = 3500;
+						title.text = "Terms";
+						break;
+					default:
+						break;
+				}
+
+				size.y = length;
+				content.rectTransform.sizeDelta = size;
+
+				// Menu Button
+				Button menuButton = GameObject.Find("menuButtonTextReader").GetComponent<Button>();
+				if (menuButton) {
+					ButtonClickedEvent callback = new ButtonClickedEvent();
+					callback.AddListener(() => {
+						// play sound effect for item select
+						audioController.PlayEffect(IEffectType.Select);
+
+						log.LogInfo(
+							message: $"Text reader menu button is clicked.",
+							classType: GetType().Name,
+							classMethod: MethodBase.GetCurrentMethod().Name
+						);
+
+						// set menu page active to allow access of game objects
+						pageController.SetPageActiveState(IPageType.Menu);
+						pageController.SetPageActiveState(IPageType.TextReader, false);
+
+						// switch to menu page
+						pageController.SwitchPage(IPageType.Menu);
+					});
+					menuButton.onClick = callback;
+				}
+			}
 			#endregion
 
 			#region Callback Functions
@@ -521,19 +476,18 @@ namespace ExpertWaves {
 			private string androidPluginName = "za.co.expertwaves.k53eyetest.unityk53javaplugin.NativeShare";
 			private AndroidJavaObject androidPlugin;
 
-			private void InitializePlugin(string plugin) {
-#if UNITY_EDITOR
+			private void InitializePlugin() {
 				log.LogWarn(
-					message: $"Android is required to run the script.",
+					message: $"Android platform is initializing plugin. Name: {androidPluginName}",
 					classType: GetType().Name,
 					classMethod: MethodBase.GetCurrentMethod().Name
 				);
-#else
+
 				try {
 					AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
 					AndroidJavaObject activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
 					AndroidJavaObject context = activity.Call<AndroidJavaObject>("getApplicationContext");
-					androidPlugin = new AndroidJavaObject(plugin);
+					androidPlugin = new AndroidJavaObject(androidPluginName);
 
 					if (androidPlugin == null) {
 						log.LogError(
@@ -559,7 +513,6 @@ namespace ExpertWaves {
 						exception: e
 					);
 				}
-#endif
 			}
 
 			public void Toast(string msg) {

@@ -6,13 +6,11 @@ namespace ExpertWaves {
 				Launch,
 				Menu,
 				Loading,
-				Help,
 				About,
-				TermsConditions,
-				Privacy,
 				GameOver,
 				Game,
-				Setting,
+				Setting, 
+				TextReader
 			}
 		}
 	}

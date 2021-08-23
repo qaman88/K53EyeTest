@@ -28,16 +28,15 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FaceTex:
-        m_Texture: {fileID: 2800000, guid: 283f897e4925411ebbaa758b4cb13fc2, type: 3}
+        m_Texture: {fileID: 2800000, guid: 069885ca0ea03df408fd8ca0436bbb62, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 28584486757587946, guid: 125cb55b44b24c4393181402bc6200e6,
-          type: 2}
+        m_Texture: {fileID: 28584486757587946, guid: 125cb55b44b24c4393181402bc6200e6, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OutlineTex:
-        m_Texture: {fileID: 2800000, guid: 1cdc5b506b1a4a33a53c30669ced1f51, type: 3}
+        m_Texture: {fileID: 2800000, guid: 069885ca0ea03df408fd8ca0436bbb62, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
@@ -49,8 +48,9 @@ Material:
     - _BevelWidth: 0.001
     - _BumpFace: 0
     - _BumpOutline: 0
+    - _CullMode: 0
     - _Diffuse: 0.5
-    - _FaceDilate: 0.2
+    - _FaceDilate: 0.335
     - _FaceShininess: 1
     - _FaceUVSpeedX: 0
     - _FaceUVSpeedY: 0
@@ -67,7 +67,7 @@ Material:
     - _OutlineSoftness: 0
     - _OutlineUVSpeedX: 0
     - _OutlineUVSpeedY: 0
-    - _OutlineWidth: 0.4
+    - _OutlineWidth: 0.326
     - _PerspectiveFilter: 0.875
     - _Reflectivity: 10
     - _ScaleRatioA: 0.90909094
@@ -99,3 +99,4 @@ Material:
     - _SpecColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _UnderlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_BuildTextureStacks: []

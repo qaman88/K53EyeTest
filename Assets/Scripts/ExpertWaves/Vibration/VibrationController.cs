@@ -1,5 +1,6 @@
 ﻿using ExpertWaves.Log;
 using ExpertWaves.Utility;
+using System.Collections;
 using UnityEngine;
 
 namespace ExpertWaves {
@@ -30,7 +31,7 @@ namespace ExpertWaves {
 			#region Public Functions
 			public void Vibrate() {
 				if (VibrationEnabled) {
-					Handheld.Vibrate();
+					StartCoroutine(AsyncVibrate());
 					log.LogInfo(
 						message: "Device is vibrating.",
 						classType: GetType().Name,
@@ -45,6 +46,11 @@ namespace ExpertWaves {
 						classMethod: System.Reflection.MethodBase.GetCurrentMethod().Name
 					);
 				}
+			}
+
+			public IEnumerator AsyncVibrate() {
+				Handheld.Vibrate();
+				yield return null;
 			}
 			#endregion
 
