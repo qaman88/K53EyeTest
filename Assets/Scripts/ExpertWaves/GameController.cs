@@ -416,7 +416,7 @@ namespace ExpertWaves {
 				switch (text) {
 					case ITextReader.Help:
 						content.text = helpTextAsset.text;
-						length = 1000;
+						length = 11500;
 						title.text = "Help";
 						break;
 					case ITextReader.Privacy:
