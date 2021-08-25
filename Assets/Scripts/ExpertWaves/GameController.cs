@@ -555,7 +555,7 @@ namespace ExpertWaves {
 					);
 				}
 				else {
-					Application.OpenURL($"mailto://?Subject=Share K53 Eye Test App");
+					Application.OpenURL($"mailto:?Subject=Share K53 Eye Test App");
 					log.LogWarn(
 						message: $"Share is done using fall-back plan for android plugin.",
 						classType: GetType().Name,
