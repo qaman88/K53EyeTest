@@ -384,7 +384,9 @@ namespace ExpertWaves {
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
 
-						vibrationController.Vibrate();
+						// vibrate devices for ms duration
+						int ms = 500;
+						vibrationController.Vibrate(ms);
 
 						// game over on incorrect answer or end of levels
 						engine.GameOver = true;

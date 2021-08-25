@@ -316,7 +316,8 @@ namespace ExpertWaves {
 								audioController.PlayEffect(IEffectType.Failure);
 
 								// vibrate device on incorrect choice
-								vibrationController.Vibrate();
+								int ms = 500;
+								vibrationController.Vibrate(ms);
 							}
 
 							// move engine to next level

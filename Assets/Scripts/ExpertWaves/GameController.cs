@@ -28,8 +28,11 @@ namespace ExpertWaves {
 			public PageController pageController;
 			public SceneController sceneController;
 			public TextAsset helpTextAsset;
+			public int helpContentLength = 7000;
 			public TextAsset privacyTextAsset;
+			public int privacyContentLength = 4000;
 			public TextAsset termsTextAsset;
+			public int termsContentLength = 3500;
 
 			// setting page UI components
 			public Slider voiceVolumeSlider;
@@ -191,7 +194,8 @@ namespace ExpertWaves {
 						settingController.SaveData();
 
 						if (state) {
-							vibrationController.Vibrate();
+							int ms = 500;
+							vibrationController.Vibrate(ms);
 						}
 					});
 					vibrationToggle.onValueChanged = toggleEvent;
@@ -256,7 +260,12 @@ namespace ExpertWaves {
 							classType: GetType().Name,
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
-						Application.OpenURL(Constant.Website);
+
+						long [] waves = new long[] {100, 500, 100};
+						int [] amplitudes = new int[] {125, 250, 125};
+						vibrationController.Vibrate(waves, amplitudes);
+
+						Application.OpenURL(Constant.AppLink);
 					});
 					rateButton.onClick = callback;
 				}
@@ -413,20 +422,21 @@ namespace ExpertWaves {
 
 				Vector2 size = content.rectTransform.sizeDelta;
 				float length = 0;
+
 				switch (text) {
 					case ITextReader.Help:
 						content.text = helpTextAsset.text;
-						length = 7500;
+						length = helpContentLength;
 						title.text = "Help";
 						break;
 					case ITextReader.Privacy:
 						content.text = privacyTextAsset.text;
-						length = 4000;
+						length = privacyContentLength;
 						title.text = "Privacy";
 						break;
 					case ITextReader.Terms:
 						content.text = termsTextAsset.text;
-						length = 3500;
+						length = termsContentLength;
 						title.text = "Terms";
 						break;
 					default:
@@ -507,7 +517,7 @@ namespace ExpertWaves {
 				}
 				catch (System.Exception e) {
 					log.LogError(
-						message: $"Failed initialize Android plugin.",
+						message: $"Failed to initialize Android plugin.",
 						classType: GetType().Name,
 						classMethod: MethodBase.GetCurrentMethod().Name,
 						exception: e
@@ -516,33 +526,42 @@ namespace ExpertWaves {
 			}
 
 			public void Toast(string msg) {
-#if UNITY_EDITOR
-				log.LogWarn(
-					message: $"Android is required to run the script.",
-					classType: GetType().Name,
-					classMethod: MethodBase.GetCurrentMethod().Name
-				);
-#else
 				if (androidPlugin != null) {
 					androidPlugin.Call("Toast", msg);
+					log.LogInfo(
+						message: $"Toast is done using android plugin.",
+						classType: GetType().Name,
+						classMethod: MethodBase.GetCurrentMethod().Name
+					);
 				}
-				Share();
-#endif
+				else {
+					// TODO - Toast fall-back plan
+					log.LogWarn(
+						message: $"Toast is done using fall-back plan for android plugin.",
+						classType: GetType().Name,
+						classMethod: MethodBase.GetCurrentMethod().Name
+					);
+				}
 			}
 
 			public void Share() {
-#if UNITY_EDITOR
-				log.LogWarn(
-					message: $"Android is required to run the script.",
-					classType: GetType().Name,
-					classMethod: MethodBase.GetCurrentMethod().Name
-				);
-#else
-				string info =  $"Hey \nHere is an app to help you pass K53 eye test on a GO. Download {Application.productName} App on {Constant.Website}. \nThanks";
+				string info =  $"Hey \nHere is an app to help you pass K53 eye test on a GO. Download {Application.productName} App on {Constant.AppLink}. \nThanks";
 				if (androidPlugin != null) {
 					androidPlugin.Call("Share", info);
+					log.LogInfo(
+						message: $"Share is done using android plugin.",
+						classType: GetType().Name,
+						classMethod: MethodBase.GetCurrentMethod().Name
+					);
 				}
-#endif
+				else {
+					Application.OpenURL($"mailto://?Subject=Share K53 Eye Test App");
+					log.LogWarn(
+						message: $"Share is done using fall-back plan for android plugin.",
+						classType: GetType().Name,
+						classMethod: MethodBase.GetCurrentMethod().Name
+					);
+				}
 			}
 			#endregion
 		}

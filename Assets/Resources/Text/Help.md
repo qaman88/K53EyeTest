@@ -46,11 +46,6 @@ Recommended environment to conduct the test:
 - <indent=1rem>You make sure that you swipe towards direction (up, down, left, right) of choice, without sloppy angle.</indent>
 
 
-<sub>NOTE:
-The app aid you to prepare for the K53 Eye Test, it does not claim to use the screening strategy use on traffic department. The app is distance test is derived from medical visual acuity test. The purpose of this app is to get you familiar with K53 eye testing, so you can know what to expect. If you are not satisfied with your score, please consult to medical doctor to conduct certified eye test. Clinical visual acuity may be measured in a variety of ways and for a variety of purposes.
-</sub>
-
-
 <align="center"><size=30>Color Test</size></align>
 
 Color test focus on your ability to determine the color of the object, in this test a vehicle is used. On each the vehicle is given distinct color. The figure below show the image of the vehicle used to conduct the color test.
@@ -100,6 +95,9 @@ Test termination conditions:
 Recommended environment to conduct the test:
 - <indent=1rem>You should conduct the indoor, make sure no additional light source enters the room during the test.</indent>
 - <indent=1rem>You should keep the same distance between your eyes and devices through out the test for accurate result, recommended distance is 30 cm, about the size of your class ruler.</indent>
+
+
+
 
 <sub>NOTE:
 The app aid you to prepare for the K53 Eye Test, it does not claim to use the screening strategy use in traffic department or in clinical visual test. The app is distance test is derived from visual acuity test. The purpose of this app is to get you familiar with K53 eye testing, so you can know what to expect. If you are not satisfied with your score, please consult to medical doctor to conduct certified eye test. Clinical color test may be measured in a variety of ways and for a variety of purposes.
