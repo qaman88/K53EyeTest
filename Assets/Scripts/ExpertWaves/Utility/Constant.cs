@@ -1,7 +1,4 @@
-﻿using System;
-using UnityEngine;
-
-namespace ExpertWaves {
+﻿namespace ExpertWaves {
 	namespace Utility {
 		public static class Constant {
 			// Switch
@@ -16,7 +13,7 @@ namespace ExpertWaves {
 			public static int LayerUI = 5;
 			public static string LogFolder = "Logs";
 			public static string Website = "https://qaman88.github.io";
-			public static string AppLink = "https://qaman88.github.io";
+			public static string AppLink = "https://apkpure.com/p/za.co.expertwaves.K53EyeTest";
 			public static string Email = "qaman88@gmail.com";
 		}
 	}

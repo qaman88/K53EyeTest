@@ -28,11 +28,11 @@ namespace ExpertWaves {
 			public PageController pageController;
 			public SceneController sceneController;
 			public TextAsset helpTextAsset;
-			public int helpContentLength = 7000;
+			public int helpContentLength = 8000;
 			public TextAsset privacyTextAsset;
-			public int privacyContentLength = 4000;
+			public int privacyContentLength = 5000;
 			public TextAsset termsTextAsset;
-			public int termsContentLength = 3500;
+			public int termsContentLength = 4000;
 
 			// setting page UI components
 			public Slider voiceVolumeSlider;
@@ -261,10 +261,12 @@ namespace ExpertWaves {
 							classMethod: MethodBase.GetCurrentMethod().Name
 						);
 
-						long [] waves = new long[] {100, 500, 100};
-						int [] amplitudes = new int[] {125, 250, 125};
+						// vibrate the device
+						long [] waves = new long[] {100, 100, 100, 100, 100};
+						int [] amplitudes = new int[] {125, 0, 250, 0, 125};
 						vibrationController.Vibrate(waves, amplitudes);
 
+						// open URL for app link
 						Application.OpenURL(Constant.AppLink);
 					});
 					rateButton.onClick = callback;
@@ -546,6 +548,7 @@ namespace ExpertWaves {
 
 			public void Share() {
 				string info =  $"Hey \nHere is an app to help you pass K53 eye test on a GO. Download {Application.productName} App on {Constant.AppLink}. \nThanks";
+
 				if (androidPlugin != null) {
 					androidPlugin.Call("Share", info);
 					log.LogInfo(
@@ -555,12 +558,13 @@ namespace ExpertWaves {
 					);
 				}
 				else {
-					Application.OpenURL($"mailto:?Subject=Share K53 Eye Test App");
+					//Application.OpenURL($"mailto:?Subject=Share K53 Eye Test App");
 					log.LogWarn(
 						message: $"Share is done using fall-back plan for android plugin.",
 						classType: GetType().Name,
 						classMethod: MethodBase.GetCurrentMethod().Name
 					);
+					InitializePlugin();
 				}
 			}
 			#endregion

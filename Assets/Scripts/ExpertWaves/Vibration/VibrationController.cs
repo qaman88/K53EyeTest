@@ -60,6 +60,19 @@ namespace ExpertWaves {
 				}
 			}
 
+			public void Vibrate(long[] wavelengths, int[] implitudes) {
+				if (VibrationEnabled) {
+					StartCoroutine(AsyncVibrate(wavelengths, implitudes));
+				}
+				else {
+					log.LogInfo(
+						message: "Vibration is disabled.",
+						classType: GetType().Name,
+						classMethod: MethodBase.GetCurrentMethod().Name
+					);
+				}
+			}
+
 			public IEnumerator AsyncVibrate(long ms) {
 				// android plugin waveform vibration
 				if (androidPlugin != null) {
@@ -80,22 +93,10 @@ namespace ExpertWaves {
 						classType: GetType().Name,
 						classMethod: MethodBase.GetCurrentMethod().Name
 					);
+					InitializePlugin();
 				}
 
 				yield return null;
-			}
-
-			public void Vibrate(long[] wavelengths, int[] implitudes) {
-				if (VibrationEnabled) {
-					StartCoroutine(AsyncVibrate(wavelengths, implitudes));
-				}
-				else {
-					log.LogInfo(
-						message: "Vibration is disabled.",
-						classType: GetType().Name,
-						classMethod: MethodBase.GetCurrentMethod().Name
-					);
-				}
 			}
 
 			public IEnumerator AsyncVibrate(long[] wavelengths, int[] implitudes) {
@@ -118,6 +119,7 @@ namespace ExpertWaves {
 						classType: GetType().Name,
 						classMethod: MethodBase.GetCurrentMethod().Name
 					);
+					InitializePlugin();
 				}
 
 				yield return null;
@@ -148,18 +150,23 @@ namespace ExpertWaves {
 
 			private void InitializePlugin() {
 				androidPlugin = new AndroidJavaObject(androidPluginName);
+				AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+				AndroidJavaObject activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+				AndroidJavaObject context = activity.Call<AndroidJavaObject>("getApplicationContext");
+				androidPlugin = new AndroidJavaObject(androidPluginName);
 
-				if (androidPlugin != null) {
-					log.LogInfo(
-						message: $"Android plugin initiated and activity setup completed.",
+				if (androidPlugin == null) {
+					log.LogError(
+						message: $"Failed to initialize Android plugin, pluginInstance is null.",
 						classType: GetType().Name,
 						classMethod: MethodBase.GetCurrentMethod().Name
 					);
 				}
 
 				else {
-					log.LogError(
-						message: $"Failed initialize Android plugin, pluginInstance is null.",
+					androidPlugin.CallStatic("SetUnityActivity", activity);
+					log.LogInfo(
+						message: $"Android plugin initiated and activity setup completed.",
 						classType: GetType().Name,
 						classMethod: MethodBase.GetCurrentMethod().Name
 					);
@@ -184,9 +191,14 @@ namespace ExpertWaves {
 			 * @param wavelengths - array of wavelength patterns,
 			 * @param amplitudes - array of wavelengths amplitudes, maximum amplitude value is 255.
 			 * @param repeat - number of playbacks, it should be -1 for a single shot.
+			 * 
+			 * Sample:
+					long [] waves = new long[] {100, 100, 100, 100, 100};
+					int [] amplitudes = new int[] {125, 0, 250, 0, 125};
+					vibrationController.Vibrate(waves, amplitudes);
 			 */
 			public void NativeVibrate(long[] waves, int[] amplitudes, int repeat = -1) {
-				if (androidPlugin != null) {
+				if (androidPlugin == null) {
 					InitializePlugin();
 				}
 				androidPlugin.CallStatic("Vibrate", waves, amplitudes, -1);
