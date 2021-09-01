@@ -1,3 +1,0 @@
-include ':UnityK53JavaPlugin'
-include ':app'
-rootProject.name = "UnityK53JavaPlugin"
